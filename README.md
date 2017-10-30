@@ -1,10 +1,10 @@
 # OhmGraphite
 
-OhmGraphite takes the hard work of extracting hardware sensors from [Open Hard Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) compatible format. If you're missing Windows GPU, temperature, or power metrics in Grafana or (or other graphite UI), this tool is for you!
+OhmGraphite takes the hard work of extracting hardware sensors from [Open Hard Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) compatible format. If you're missing GPU, temperature, or power metrics in Grafana or (or other graphite UI), this tool is for you!
 
-OhmGraphite functions as a console app or a Windows service that periodically polls the hardware.
+OhmGraphite functions as a console app (cross platform) or a Windows service that periodically polls the hardware.
 
-## Getting Started
+## Getting Started (Windows)
 
 - Create a directory that will home base for OhmGraphite (I use C:\Apps\OhmGraphite).
 - Download the latest zip and extract to our directory
@@ -24,3 +24,14 @@ OhmGraphite functions as a console app or a Windows service that periodically po
 - The app can be ran interactively by simply executing `OhmGraphite.exe`
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
 - To start the app after installation: `.\OhmGraphite.exe start` or your favorite Windows service management tool
+
+## Getting Started (Docker)
+
+Until this project is on docker hub, you'll need to build it from this repo:
+
+```bash
+docker build -t nickbabcock/ohm-graphite .
+docker run -v $PWD/app.config:/opt/OhmGraphite/OhmGraphite.exe.config:ro nickbabcock/ohm-graphite
+```
+
+`app.config` is in the same format as the above configuration.
