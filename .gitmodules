@@ -1,0 +1,3 @@
+[submodule "LibreHardwareMonitor"]
+	path = LibreHardwareMonitor
+	url = https://github.com/LibreHardwareMonitor/LibreHardwareMonitor
