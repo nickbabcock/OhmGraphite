@@ -104,10 +104,21 @@ namespace OhmGraphite
             foreach (var hardware in computer.Hardware)
             {
                 hardware.Update();
-                foreach (var hardwareSensor in hardware.Sensors)
+                foreach (var sensor in hardware.Sensors)
                 {
-                    yield return new Sensor(hardwareSensor.Identifier.ToString(), hardwareSensor.Name,
-                        hardwareSensor.Value ?? 0.0f);
+                    var id = sensor.Identifier.ToString();
+
+                    // Only report a value if the sensor was able to get a value
+                    // as 0 is different than "didn't read". For example, are the
+                    // fans really spinning at 0 RPM or was the value not read.
+                    if (sensor.Value.HasValue)
+                    {
+                        yield return new Sensor(id, sensor.Name, sensor.Value.Value);
+                    }
+                    else
+                    {
+                        Logger.Warn($"{id} did not have a value");
+                    }
                 }
             }
         }
