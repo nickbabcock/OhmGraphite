@@ -2,7 +2,7 @@
 
 OhmGraphite takes the hard work of extracting hardware sensors from [Open Hard Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) compatible format. If you're missing GPU, temperature, or power metrics in Grafana or (or other graphite UI), this tool is for you!
 
-OhmGraphite functions as a console app (cross platform) or a Windows service that periodically polls the hardware.
+OhmGraphite functions as a console app (cross platform) or a Windows service that periodically polls the hardware. My recommendation is that even though OhmGraphite can be run via Mono / Docker, many hardware sensors aren't available in those modes.
 
 ## Getting Started (Windows)
 
@@ -27,7 +27,7 @@ OhmGraphite functions as a console app (cross platform) or a Windows service tha
 
 ## Getting Started (Docker)
 
-Until this project is on docker hub, you'll need to build it from this repo:
+Since the full gambit of metrics aren't available in a Docker container, I've refrained from putting the project on docker hub lest it misleads people to think otherwise.
 
 ```bash
 docker build -t nickbabcock/ohm-graphite .
