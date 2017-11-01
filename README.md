@@ -10,7 +10,7 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 
 - Create a directory that will home base for OhmGraphite (I use C:\Apps\OhmGraphite).
 - Download the latest zip and extract to our directory
-- Update app configuration (located at `OhmGraphite.exe.config`) to include the host and port of graphite and the hardware polling interval. This config can be updated, but a restart of the app is needed for affect
+- Update app configuration (located at `OhmGraphite.exe.config`) to include the host and port of graphite and the hardware polling interval. This config can be updated in the future, but will require a restart of the app for effect.
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -23,7 +23,7 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 </configuration>
 ```
 
-- The app can be ran interactively by simply executing `OhmGraphite.exe`
+- The app can be ran interactively by simply executing `OhmGraphite.exe`. Executing as administrator will ensure all sensors are found.
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
 - To start the app after installation: `.\OhmGraphite.exe start` or your favorite Windows service management tool
 
