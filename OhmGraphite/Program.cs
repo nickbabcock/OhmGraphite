@@ -40,10 +40,7 @@ namespace OhmGraphite
                 x.SetDescription("Extract hardware sensor data and exports it to a given host and port in a graphite compatible format");
                 x.SetDisplayName("Ohm Graphite");
                 x.SetServiceName("OhmGraphite");
-                x.OnException(ex =>
-                {
-                    Logger.Error(ex, "OhmGraphite TopShelf encountered an error");
-                });
+                x.OnException(ex => Logger.Error(ex, "OhmGraphite TopShelf encountered an error"));
             });
         }
 
