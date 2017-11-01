@@ -15,7 +15,7 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 ## Getting Started (Windows)
 
 - Create a directory that will home base for OhmGraphite (I use C:\Apps\OhmGraphite).
-- Download the latest zip and extract to our directory
+- Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory
 - Update app configuration (located at `OhmGraphite.exe.config`) to include the host and port of graphite and the hardware polling interval. This config can be updated in the future, but will require a restart of the app for effect.
 
 ```xml
