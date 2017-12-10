@@ -34,6 +34,12 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
 - To start the app after installation: `.\OhmGraphite.exe start` or your favorite Windows service management tool
 
+### Upgrades
+
+- Stop OhmGraphite service
+- Unzip latest release over previous directory
+- Start OhmGraphite service
+
 ## Getting Started (Docker)
 
 Since the full gambit of metrics aren't available in a Docker container, I've refrained from putting the project on docker hub lest it misleads people to think otherwise.
