@@ -1,6 +1,15 @@
 # OhmGraphite
 
-OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) compatible format. If you're missing GPU, temperature, or power metrics in Grafana or (or other graphite UI), this tool is for you!
+OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) compatible format. If you're missing GPU, temperature, or power metrics in [Grafana](https://grafana.com/) or (or other graphite UI), this tool is for you!
+
+## Who's this for?
+
+- People who are familiar with Graphite / Grafana and may have an instance running on their home or cloud server. If you're not familiar with those applications, it may be overwhelming to setup and maintain them. If you're just looking for a UI for hardware sensors, I'd recommend [HWINFO](https://www.hwinfo.com/)
+- People who have administrative privileges
+- People who know how to execute commands on Windows Command Prompt or other terminal
+- People who like lightweight (8MB of RAM and neglible CPU usage), portable (can run off usb), and straightforward applications
+
+## Introduction
 
 OhmGraphite functions as a console app (cross platform) or a Windows service that periodically polls the hardware. My recommendation is that even though OhmGraphite can be run via Mono / Docker, many hardware sensors aren't available in those modes.
 
@@ -15,7 +24,7 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 ## Getting Started (Windows)
 
 - Create a directory that will home base for OhmGraphite (I use C:\Apps\OhmGraphite).
-- Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory
+- Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory.
 - Update app configuration (located at `OhmGraphite.exe.config`). The config below polls our hardware every `5` seconds and sends the results to a graphite server listening on `localhost:2003`.
 
 ```xml
@@ -36,9 +45,9 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 
 ### Upgrades
 
-- Stop OhmGraphite service
-- Unzip latest release over previous directory
-- Start OhmGraphite service
+- Stop OhmGraphite service `.\OhmGraphite.exe stop`
+- Unzip latest release over previous directory, but don't overwrite your previous config.
+- Start OhmGraphite service `.\OhmGraphite.exe start`
 
 ## Getting Started (Docker)
 
