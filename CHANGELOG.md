@@ -1,3 +1,8 @@
+## 0.1.3 - 2018-03-07
+
+* Increase logging done under `DEBUG` to aid diagnostics
+* Ease upgrades by packing everything into `OhmGraphite.exe`. No need for the .dll files anymore. Upgrading now consists solely of replacing the executable.
+
 ## 0.1.2 - 2018-02-06
 
 * Update LibreHardwareMonitor to [22bd00c](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/22bd00c806e4c5175a5ca3013867c5532c06f984)
