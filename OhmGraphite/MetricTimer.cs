@@ -18,36 +18,43 @@ namespace OhmGraphite
         private readonly string _graphiteHost;
         private readonly Timer _timer;
 
-        public MetricTimer(Computer computer, TimeSpan interval, string graphiteHost, int graphitePort = 2003)
+        public MetricTimer(MetricConfig config)
         {
-            _computer = computer;
-            _graphitePort = graphitePort;
-            _graphiteHost = graphiteHost;
-            _timer = new Timer(interval.TotalMilliseconds) {AutoReset = true};
+            _computer = config.Computer;
+            _graphitePort = config.Port;
+            _graphiteHost = config.Host;
+            _timer = new Timer(config.Interval.TotalMilliseconds) {AutoReset = true};
             _timer.Elapsed += ReportMetrics;
         }
 
         public void Start()
         {
-            _computer.Open();
-            _timer.Start();
+            Logger.LogAction("starting metric timer", () =>
+            {
+                _computer.Open();
+                _timer.Start();
+            });
         }
 
         public void Stop()
         {
-            _computer.Close();
-            _timer.Stop();
+            Logger.LogAction("stopping metric timer", () =>
+            {
+                _computer.Close();
+                _timer.Stop();
+            });
         }
 
         private void ReportMetrics(object sender, ElapsedEventArgs e)
         {
-            // We don't want to transmit metrics across multiple seconds as they
-            // are being retrieved so calculate the timestamp of the signaled event
-            // only once.
-            long epoch = ((DateTimeOffset) e.SignalTime).ToUnixTimeSeconds();
-            string host = Environment.MachineName;
+            Logger.Debug("Starting to report metrics");
             try
             {
+                // We don't want to transmit metrics across multiple seconds as they
+                // are being retrieved so calculate the timestamp of the signaled event
+                // only once.
+                long epoch = new DateTimeOffset(e.SignalTime).ToUnixTimeSeconds();
+                string host = Environment.MachineName;
                 SendMetrics(host, epoch);
             }
             catch (Exception ex)

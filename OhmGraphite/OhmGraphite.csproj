@@ -32,6 +32,7 @@
   <ItemGroup>
     <PackageReference Include="NLog.Config" Version="4.4.12" />
     <PackageReference Include="TopShelf" Version="4.0.3" />
+    <PackageReference Include="Topshelf.NLog" Version="4.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj" />
