@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/c8b43wg7qtwicjj6/branch/master?svg=true)](https://ci.appveyor.com/project/nickbabcock/ohmgraphite/branch/master)
+
 # OhmGraphite
 
 OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) compatible format. If you're missing GPU, temperature, or power metrics in [Grafana](https://grafana.com/) or (or other graphite UI), this tool is for you!
