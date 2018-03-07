@@ -5,3 +5,6 @@ configuration:
 
 before_build:
 - cmd: git submodule update --init --recursive
+
+build:
+  project: OhmGraphite.sln
