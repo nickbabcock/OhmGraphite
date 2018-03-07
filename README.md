@@ -39,14 +39,14 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 ```
 
 - This config can be updated in the future, but will require a restart of the app for effect.
-- The app can be ran interactively by simply executing `OhmGraphite.exe`. Executing as administrator will ensure all sensors are found.
+- The app can be ran interactively by executing `.\OhmGraphite.exe run`. Executing as administrator *may* make difference in the number of sensors found (OhmGraphite will log how many sensors are found).
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
 - To start the app after installation: `.\OhmGraphite.exe start` or your favorite Windows service management tool
 
 ### Upgrades
 
 - Stop OhmGraphite service `.\OhmGraphite.exe stop`
-- Unzip latest release over previous directory, but don't overwrite your previous config.
+- Unzip latest release and copy `OhmGraphite.exe` to your installation directory.
 - Start OhmGraphite service `.\OhmGraphite.exe start`
 
 ## Getting Started (Docker)
