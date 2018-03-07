@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ILRepack" Version="2.0.15" />
     <PackageReference Include="NLog.Config" Version="4.4.12" />
     <PackageReference Include="TopShelf" Version="4.0.3" />
     <PackageReference Include="Topshelf.NLog" Version="4.0.3" />
@@ -40,4 +41,8 @@
   <ItemGroup>
     <Reference Include="System.Configuration" />
   </ItemGroup>
+
+  <Target Name="ILPack">
+    <Exec Command="&quot;$(NuGetPackageRoot)ilrepack\2.0.15\tools\ILRepack.exe&quot; /out:$(OutputPath)OhmGraphite.exe $(OutputPath)OhmGraphite.exe $(OutputPath)Topshelf.dll $(OutputPath)Topshelf.NLog.dll $(OutputPath)NLog.dll $(OutputPath)OpenHardwareMonitorLib.dll" />
+  </Target>
 </Project>
