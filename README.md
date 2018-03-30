@@ -51,6 +51,11 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 - Unzip latest release and copy `OhmGraphite.exe` to your installation directory.
 - Start OhmGraphite service `.\OhmGraphite.exe start`
 
+### Uninstall
+
+- Stop OhmGraphite service `.\OhmGraphite.exe stop`
+- Run uninstall command `.\OhmGraphite.exe uninstall`
+
 ## Getting Started (Docker)
 
 Since the full gambit of metrics aren't available in a Docker container, I've refrained from putting the project on docker hub lest it misleads people to think otherwise.
