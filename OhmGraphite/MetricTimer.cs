@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -138,7 +138,7 @@ namespace OhmGraphite
                 }
                 else
                 {
-                    Logger.Warn($"{id} did not have a value");
+                    Logger.Debug($"{id} did not have a value");
                 }
             }
         }
