@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -23,7 +23,7 @@ namespace OhmGraphite
             _computer = config.Computer;
             _graphitePort = config.Port;
             _graphiteHost = config.Host;
-            _timer = new Timer(config.Interval.TotalMilliseconds) {AutoReset = true};
+            _timer = new Timer(config.Interval.TotalMilliseconds) { AutoReset = true };
             _timer.Elapsed += ReportMetrics;
         }
 
@@ -77,15 +77,18 @@ namespace OhmGraphite
             using (var networkStream = client.GetStream())
             using (var writer = new StreamWriter(networkStream))
             {
-                foreach (var sensor in ReadSensors(_computer))
+                foreach (var hardware in ReadHardware(_computer))
                 {
-                    var data = Normalize(sensor);
+                    foreach (var sensor in ReadSensors(hardware))
+                    {
+                        var data = Normalize(sensor);
 
-                    // Graphite API wants <metric> <value> <timestamp>. We prefix the metric
-                    // with `ohm` as to not overwrite potentially existing metrics
-                    writer.WriteLine($"ohm.{host}.{data.Identifier}.{data.Name} {data.Value} {epoch:d}");
+                        // Graphite API wants <metric> <value> <timestamp>. We prefix the metric
+                        // with `ohm` as to not overwrite potentially existing metrics
+                        writer.WriteLine($"ohm.{host}.{data.Identifier}.{data.Name} {data.Value} {epoch:d}");
 
-                    sensorCount++;
+                        sensorCount++;
+                    }
                 }
             }
 
@@ -106,26 +109,36 @@ namespace OhmGraphite
             return new Sensor(identifier, name, sensor.Value);
         }
 
-        private static IEnumerable<Sensor> ReadSensors(IComputer computer)
+        private static IEnumerable<IHardware> ReadHardware(IComputer computer)
         {
             foreach (var hardware in computer.Hardware)
             {
-                hardware.Update();
-                foreach (var sensor in hardware.Sensors)
-                {
-                    var id = sensor.Identifier.ToString();
+                yield return hardware;
 
-                    // Only report a value if the sensor was able to get a value
-                    // as 0 is different than "didn't read". For example, are the
-                    // fans really spinning at 0 RPM or was the value not read.
-                    if (sensor.Value.HasValue)
-                    {
-                        yield return new Sensor(id, sensor.Name, sensor.Value.Value);
-                    }
-                    else
-                    {
-                        Logger.Warn($"{id} did not have a value");
-                    }
+                foreach (var subHardware in hardware.SubHardware)
+                {
+                    yield return subHardware;
+                }
+            }
+        }
+
+        private static IEnumerable<Sensor> ReadSensors(IHardware hardware)
+        {
+            hardware.Update();
+            foreach (var sensor in hardware.Sensors)
+            {
+                var id = sensor.Identifier.ToString();
+
+                // Only report a value if the sensor was able to get a value
+                // as 0 is different than "didn't read". For example, are the
+                // fans really spinning at 0 RPM or was the value not read.
+                if (sensor.Value.HasValue)
+                {
+                    yield return new Sensor(id, sensor.Name, sensor.Value.Value);
+                }
+                else
+                {
+                    Logger.Debug($"{id} did not have a value");
                 }
             }
         }
