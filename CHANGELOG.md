@@ -1,6 +1,6 @@
 ## 0.2.0 - 2018-04-02
 
-Huge shotout to @jonasbleyl who discovered a whole swath of hardware metrics that can be reported!
+Huge shout out to @jonasbleyl who discovered a whole swath of hardware metrics that can be reported!
 
 * Report sub-hardware sensors. For those missing motherboard temperatures, fan controllers, and voltage metrics -- those should now be reported.
 * Change logging of sensors without a value from warning to debug as fan controllers often don't have a value and we want to prevent log spam.
