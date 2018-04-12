@@ -19,6 +19,8 @@ Don't fret if this repo hasn't been updated recently. I use this every day to cr
 
 [![GPU Utilization](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/gpu-utilization.png)](#gpu-utilization)
 [![Temperatures](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/temperatures.png)](#temperatures)
+[![Motherboard-Temperatures](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/mobo-temp.png)](#mobo-temp)
+[![Fans](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/fans.png)](#fans)
 [![Power](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/power.png)](#power)
 [![Text1](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/text1.png)](#text1)
 [![Text2](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/text2.png)](#text2)
