@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Timers;
 using NLog;
 using OpenHardwareMonitor.Hardware;
+using static System.FormattableString;
 
 namespace OhmGraphite
 {
@@ -85,7 +86,7 @@ namespace OhmGraphite
 
                         // Graphite API wants <metric> <value> <timestamp>. We prefix the metric
                         // with `ohm` as to not overwrite potentially existing metrics
-                        writer.WriteLine($"ohm.{host}.{data.Identifier}.{data.Name} {data.Value} {epoch:d}");
+                        writer.WriteLine(FormatGraphiteData(host, epoch, data));
 
                         sensorCount++;
                     }
@@ -93,6 +94,11 @@ namespace OhmGraphite
             }
 
             Logger.Info($"Sent {sensorCount} metrics in {stopwatch.Elapsed.TotalMilliseconds}ms");
+        }
+
+        public static string FormatGraphiteData(string host, long epoch, Sensor data)
+        {
+            return Invariant($"ohm.{host}.{data.Identifier}.{data.Name} {data.Value} {epoch:d}");
         }
 
         private static Sensor Normalize(Sensor sensor)
