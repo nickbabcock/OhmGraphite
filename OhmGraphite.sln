@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OhmGraphite", "OhmGraphite\OhmGraphite.csproj", "{329E2785-6E88-449F-A641-6ACCBFF943CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OhmGraphite", "OhmGraphite\OhmGraphite.csproj", "{329E2785-6E88-449F-A641-6ACCBFF943CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenHardwareMonitorLib", "LibreHardwareMonitor\OpenHardwareMonitorLib.csproj", "{B0397530-545A-471D-BB74-027AE456DF1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenHardwareMonitorLib", "LibreHardwareMonitor\OpenHardwareMonitorLib.csproj", "{B0397530-545A-471D-BB74-027AE456DF1A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OhmGraphite.Test", "OhmGraphite.Test\OhmGraphite.Test.csproj", "{E6C3F138-BED7-4350-B1F0-95AE87640CFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B0397530-545A-471D-BB74-027AE456DF1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0397530-545A-471D-BB74-027AE456DF1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0397530-545A-471D-BB74-027AE456DF1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6C3F138-BED7-4350-B1F0-95AE87640CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6C3F138-BED7-4350-B1F0-95AE87640CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6C3F138-BED7-4350-B1F0-95AE87640CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6C3F138-BED7-4350-B1F0-95AE87640CFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
