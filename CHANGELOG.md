@@ -1,3 +1,7 @@
+## 0.2.1 - 2018-05-03
+
+Bugfix for users where their computer culture doesn't use a period `.` as the decimal separator resulting in warnings and no data being stored.
+
 ## 0.2.0 - 2018-04-02
 
 Huge shout out to @jonasbleyl who discovered a whole swath of hardware metrics that can be reported!
