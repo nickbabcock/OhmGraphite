@@ -8,14 +8,12 @@ namespace OhmGraphite
     {
         public string Host { get; }
         public int Port { get; }
-        public Computer Computer { get; }
         public TimeSpan Interval { get; }
 
-        public MetricConfig(string host, int port, Computer computer, TimeSpan interval)
+        public MetricConfig(string host, int port, TimeSpan interval)
         {
             Host = host;
             Port = port;
-            Computer = computer;
             Interval = interval;
         }
 
@@ -33,20 +31,7 @@ namespace OhmGraphite
             }
 
             var interval = TimeSpan.FromSeconds(seconds);
-
-            // We'll want to capture all available hardware metrics
-            // to send to graphite
-            var computer = new Computer
-            {
-                GPUEnabled = true,
-                MainboardEnabled = true,
-                CPUEnabled = true,
-                RAMEnabled = true,
-                FanControllerEnabled = true,
-                HDDEnabled = true
-            };
-
-            return new MetricConfig(host, port, computer, interval);
+            return new MetricConfig(host, port, interval);
         }
     }
 }

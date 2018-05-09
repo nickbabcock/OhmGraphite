@@ -14,25 +14,25 @@ namespace OhmGraphite
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Computer _computer;
         private readonly int _graphitePort;
         private readonly string _graphiteHost;
         private readonly Timer _timer;
+        private readonly SensorCollector _collector;
 
-        public MetricTimer(MetricConfig config)
+        public MetricTimer(MetricConfig config, SensorCollector collector)
         {
-            _computer = config.Computer;
             _graphitePort = config.Port;
             _graphiteHost = config.Host;
             _timer = new Timer(config.Interval.TotalMilliseconds) { AutoReset = true };
             _timer.Elapsed += ReportMetrics;
+            _collector = collector;
         }
 
         public void Start()
         {
             Logger.LogAction("starting metric timer", () =>
             {
-                _computer.Open();
+                _collector.Open();
                 _timer.Start();
             });
         }
@@ -41,7 +41,7 @@ namespace OhmGraphite
         {
             Logger.LogAction("stopping metric timer", () =>
             {
-                _computer.Close();
+                _collector.Close();
                 _timer.Stop();
             });
         }
@@ -78,18 +78,15 @@ namespace OhmGraphite
             using (var networkStream = client.GetStream())
             using (var writer = new StreamWriter(networkStream))
             {
-                foreach (var hardware in ReadHardware(_computer))
+                foreach (var sensor in _collector.ReadAllSensors())
                 {
-                    foreach (var sensor in ReadSensors(hardware))
-                    {
-                        var data = Normalize(sensor);
+                    var data = Normalize(sensor);
 
-                        // Graphite API wants <metric> <value> <timestamp>. We prefix the metric
-                        // with `ohm` as to not overwrite potentially existing metrics
-                        writer.WriteLine(FormatGraphiteData(host, epoch, data));
+                    // Graphite API wants <metric> <value> <timestamp>. We prefix the metric
+                    // with `ohm` as to not overwrite potentially existing metrics
+                    writer.WriteLine(FormatGraphiteData(host, epoch, data));
 
-                        sensorCount++;
-                    }
+                    sensorCount++;
                 }
             }
 
@@ -113,40 +110,6 @@ namespace OhmGraphite
             identifier = identifier.Remove(identifier.LastIndexOf('.'));
             var name = sensor.Name.ToLower().Replace(" ", null).Replace('#', '.');
             return new Sensor(identifier, name, sensor.Value);
-        }
-
-        private static IEnumerable<IHardware> ReadHardware(IComputer computer)
-        {
-            foreach (var hardware in computer.Hardware)
-            {
-                yield return hardware;
-
-                foreach (var subHardware in hardware.SubHardware)
-                {
-                    yield return subHardware;
-                }
-            }
-        }
-
-        private static IEnumerable<Sensor> ReadSensors(IHardware hardware)
-        {
-            hardware.Update();
-            foreach (var sensor in hardware.Sensors)
-            {
-                var id = sensor.Identifier.ToString();
-
-                // Only report a value if the sensor was able to get a value
-                // as 0 is different than "didn't read". For example, are the
-                // fans really spinning at 0 RPM or was the value not read.
-                if (sensor.Value.HasValue)
-                {
-                    yield return new Sensor(id, sensor.Name, sensor.Value.Value);
-                }
-                else
-                {
-                    Logger.Debug($"{id} did not have a value");
-                }
-            }
         }
     }
 }
