@@ -10,25 +10,10 @@ namespace OhmGraphite
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Computer _computer;
 
-        public SensorCollector(Computer computer)
-        {
-            _computer = computer;
-        }
-
-        public void Open()
-        {
-            _computer.Open();
-        }
-
-        public void Close()
-        {
-            _computer.Close();
-        }
-
-        public IEnumerable<Sensor> ReadAllSensors()
-        {
-            return ReadHardware().SelectMany(ReadSensors);
-        }
+        public SensorCollector(Computer computer) => _computer = computer;
+        public void Open() => _computer.Open();
+        public void Close() => _computer.Close();
+        public IEnumerable<Sensor> ReadAllSensors() => ReadHardware().SelectMany(ReadSensors);
 
         private IEnumerable<IHardware> ReadHardware()
         {
