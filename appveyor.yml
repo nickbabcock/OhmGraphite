@@ -1,11 +1,8 @@
 image: 'Visual Studio 2017'
-
-configuration:
-  - Release
-
-before_build:
-- cmd: git submodule update --init --recursive
-- cmd: nuget restore
-
-build:
-  project: OhmGraphite.sln
+build: off
+test_script:
+  cmd: |
+      git submodule update --init --recursive
+      nuget restore
+      dotnet build -c Release ./OhmGraphite/OhmGraphite.csproj
+      dotnet test .\OhmGraphite.Test\OhmGraphite.Test.csproj
