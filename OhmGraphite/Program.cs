@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 using OpenHardwareMonitor.Hardware;
 using Topshelf;
 
@@ -18,7 +19,7 @@ namespace OhmGraphite
                     // to poll the hardware
                     var config = Logger.LogFunction("parse config", MetricConfig.ParseAppSettings);
                     double seconds = config.Interval.TotalSeconds;
-                    Logger.Info($"Host: {config.Host} port: {config.Port} interval: {seconds}");
+                    Logger.Info($"Host: {config.Host} port: {config.Port} interval: {seconds} tags: {config.Tags}");
 
                     // We'll want to capture all available hardware metrics
                     // to send to graphite
@@ -33,7 +34,7 @@ namespace OhmGraphite
                     };
 
                     var collector = new SensorCollector(computer);
-                    var writer = new GraphiteWriter(config.Host, config.Port);
+                    var writer = new GraphiteWriter(config.Host, config.Port, Environment.MachineName, config.Tags);
 
                     s.ConstructUsing(name =>
                         Logger.LogFunction("creating timer",

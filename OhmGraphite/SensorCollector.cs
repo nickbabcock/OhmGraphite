@@ -13,7 +13,7 @@ namespace OhmGraphite
         public SensorCollector(Computer computer) => _computer = computer;
         public void Open() => _computer.Open();
         public void Close() => _computer.Close();
-        public IEnumerable<Sensor> ReadAllSensors() => ReadHardware().SelectMany(ReadSensors);
+        public IEnumerable<ReportedValue> ReadAllSensors() => ReadHardware().SelectMany(ReadSensors);
 
         private IEnumerable<IHardware> ReadHardware()
         {
@@ -25,7 +25,7 @@ namespace OhmGraphite
             }
         }
 
-        private static IEnumerable<Sensor> ReadSensors(IHardware hardware)
+        private static IEnumerable<ReportedValue> ReadSensors(IHardware hardware)
         {
             hardware.Update();
             foreach (var sensor in hardware.Sensors)
@@ -37,7 +37,13 @@ namespace OhmGraphite
                 // fans really spinning at 0 RPM or was the value not read.
                 if (sensor.Value.HasValue)
                 {
-                    yield return new Sensor(id, sensor.Name, sensor.Value.Value);
+                    yield return new ReportedValue(id,
+                        sensor.Name,
+                        sensor.Value.Value,
+                        sensor.SensorType,
+                        sensor.Hardware.Name,
+                        sensor.Hardware.HardwareType,
+                        sensor.Index);
                 }
                 else
                 {
