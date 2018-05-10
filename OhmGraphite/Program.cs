@@ -32,8 +32,9 @@ namespace OhmGraphite
                     };
 
                     var collector = new SensorCollector(computer);
+                    var writer = new GraphiteWriter(config.Host, config.Port);
 
-                    s.ConstructUsing(name => Logger.LogFunction("creating timer", () => new MetricTimer(config, collector)));
+                    s.ConstructUsing(name => Logger.LogFunction("creating timer", () => new MetricTimer(config.Interval, collector, writer)));
                     s.WhenStarted(tc => tc.Start());
                     s.WhenStopped(tc => tc.Stop());
                 });

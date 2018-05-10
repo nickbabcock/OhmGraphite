@@ -12,7 +12,7 @@ namespace OhmGraphite.Test
         {
             var epoch = new DateTimeOffset(new DateTime(2001, 1, 13), TimeSpan.Zero).ToUnixTimeSeconds();
             var sensor = new Sensor("my.cpu.identifier", "voltage", 1.06f);
-            string actual = MetricTimer.FormatGraphiteData("MY-PC", epoch, sensor);
+            string actual = GraphiteWriter.FormatGraphiteData("MY-PC", epoch, sensor);
             Assert.Equal("ohm.MY-PC.my.cpu.identifier.voltage 1.06 979344000", actual);
         }
 
@@ -27,7 +27,7 @@ namespace OhmGraphite.Test
 
                 var epoch = new DateTimeOffset(new DateTime(2001, 1, 13), TimeSpan.Zero).ToUnixTimeSeconds();
                 var sensor = new Sensor("my.cpu.identifier", "voltage", 1.06f);
-                string actual = MetricTimer.FormatGraphiteData("MY-PC", epoch, sensor);
+                string actual = GraphiteWriter.FormatGraphiteData("MY-PC", epoch, sensor);
                 Assert.Equal("ohm.MY-PC.my.cpu.identifier.voltage 1.06 979344000", actual);
             }
             finally
