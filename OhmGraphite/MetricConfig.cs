@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Configuration;
-using OpenHardwareMonitor.Hardware;
 
 namespace OhmGraphite
 {
     public class MetricConfig
     {
-        public string Host { get; }
-        public int Port { get; }
-        public TimeSpan Interval { get; }
-
         public MetricConfig(string host, int port, TimeSpan interval)
         {
             Host = host;
             Port = port;
             Interval = interval;
         }
+
+        public string Host { get; }
+        public int Port { get; }
+        public TimeSpan Interval { get; }
 
         public static MetricConfig ParseAppSettings()
         {

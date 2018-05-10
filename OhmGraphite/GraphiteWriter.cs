@@ -8,9 +8,9 @@ namespace OhmGraphite
 {
     public class GraphiteWriter
     {
+        private readonly string _localHost;
         private readonly string _remoteHost;
         private readonly int _remotePort;
-        private readonly string _localHost;
 
         public GraphiteWriter(string remoteHost, int remotePort)
         {
@@ -24,7 +24,7 @@ namespace OhmGraphite
             // We don't want to transmit metrics across multiple seconds as they
             // are being retrieved so calculate the timestamp of the signaled event
             // only once.
-            var epoch = new DateTimeOffset(reportTime).ToUnixTimeSeconds();
+            long epoch = new DateTimeOffset(reportTime).ToUnixTimeSeconds();
             using (var client = new TcpClient(_remoteHost, _remotePort))
             using (var networkStream = client.GetStream())
             using (var writer = new StreamWriter(networkStream))
@@ -48,9 +48,9 @@ namespace OhmGraphite
             // A name like "GPU Core" is turned into "gpucore". Also
             // since some names are like "cpucore#2", turn them into
             // separate metrics by replacing "#" with "."
-            var identifier = sensor.Identifier.Replace('/', '.').Substring(1);
+            string identifier = sensor.Identifier.Replace('/', '.').Substring(1);
             identifier = identifier.Remove(identifier.LastIndexOf('.'));
-            var name = sensor.Name.ToLower().Replace(" ", null).Replace('#', '.');
+            string name = sensor.Name.ToLower().Replace(" ", null).Replace('#', '.');
             return new Sensor(identifier, name, sensor.Value);
         }
 

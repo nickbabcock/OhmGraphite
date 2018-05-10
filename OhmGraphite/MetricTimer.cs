@@ -9,14 +9,14 @@ namespace OhmGraphite
     public class MetricTimer
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly SensorCollector _collector;
 
         private readonly Timer _timer;
-        private readonly SensorCollector _collector;
         private readonly GraphiteWriter _writer;
 
         public MetricTimer(TimeSpan interval, SensorCollector collector, GraphiteWriter writer)
         {
-            _timer = new Timer(interval.TotalMilliseconds) { AutoReset = true };
+            _timer = new Timer(interval.TotalMilliseconds) {AutoReset = true};
             _timer.Elapsed += ReportMetrics;
             _collector = collector;
             _writer = writer;

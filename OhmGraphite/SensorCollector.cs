@@ -36,10 +36,7 @@ namespace OhmGraphite
             {
                 yield return hardware;
 
-                foreach (var subHardware in hardware.SubHardware)
-                {
-                    yield return subHardware;
-                }
+                foreach (var subHardware in hardware.SubHardware) yield return subHardware;
             }
         }
 
@@ -48,7 +45,7 @@ namespace OhmGraphite
             hardware.Update();
             foreach (var sensor in hardware.Sensors)
             {
-                var id = sensor.Identifier.ToString();
+                string id = sensor.Identifier.ToString();
 
                 // Only report a value if the sensor was able to get a value
                 // as 0 is different than "didn't read". For example, are the
