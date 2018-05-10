@@ -17,13 +17,7 @@ OhmGraphite functions as a console app (cross platform) or a Windows service tha
 
 Don't fret if this repo hasn't been updated recently. I use this every day to create beautiful dashboards. Keep in mind, Open Hardware Monitor supported components will determine what metrics are available. Below are graphs / stats made strictly from OhmGraphite (additional Windows metrics can be exposed, see [Monitoring Windows system metrics with grafana](https://nbsoftsolutions.com/blog/monitoring-windows-system-metrics-with-grafana))
 
-[![GPU Utilization](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/gpu-utilization.png)](#gpu-utilization)
-[![Temperatures](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/temperatures.png)](#temperatures)
-[![Motherboard-Temperatures](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/mobo-temp.png)](#mobo-temp)
-[![Fans](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/fans.png)](#fans)
-[![Power](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/power.png)](#power)
-[![Text1](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/text1.png)](#text1)
-[![Text2](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/text2.png)](#text2)
+[![dashboard](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/dashboard.png)](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/dashboard.png)
 
 ## Getting Started (Windows)
 
