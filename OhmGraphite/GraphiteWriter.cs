@@ -8,7 +8,7 @@ using static System.FormattableString;
 
 namespace OhmGraphite
 {
-    public class GraphiteWriter
+    public class GraphiteWriter : IWriteMetrics
     {
         private readonly string _localHost;
         private readonly string _remoteHost;

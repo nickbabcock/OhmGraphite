@@ -19,7 +19,20 @@ namespace OhmGraphite
                     // to poll the hardware
                     var config = Logger.LogFunction("parse config", MetricConfig.ParseAppSettings);
                     double seconds = config.Interval.TotalSeconds;
-                    Logger.Info($"Host: {config.Host} port: {config.Port} interval: {seconds} tags: {config.Tags}");
+                    IWriteMetrics writer = null;
+                    if (config.Graphite != null)
+                    {
+                        Logger.Info($"Graphite host: {config.Graphite.Host} port: {config.Graphite.Port} interval: {seconds} tags: {config.Graphite.Tags}");
+                        writer = new GraphiteWriter(config.Graphite.Host,
+                            config.Graphite.Port,
+                            Environment.MachineName,
+                            config.Graphite.Tags);
+                    }
+                    else
+                    {
+                        Logger.Info($"Influxdb address: {config.Influx.Address} db: {config.Influx.Db}");
+                        writer = new InfluxWriter(config.Influx, Environment.MachineName);
+                    }
 
                     // We'll want to capture all available hardware metrics
                     // to send to graphite
@@ -34,7 +47,6 @@ namespace OhmGraphite
                     };
 
                     var collector = new SensorCollector(computer);
-                    var writer = new GraphiteWriter(config.Host, config.Port, Environment.MachineName, config.Tags);
 
                     s.ConstructUsing(name =>
                         Logger.LogFunction("creating timer",

@@ -5,39 +5,42 @@ namespace OhmGraphite
 {
     public class MetricConfig
     {
-        public MetricConfig(string host, int port, TimeSpan interval, bool tags)
+        public MetricConfig(TimeSpan interval, GraphiteConfig graphite, InfluxConfig influx)
         {
-            Host = host;
-            Port = port;
             Interval = interval;
-            Tags = tags;
+            Graphite = graphite;
+            Influx = influx;
         }
 
-        public string Host { get; }
-        public int Port { get; }
         public TimeSpan Interval { get; }
-        public bool Tags { get; }
+        public GraphiteConfig Graphite { get; }
+        public InfluxConfig Influx { get; }
 
         public static MetricConfig ParseAppSettings()
         {
-            string host = ConfigurationManager.AppSettings["host"] ?? "localhost";
-            if (!int.TryParse(ConfigurationManager.AppSettings["port"], out int port))
-            {
-                port = 2003;
-            }
-
-            if (!bool.TryParse(ConfigurationManager.AppSettings["tags"], out bool tags))
-            {
-                tags = false;
-            }
-
             if (!int.TryParse(ConfigurationManager.AppSettings["interval"], out int seconds))
             {
                 seconds = 5;
             }
 
             var interval = TimeSpan.FromSeconds(seconds);
-            return new MetricConfig(host, port, interval, tags);
+
+            var type = ConfigurationManager.AppSettings["type"] ?? "graphite";
+            var gconfig = null;
+            var iconfig = null;
+
+            switch (type.ToLowerInvariant())
+            {
+                case "graphite":
+                    gconfig = GraphiteConfig.ParseAppSettings();
+                    break;
+                case "influxdb":
+                case "influx":
+                    iconfig = InfluxConfig.ParseAppSettings();
+                    break;
+            }
+
+            return new MetricConfig(interval, gconfig, iconfig);
         }
     }
 }

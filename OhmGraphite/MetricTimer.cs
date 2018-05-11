@@ -12,9 +12,9 @@ namespace OhmGraphite
         private readonly SensorCollector _collector;
 
         private readonly Timer _timer;
-        private readonly GraphiteWriter _writer;
+        private readonly IWriteMetrics _writer;
 
-        public MetricTimer(TimeSpan interval, SensorCollector collector, GraphiteWriter writer)
+        public MetricTimer(TimeSpan interval, SensorCollector collector, IWriteMetrics writer)
         {
             _timer = new Timer(interval.TotalMilliseconds) {AutoReset = true};
             _timer.Elapsed += ReportMetrics;
