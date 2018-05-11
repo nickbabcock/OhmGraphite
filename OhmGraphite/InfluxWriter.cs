@@ -33,8 +33,7 @@ namespace OhmGraphite
             }
 
             var task = client.SendAsync(writer);
-            task.RunSynchronously();
-            var result = task.Result;
+            var result = task.GetAwaiter().GetResult();
             if (!result.Success)
             {
                 Logger.Error("Influxdb encountered an error: {0}", result.ErrorMessage);
