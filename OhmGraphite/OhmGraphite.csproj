@@ -6,7 +6,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Authors>Nick Babcock</Authors>
 
-
     <Description>Extract hardware sensor data and exports it to a given host and port in a graphite compatible format</Description>
     <Copyright>Nick Babcock</Copyright>
     <Major>0</Major>
@@ -44,6 +43,6 @@
   </ItemGroup>
 
   <Target Name="ILPack" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-    <Exec Command="&quot;$(NuGetPackageRoot)ilrepack\2.0.15\tools\ILRepack.exe&quot; /out:$(OutputPath)OhmGraphite.exe $(OutputPath)OhmGraphite.exe $(OutputPath)Topshelf.dll $(OutputPath)Topshelf.NLog.dll $(OutputPath)NLog.dll $(OutputPath)OpenHardwareMonitorLib.dll $(OutputPath)InfluxDB.LineProtocol.dll" />
+    <Exec Command="&quot;$(NuGetPackageRoot)ilrepack\2.0.15\tools\ILRepack.exe&quot; /out:$(BaseOutputPath)OhmGraphite.exe $(OutputPath)OhmGraphite.exe $(OutputPath)Topshelf.dll $(OutputPath)Topshelf.NLog.dll $(OutputPath)NLog.dll $(OutputPath)OpenHardwareMonitorLib.dll $(OutputPath)InfluxDB.LineProtocol.dll" />
   </Target>
 </Project>
