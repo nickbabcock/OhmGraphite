@@ -34,6 +34,7 @@
     <PackageReference Include="TopShelf" Version="4.0.3" />
     <PackageReference Include="Topshelf.NLog" Version="4.0.3" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.0" />
+    <PackageReference Include="MSBuildTasks" Version="1.5.0.235" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj" />
@@ -44,5 +45,7 @@
 
   <Target Name="ILPack" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
     <Exec Command="&quot;$(NuGetPackageRoot)ilrepack\2.0.15\tools\ILRepack.exe&quot; /out:$(BaseOutputPath)OhmGraphite.exe $(OutputPath)OhmGraphite.exe $(OutputPath)Topshelf.dll $(OutputPath)Topshelf.NLog.dll $(OutputPath)NLog.dll $(OutputPath)OpenHardwareMonitorLib.dll $(OutputPath)InfluxDB.LineProtocol.dll" />
+    <Copy SourceFiles="$(OutputPath)NLog.config" DestinationFolder="$(BaseOutputPath)"/>
+    <Zip Files="$(BaseOutputPath)OhmGraphite.exe;$(BaseOutputPath)OhmGraphite.exe.config;$(BaseOutputPath)NLog.config" WorkingDirectory="$(BaseOutputPath)"  ZipFileName="$(BaseOutputPath)OhmGraphite-$(Major).$(Minor).$(Revision).zip" />
   </Target>
 </Project>
