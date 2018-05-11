@@ -26,8 +26,8 @@ namespace OhmGraphite
             var interval = TimeSpan.FromSeconds(seconds);
 
             var type = ConfigurationManager.AppSettings["type"] ?? "graphite";
-            var gconfig = null;
-            var iconfig = null;
+            GraphiteConfig gconfig = null;
+            InfluxConfig iconfig = null;
 
             switch (type.ToLowerInvariant())
             {

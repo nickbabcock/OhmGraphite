@@ -25,7 +25,7 @@ namespace OhmGraphite
         public void ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
             var payload = new LineProtocolPayload();
-            var client = new LineProtocolClient(_uri, _db, _user, _password);
+            var client = new LineProtocolClient(_config.Address, _config.Db, _config.User, _config.Password);
             var writer = new LineProtocolWriter(Precision.Seconds);
             foreach (var point in sensors.Select(x => NewMethod(reportTime, x)))
             {

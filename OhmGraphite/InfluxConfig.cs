@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OhmGraphite
 {
-    class InfluxConfig
+    public class InfluxConfig
     {
         public InfluxConfig(Uri address, string db, string user, string password)
         {
-            this.Address = address;
-            this.Db = db;
-            this.User = user;
-            this.Password = password;
+            Address = address;
+            Db = db;
+            User = user;
+            Password = password;
         }
 
         public Uri Address { get; }

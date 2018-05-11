@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OhmGraphite
 {
-    interface IWriteMetrics
+    public interface IWriteMetrics
     {
         void ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors);
     }

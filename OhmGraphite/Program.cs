@@ -19,7 +19,7 @@ namespace OhmGraphite
                     // to poll the hardware
                     var config = Logger.LogFunction("parse config", MetricConfig.ParseAppSettings);
                     double seconds = config.Interval.TotalSeconds;
-                    IWriteMetrics writer = null;
+                    IWriteMetrics writer;
                     if (config.Graphite != null)
                     {
                         Logger.Info($"Graphite host: {config.Graphite.Host} port: {config.Graphite.Port} interval: {seconds} tags: {config.Graphite.Tags}");
