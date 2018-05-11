@@ -4,5 +4,5 @@ test_script:
   cmd: |
       git submodule update --init --recursive
       nuget restore
-      dotnet build -c Release ./OhmGraphite/OhmGraphite.csproj
-      dotnet test .\OhmGraphite.Test\OhmGraphite.Test.csproj
+      dotnet build ./OhmGraphite/OhmGraphite.csproj
+      dotnet test ./OhmGraphite.Test/OhmGraphite.Test.csproj
