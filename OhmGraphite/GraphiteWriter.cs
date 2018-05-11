@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using OpenHardwareMonitor.Hardware;
 using static System.FormattableString;
 
@@ -23,7 +24,7 @@ namespace OhmGraphite
             _localHost = localHost;
         }
 
-        public void ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
             // We don't want to transmit metrics across multiple seconds as they
             // are being retrieved so calculate the timestamp of the signaled event
@@ -35,7 +36,7 @@ namespace OhmGraphite
             {
                 foreach (var sensor in sensors)
                 {
-                    writer.WriteLine(FormatGraphiteData(epoch, sensor));
+                    await writer.WriteLineAsync(FormatGraphiteData(epoch, sensor));
                 }
             }
         }

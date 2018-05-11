@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using InfluxDB.LineProtocol;
 using InfluxDB.LineProtocol.Client;
 using InfluxDB.LineProtocol.Payload;
@@ -22,7 +23,7 @@ namespace OhmGraphite
             _localHost = localHost;
         }
 
-        public void ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
             var payload = new LineProtocolPayload();
             var client = new LineProtocolClient(_config.Address, _config.Db, _config.User, _config.Password);
@@ -32,8 +33,7 @@ namespace OhmGraphite
                 payload.Add(point);
             }
 
-            var task = client.SendAsync(writer);
-            var result = task.GetAwaiter().GetResult();
+            var result = await client.SendAsync(writer);
             if (!result.Success)
             {
                 Logger.Error("Influxdb encountered an error: {0}", result.ErrorMessage);

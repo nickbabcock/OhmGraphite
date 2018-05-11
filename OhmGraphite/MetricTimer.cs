@@ -40,7 +40,7 @@ namespace OhmGraphite
             });
         }
 
-        private void ReportMetrics(object sender, ElapsedEventArgs e)
+        private async void ReportMetrics(object sender, ElapsedEventArgs e)
         {
             Logger.Debug("Starting to report metrics");
             try
@@ -52,7 +52,7 @@ namespace OhmGraphite
                 // don't affect future results
                 var stopwatch = Stopwatch.StartNew();
                 var sensors = _collector.ReadAllSensors().ToList();
-                _writer.ReportMetrics(e.SignalTime, sensors);
+                await _writer.ReportMetrics(e.SignalTime, sensors);
                 Logger.Info($"Sent {sensors.Count} metrics in {stopwatch.Elapsed.TotalMilliseconds}ms");
             }
             catch (Exception ex)

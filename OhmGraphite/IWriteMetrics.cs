@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OhmGraphite
 {
     public interface IWriteMetrics
     {
-        void ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors);
+        Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors);
     }
 }
