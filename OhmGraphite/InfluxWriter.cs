@@ -27,29 +27,30 @@ namespace OhmGraphite
         {
             var payload = new LineProtocolPayload();
             var client = new LineProtocolClient(_config.Address, _config.Db, _config.User, _config.Password);
-            var writer = new LineProtocolWriter(Precision.Seconds);
-            foreach (var point in sensors.Select(x => NewMethod(reportTime, x)))
+
+            foreach (var point in sensors.Select(x => NewPoint(reportTime, x)))
             {
                 payload.Add(point);
             }
 
-            var result = await client.SendAsync(writer);
+            var result = await client.WriteAsync(payload);
             if (!result.Success)
             {
                 Logger.Error("Influxdb encountered an error: {0}", result.ErrorMessage);
             }
         }
 
-        private LineProtocolPoint NewMethod(DateTime reportTime, ReportedValue sensor)
+        private LineProtocolPoint NewPoint(DateTime reportTime, ReportedValue sensor)
         {
+            var sensorType = Enum.GetName(typeof(SensorType), sensor.SensorType);
             var tags = new Dictionary<string, string>()
             {
                 {"host", _localHost},
                 {"app", "ohm"},
                 {"hardware", sensor.Hardware},
                 {"hardware_type", Enum.GetName(typeof(HardwareType), sensor.HardwareType)},
+                {"identifier", sensor.Identifier },
                 {"sensor", sensor.Sensor},
-                {"sensor_type", Enum.GetName(typeof(SensorType), sensor.SensorType)}
             };
 
             var fields = new Dictionary<string, object>()
@@ -58,7 +59,7 @@ namespace OhmGraphite
                 {"sensor_index", sensor.SensorIndex}
             };
 
-            return new LineProtocolPoint(sensor.Identifier, fields, tags, reportTime.ToUniversalTime());
+            return new LineProtocolPoint(sensorType, fields, tags, reportTime.ToUniversalTime());
         }
     }
 }
