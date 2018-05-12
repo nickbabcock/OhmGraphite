@@ -15,7 +15,7 @@ OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardwa
 
 OhmGraphite functions as a console app (cross platform) or a Windows service that periodically polls the hardware. My recommendation is that even though OhmGraphite can be run via Mono / Docker, many hardware sensors aren't available in those modes.
 
-Don't fret if this repo hasn't been updated recently. I use this every day to create beautiful dashboards. Keep in mind, Open Hardware Monitor supported components will determine what metrics are available. Below are graphs / stats made strictly from OhmGraphite (additional Windows metrics can be exposed, see [Monitoring Windows system metrics with grafana](https://nbsoftsolutions.com/blog/monitoring-windows-system-metrics-with-grafana))
+Don't fret if this repo hasn't been updated recently. I use this every day to create beautiful dashboards. Keep in mind, Open Hardware Monitor supported components will determine what metrics are available. Below are graphs / stats made with OhmGraphite (couple of the panels are complemented with [telegraf](https://github.com/influxdata/telegraf) as demonstrated in [Monitoring Windows system metrics with grafana](https://nbsoftsolutions.com/blog/monitoring-windows-system-metrics-with-grafana))
 
 [![dashboard](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/dashboard.png)](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/dashboard.png)
 
