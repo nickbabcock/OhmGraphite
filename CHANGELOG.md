@@ -1,3 +1,12 @@
+## 0.3.0 - TBD
+
+* Update LibreHardwareMonitor to [3460ec](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/3460ec7fb27a4c9ac1aec6512364340c4bd38004)
+  * Support for NCT6792D (X99)
+* Add opt-in to [Graphite tag support](http://graphite.readthedocs.io/en/latest/tags.html)
+* Add [InfluxDB](https://www.influxdata.com/) support
+
+This release is backwards compatible. For those interested in Graphite tags -- they are not backwards compatible! While tagged metrics will have the same name as pre-tagged OhmGraphite metrics, Graphite will treat them separately. So one can either merge these metrics or start over.
+
 ## 0.2.1 - 2018-05-03
 
 Bugfix for users where their computer culture doesn't use a period `.` as the decimal separator resulting in warnings and no data being stored.
