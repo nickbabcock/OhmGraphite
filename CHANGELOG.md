@@ -1,4 +1,4 @@
-## 0.3.0 - TBD
+## 0.3.0 - 2018-05-14
 
 * Update LibreHardwareMonitor to [3460ec](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/3460ec7fb27a4c9ac1aec6512364340c4bd38004)
   * Support for NCT6792D (X99)
