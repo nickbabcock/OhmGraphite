@@ -2,7 +2,7 @@
 
 # OhmGraphite
 
-OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) (or [InfluxdDB](https://www.influxdata.com/)) compatible format. If you're missing any of the following in [Grafana](https://grafana.com/) or (other time series UI), this tool is for you!
+OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) (or [InfluxdDB](https://www.influxdata.com/)) compatible format. OhmGraphite is for those missing any of the following in [Grafana](https://grafana.com/) or (other time series UI):
 
 - Breakdown of GPU utilization
 - Fan speed
@@ -26,7 +26,7 @@ I use this every day to create beautiful dashboards. Keep in mind, Open Hardware
 
 ## Getting Started (Windows)
 
-- Create a directory that will home base for OhmGraphite (I use C:\Apps\OhmGraphite).
+- Create a directory that will be the home base for OhmGraphite (I use C:\Apps\OhmGraphite).
 - Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory.
 - Update app configuration (located at `OhmGraphite.exe.config`) using either the Graphite config or InfluxDB config
 - This config can be updated in the future, but will require a restart of the app for effect.
@@ -45,11 +45,27 @@ The config below polls our hardware every `5` seconds and sends the results to a
     <add key="host" value="localhost" />
     <add key="port" value="2003" />
     <add key="interval" value="5" />
+    <add key="tags" value="false" />
   </appSettings>
 </configuration>
 ```
 
+Starting with 1.1.0, Graphite supports tags (similar to InfluxDB's tags). When enabled in OhmGraphite the data format switches from `<name> <value> <timestamp>` to `<name>;tag1=a;tag2=b <value> <timestamp>`.  Since tags are such a new feature, OhmGraphite has it disabled by default to prevent cumbersome usage with Graphite 0.9 and 1.0 installations.
+
+Examples of types of tags used (same for InfluxDB):
+
+- sensor_type: temperature, load, watts, rpms
+- hardware_type: cpu, gpu, hdd
+- host: my-pc
+- app: ohm
+- hardware: Nvidia GTX 970, Intel i7 6700k
+- raw_name (sensor name): CPU DRAM, CPU graphics
+
+For any serious interest in tags, make sure to use external db like postgres, mysql, or redis, as sqlite won't cut it.
+
 ### InfluxDB Configuration
+
+Graphite is the default export style, but if you're an InfluxDB user you can change the `type` to `influxdb` and fill out InfluxDB specific options:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -62,6 +78,7 @@ The config below polls our hardware every `5` seconds and sends the results to a
 <!--
     <add key="influx_user" value="myuser" />
     <add key="influx_password" value="mypassword" />
+    <add key="interval" value="5" />
 -->
   </appSettings>
 </configuration>
