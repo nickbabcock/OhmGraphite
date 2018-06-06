@@ -17,7 +17,7 @@ namespace OhmGraphite
                 {
                     // We need to know where the graphite server lives and how often
                     // to poll the hardware
-                    var config = Logger.LogFunction("parse config", MetricConfig.ParseAppSettings);
+                    var config = Logger.LogFunction("parse config", () => MetricConfig.ParseAppSettings(new AppConfigManager()));
                     double seconds = config.Interval.TotalSeconds;
                     IWriteMetrics writer;
                     if (config.Graphite != null)

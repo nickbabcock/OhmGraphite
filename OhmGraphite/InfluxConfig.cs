@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 
 namespace OhmGraphite
 {
@@ -18,22 +17,22 @@ namespace OhmGraphite
         public string User { get; }
         public string Password { get; }
 
-        public static InfluxConfig ParseAppSettings()
+        public static InfluxConfig ParseAppSettings(IAppConfig config)
         {
-            string influxAddress = ConfigurationManager.AppSettings["influx_address"];
+            string influxAddress = config["influx_address"];
             if (!Uri.TryCreate(influxAddress, UriKind.Absolute, out var addr))
             {
                 throw new ApplicationException($"Unable to parse {influxAddress} into a Uri");
             }
 
-            var db = ConfigurationManager.AppSettings["influx_db"];
+            var db = config["influx_db"];
             if (string.IsNullOrEmpty(db))
             {
                 throw new ApplicationException("influx_db must be specified in the config");
             }
 
-            var user = ConfigurationManager.AppSettings["influx_user"];
-            var password = ConfigurationManager.AppSettings["influx_password"];
+            var user = config["influx_user"];
+            var password = config["influx_password"];
 
             return new InfluxConfig(addr, db, user, password);
         }

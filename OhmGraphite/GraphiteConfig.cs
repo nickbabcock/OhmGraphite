@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace OhmGraphite
+﻿namespace OhmGraphite
 {
     public class GraphiteConfig
     {
@@ -15,15 +13,15 @@ namespace OhmGraphite
         public int Port { get; }
         public bool Tags { get; }
 
-        public static GraphiteConfig ParseAppSettings()
+        public static GraphiteConfig ParseAppSettings(IAppConfig config)
         {
-            string host = ConfigurationManager.AppSettings["host"] ?? "localhost";
-            if (!int.TryParse(ConfigurationManager.AppSettings["port"], out int port))
+            string host = config["host"] ?? "localhost";
+            if (!int.TryParse(config["port"], out int port))
             {
                 port = 2003;
             }
 
-            if (!bool.TryParse(ConfigurationManager.AppSettings["tags"], out bool tags))
+            if (!bool.TryParse(config["tags"], out bool tags))
             {
                 tags = false;
             }
