@@ -30,9 +30,9 @@
 
   <ItemGroup>
     <PackageReference Include="ILRepack" Version="2.0.15" />
-    <PackageReference Include="NLog.Config" Version="4.4.12" />
-    <PackageReference Include="TopShelf" Version="4.0.3" />
-    <PackageReference Include="Topshelf.NLog" Version="4.0.3" />
+    <PackageReference Include="NLog.Config" Version="4.5.6" />
+    <PackageReference Include="TopShelf" Version="4.0.4" />
+    <PackageReference Include="Topshelf.NLog" Version="4.0.4" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.0" />
     <PackageReference Include="MSBuildTasks" Version="1.5.0.235" />
   </ItemGroup>
