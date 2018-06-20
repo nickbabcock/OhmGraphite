@@ -61,7 +61,7 @@ Examples of types of tags used (same for InfluxDB):
 - hardware: Nvidia GTX 970, Intel i7 6700k
 - raw_name (sensor name): CPU DRAM, CPU graphics
 
-For any serious interest in tags, make sure to use external db like postgres, mysql, or redis, as sqlite won't cut it.
+For any serious interest in tags, make sure to use external db like postgres, mysql, or redis, as [sqlite won't cut it](https://github.com/graphite-project/docker-graphite-statsd/issues/32#issuecomment-378536784).
 
 ### InfluxDB Configuration
 
