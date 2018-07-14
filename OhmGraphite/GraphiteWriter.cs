@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using OpenHardwareMonitor.Hardware;
 using static System.FormattableString;
 
@@ -11,10 +12,14 @@ namespace OhmGraphite
 {
     public class GraphiteWriter : IWriteMetrics
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly string _localHost;
         private readonly string _remoteHost;
         private readonly int _remotePort;
         private readonly bool _tags;
+        private TcpClient _client = new TcpClient();
+        private bool _failure = true;
 
         public GraphiteWriter(string remoteHost, int remotePort, string localHost, bool tags)
         {
@@ -30,14 +35,32 @@ namespace OhmGraphite
             // are being retrieved so calculate the timestamp of the signaled event
             // only once.
             long epoch = new DateTimeOffset(reportTime).ToUnixTimeSeconds();
-            using (var client = new TcpClient(_remoteHost, _remotePort))
-            using (var networkStream = client.GetStream())
-            using (var writer = new StreamWriter(networkStream))
+
+            try
             {
-                foreach (var sensor in sensors)
+                if (_failure)
                 {
-                    await writer.WriteLineAsync(FormatGraphiteData(epoch, sensor));
+                    Logger.Debug($"New connection to {_remoteHost}:{_remotePort}");
+                    _client.Close();
+                    _client = new TcpClient();
+                    await _client.ConnectAsync(_remoteHost, _remotePort);
                 }
+            
+                using (var writer = new StreamWriter(_client.GetStream(), Encoding.Default, 0x1000, true))
+                {
+                    foreach (var sensor in sensors)
+                    {
+                        await writer.WriteLineAsync(FormatGraphiteData(epoch, sensor));
+                    }
+                }
+
+                await _client.GetStream().FlushAsync();
+                _failure = false;
+            }
+            catch (SocketException)
+            {
+                _failure = true;
+                throw;
             }
         }
 
