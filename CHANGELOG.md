@@ -3,6 +3,9 @@
 * Update LibreHardwareMonitor to [4652be0](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/4652be058cb263b945bbea3e67dd6c4732f96f06)
   * Support for Ryzen 2000 series processors
 * As long as OhmGraphite can send to a given graphite endpoint, keep a persistent tcp connection alive. Previous behavior would open a connection every `interval` seconds. This technique should work for 99% of use cases, but when there are a limited number of ports open on the client load one can receive the error "Only one usage of each socket address (protocol/network address/port) is normally permitted". The new behavior will keep the same connection open until there is a failure, which will then trigger a reconnect.
+* Update internal dependencies
+  * NLog (4.4.12) -> (4.5.6)
+  * TopShelf (4.0.3) -> (4.0.4)
 
 ## 0.3.0 - 2018-05-14
 
