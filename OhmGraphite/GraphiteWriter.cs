@@ -43,9 +43,17 @@ namespace OhmGraphite
                     Logger.Debug($"New connection to {_remoteHost}:{_remotePort}");
                     _client.Close();
                     _client = new TcpClient();
+                }
+
+                // When coming back from sleep they'll be "the operation is
+                // not allowed on non-connected sockets" so decouple
+                // connection from tcp client instantiation so that we can use
+                // the same tcp client whether it's disconnected or not
+                if (!_client.Connected)
+                {
                     await _client.ConnectAsync(_remoteHost, _remotePort);
                 }
-            
+
                 using (var writer = new StreamWriter(_client.GetStream(), Encoding.Default, 0x1000, true))
                 {
                     foreach (var sensor in sensors)
