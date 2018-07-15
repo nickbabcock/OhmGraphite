@@ -1,4 +1,4 @@
-## 0.4.0 - TBD
+## 0.4.0 - 2018-07-15
 
 * Update LibreHardwareMonitor to [4652be0](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/4652be058cb263b945bbea3e67dd6c4732f96f06)
   * Support for Ryzen 2000 series processors
