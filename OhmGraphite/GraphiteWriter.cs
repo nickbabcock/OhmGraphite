@@ -19,6 +19,7 @@ namespace OhmGraphite
         private readonly int _remotePort;
         private readonly bool _tags;
         private TcpClient _client = new TcpClient();
+        private static readonly Encoding UTF8NoBOM = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
         private bool _failure = true;
 
         public GraphiteWriter(string remoteHost, int remotePort, string localHost, bool tags)
@@ -54,7 +55,7 @@ namespace OhmGraphite
                     await _client.ConnectAsync(_remoteHost, _remotePort);
                 }
 
-                using (var writer = new StreamWriter(_client.GetStream(), Encoding.Default, 0x1000, true))
+                using (var writer = new StreamWriter(_client.GetStream(), UTF8NoBOM, bufferSize: 1024, leaveOpen: true))
                 {
                     foreach (var sensor in sensors)
                     {
