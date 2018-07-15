@@ -19,7 +19,7 @@ namespace OhmGraphite
         private readonly int _remotePort;
         private readonly bool _tags;
         private TcpClient _client = new TcpClient();
-        private static readonly Encoding UTF8NoBOM = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
+        private static readonly Encoding Utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
         private bool _failure = true;
 
         public GraphiteWriter(string remoteHost, int remotePort, string localHost, bool tags)
@@ -55,7 +55,12 @@ namespace OhmGraphite
                     await _client.ConnectAsync(_remoteHost, _remotePort);
                 }
 
-                using (var writer = new StreamWriter(_client.GetStream(), UTF8NoBOM, bufferSize: 1024, leaveOpen: true))
+                // Create a stream writer that leaves the underlying stream
+                // open when the writer is closed, as we don't want our TCP
+                // connection closed too. Since this requires the four param
+                // constructor for the stream writer, the encoding and buffer
+                // sized are copied from the C# reference source.
+                using (var writer = new StreamWriter(_client.GetStream(), Utf8NoBom, bufferSize: 1024, leaveOpen: true))
                 {
                     foreach (var sensor in sensors)
                     {
