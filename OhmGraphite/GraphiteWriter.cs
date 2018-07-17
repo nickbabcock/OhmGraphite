@@ -18,7 +18,8 @@ namespace OhmGraphite
         private readonly string _remoteHost;
         private readonly int _remotePort;
         private readonly bool _tags;
-        private readonly TcpClient _client = new TcpClient();
+        private TcpClient _client;
+        private bool _failure = true;
         private static readonly Encoding Utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
 
         public GraphiteWriter(string remoteHost, int remotePort, string localHost, bool tags)
@@ -31,33 +32,43 @@ namespace OhmGraphite
 
         public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
-            // Reconnect whenever the previous network attempt failed or first
-            // time connections
-            if (!_client.Connected)
+            try
             {
-                Logger.Debug($"New connection to {_remoteHost}:{_remotePort}");
-                await _client.ConnectAsync(_remoteHost, _remotePort);
-            }
-
-            // We don't want to transmit metrics across multiple seconds as they
-            // are being retrieved so calculate the timestamp of the signaled event
-            // only once.
-            long epoch = new DateTimeOffset(reportTime).ToUnixTimeSeconds();
-
-            // Create a stream writer that leaves the underlying stream open
-            // when the writer is closed, as we don't want our TCP connection
-            // closed too. Since this requires the four param constructor for
-            // the stream writer, the encoding and buffer sized are copied from
-            // the C# reference source.
-            using (var writer = new StreamWriter(_client.GetStream(), Utf8NoBom, bufferSize: 1024, leaveOpen: true))
-            {
-                foreach (var sensor in sensors)
+                // Reconnect whenever the previous network attempt failed or first
+                // time connections
+                if (_failure || !_client.Connected)
                 {
-                    await writer.WriteLineAsync(FormatGraphiteData(epoch, sensor));
+                    _client = new TcpClient();
+                    Logger.Debug($"New connection to {_remoteHost}:{_remotePort}");
+                    await _client.ConnectAsync(_remoteHost, _remotePort);
                 }
-            }
 
-            await _client.GetStream().FlushAsync();
+                // We don't want to transmit metrics across multiple seconds as they
+                // are being retrieved so calculate the timestamp of the signaled event
+                // only once.
+                long epoch = new DateTimeOffset(reportTime).ToUnixTimeSeconds();
+
+                // Create a stream writer that leaves the underlying stream open
+                // when the writer is closed, as we don't want our TCP connection
+                // closed too. Since this requires the four param constructor for
+                // the stream writer, the encoding and buffer sized are copied from
+                // the C# reference source.
+                using (var writer = new StreamWriter(_client.GetStream(), Utf8NoBom, bufferSize: 1024, leaveOpen: true))
+                {
+                    foreach (var sensor in sensors)
+                    {
+                        await writer.WriteLineAsync(FormatGraphiteData(epoch, sensor));
+                    }
+                }
+
+                await _client.GetStream().FlushAsync();
+                _failure = false;
+            }
+            catch (SocketException)
+            {
+                _failure = true;
+                throw;
+            }
         }
 
         private static string NormalizedIdentifier(string host, ReportedValue sensor)
