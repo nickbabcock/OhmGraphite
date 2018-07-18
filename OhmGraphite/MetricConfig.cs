@@ -4,16 +4,18 @@ namespace OhmGraphite
 {
     public class MetricConfig
     {
-        public MetricConfig(TimeSpan interval, GraphiteConfig graphite, InfluxConfig influx)
+        public MetricConfig(TimeSpan interval, GraphiteConfig graphite, InfluxConfig influx, PrometheusConfig prometheus)
         {
             Interval = interval;
             Graphite = graphite;
             Influx = influx;
+            Prometheus = prometheus;
         }
 
         public TimeSpan Interval { get; }
         public GraphiteConfig Graphite { get; }
         public InfluxConfig Influx { get; }
+        public PrometheusConfig Prometheus { get; }
 
         public static MetricConfig ParseAppSettings(IAppConfig config)
         {
@@ -27,6 +29,7 @@ namespace OhmGraphite
             var type = config["type"] ?? "graphite";
             GraphiteConfig gconfig = null;
             InfluxConfig iconfig = null;
+            PrometheusConfig pconfig = null;
 
             switch (type.ToLowerInvariant())
             {
@@ -37,9 +40,12 @@ namespace OhmGraphite
                 case "influx":
                     iconfig = InfluxConfig.ParseAppSettings(config);
                     break;
+                case "prometheus":
+                    pconfig = PrometheusConfig.ParseAppSettings(config);
+                    break;
             }
 
-            return new MetricConfig(interval, gconfig, iconfig);
+            return new MetricConfig(interval, gconfig, iconfig, pconfig);
         }
     }
 }

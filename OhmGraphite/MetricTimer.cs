@@ -6,7 +6,7 @@ using NLog;
 
 namespace OhmGraphite
 {
-    public class MetricTimer
+    public class MetricTimer : IManage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly SensorCollector _collector;

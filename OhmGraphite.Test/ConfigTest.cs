@@ -54,5 +54,20 @@ namespace OhmGraphite.Test
             Assert.Equal("my_user", results.Influx.User);
             Assert.Equal("my_pass", results.Influx.Password);
         }
+
+        [Fact]
+        public void CanParsePrometheusConfig()
+        {
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "prometheus.config" };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            var customConfig = new CustomConfig(config);
+            var results = MetricConfig.ParseAppSettings(customConfig);
+
+            Assert.Null(results.Graphite);
+            Assert.Null(results.Influx);
+            Assert.NotNull(results.Prometheus);
+            Assert.Equal(4446, results.Prometheus.Port);
+            Assert.Equal("127.0.0.1", results.Prometheus.Host);
+        }
     }
 }

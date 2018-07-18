@@ -1,6 +1,7 @@
 ﻿using System;
 using NLog;
 using OpenHardwareMonitor.Hardware;
+using Prometheus;
 using Topshelf;
 
 namespace OhmGraphite
@@ -13,27 +14,8 @@ namespace OhmGraphite
         {
             HostFactory.Run(x =>
             {
-                x.Service<MetricTimer>(s =>
+                x.Service<IManage>(s =>
                 {
-                    // We need to know where the graphite server lives and how often
-                    // to poll the hardware
-                    var config = Logger.LogFunction("parse config", () => MetricConfig.ParseAppSettings(new AppConfigManager()));
-                    double seconds = config.Interval.TotalSeconds;
-                    IWriteMetrics writer;
-                    if (config.Graphite != null)
-                    {
-                        Logger.Info($"Graphite host: {config.Graphite.Host} port: {config.Graphite.Port} interval: {seconds} tags: {config.Graphite.Tags}");
-                        writer = new GraphiteWriter(config.Graphite.Host,
-                            config.Graphite.Port,
-                            Environment.MachineName,
-                            config.Graphite.Tags);
-                    }
-                    else
-                    {
-                        Logger.Info($"Influxdb address: {config.Influx.Address} db: {config.Influx.Db}");
-                        writer = new InfluxWriter(config.Influx, Environment.MachineName);
-                    }
-
                     // We'll want to capture all available hardware metrics
                     // to send to graphite
                     var computer = new Computer
@@ -48,9 +30,12 @@ namespace OhmGraphite
 
                     var collector = new SensorCollector(computer);
 
-                    s.ConstructUsing(name =>
-                        Logger.LogFunction("creating timer",
-                            () => new MetricTimer(config.Interval, collector, writer)));
+                    // We need to know where the graphite server lives and how often
+                    // to poll the hardware
+                    var config = Logger.LogFunction("parse config", () => MetricConfig.ParseAppSettings(new AppConfigManager()));
+                    var metricsManager = CreateManager(config, collector);
+
+                    s.ConstructUsing(name => metricsManager);
                     s.WhenStarted(tc => tc.Start());
                     s.WhenStopped(tc => tc.Stop());
                 });
@@ -62,6 +47,34 @@ namespace OhmGraphite
                 x.SetServiceName("OhmGraphite");
                 x.OnException(ex => Logger.Error(ex, "OhmGraphite TopShelf encountered an error"));
             });
+        }
+
+        private static IManage CreateManager(MetricConfig config, SensorCollector collector)
+        {
+            double seconds = config.Interval.TotalSeconds;
+            if (config.Graphite != null)
+            {
+                Logger.Info(
+                    $"Graphite host: {config.Graphite.Host} port: {config.Graphite.Port} interval: {seconds} tags: {config.Graphite.Tags}");
+                var writer = new GraphiteWriter(config.Graphite.Host,
+                    config.Graphite.Port,
+                    Environment.MachineName,
+                    config.Graphite.Tags);
+                return new MetricTimer(config.Interval, collector, writer);
+            }
+            else if (config.Prometheus != null)
+            {
+                Logger.Info($"Prometheus port: {config.Prometheus.Port}");
+                var prometheusCollection = new PrometheusCollection(collector, Environment.MachineName);
+                var server = new MetricServer(config.Prometheus.Host, config.Prometheus.Port);
+                return new PrometheusServer(server, collector, prometheusCollection);
+            }
+            else
+            {
+                Logger.Info($"Influxdb address: {config.Influx.Address} db: {config.Influx.Db}");
+                var writer = new InfluxWriter(config.Influx, Environment.MachineName);
+                return new MetricTimer(config.Interval, collector, writer);
+            }
         }
     }
 }
