@@ -13,15 +13,21 @@ namespace OhmGraphite
         public SensorCollector(Computer computer) => _computer = computer;
         public void Open() => _computer.Open();
         public void Close() => _computer.Close();
-        public IEnumerable<ReportedValue> ReadAllSensors() => ReadHardware().SelectMany(ReadSensors);
+        public IEnumerable<ReportedValue> ReadAllSensors() =>
+            _computer
+                .Hardware
+                .SelectMany(ReadHardware)
+                .SelectMany(ReadSensors);
 
-        private IEnumerable<IHardware> ReadHardware()
+        private static IEnumerable<IHardware> ReadHardware(IHardware hardware)
         {
-            foreach (var hardware in _computer.Hardware)
+            yield return hardware;
+            foreach (var subHardware in hardware.SubHardware)
             {
-                yield return hardware;
-
-                foreach (var subHardware in hardware.SubHardware) yield return subHardware;
+                foreach (var ware in ReadHardware(subHardware))
+                {
+                    yield return ware;
+                }
             }
         }
 
