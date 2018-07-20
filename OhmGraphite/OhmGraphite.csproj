@@ -20,12 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="NLog.config" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
