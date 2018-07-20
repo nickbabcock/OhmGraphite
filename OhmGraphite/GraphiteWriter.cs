@@ -18,7 +18,7 @@ namespace OhmGraphite
         private readonly string _remoteHost;
         private readonly int _remotePort;
         private readonly bool _tags;
-        private TcpClient _client;
+        private TcpClient _client = new TcpClient();
         private bool _failure = true;
         private static readonly Encoding Utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
 
@@ -38,6 +38,7 @@ namespace OhmGraphite
                 // time connections
                 if (_failure || !_client.Connected)
                 {
+                    _client.Close();
                     _client = new TcpClient();
                     Logger.Debug($"New connection to {_remoteHost}:{_remotePort}");
                     await _client.ConnectAsync(_remoteHost, _remotePort);
