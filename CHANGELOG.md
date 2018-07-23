@@ -1,3 +1,9 @@
+## 0.5.0 - TBA
+
+* Add [Prometheus](https://prometheus.io/) support
+  * OhmGraphite now requires .NET v4.6.1 (up from .NET v4.6). Most users should be unaffected by this change.
+* More metrics! OhmGraphite now takes advantage of metrics that the underlying hardware library detects during runtime. Some users may see a significant jump in the number of metrics, others may not.
+
 ## 0.4.0 - 2018-07-15
 
 * Update LibreHardwareMonitor to [4652be0](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/4652be058cb263b945bbea3e67dd6c4732f96f06)
