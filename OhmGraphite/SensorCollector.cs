@@ -11,7 +11,9 @@ namespace OhmGraphite
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Computer _computer;
         private readonly IVisitor _updateVisitor = new UpdateVisitor();
-        private readonly IDictionary<Identifier, ISensor> _sensors = new ConcurrentDictionary<Identifier, ISensor>();
+
+        private readonly ConcurrentDictionary<Identifier, object> _ids =
+            new ConcurrentDictionary<Identifier, object>();
 
         public SensorCollector(Computer computer) => _computer = computer;
         public void Open()
@@ -39,12 +41,18 @@ namespace OhmGraphite
 
         private void HardwareAdded(IHardware hardware)
         {
+            if (!_ids.TryAdd(hardware.Identifier, hardware))
+            {
+                Logger.Debug("Hardware previously added: {0}", hardware.Identifier);
+                return;
+            }
+
             Logger.Debug("Hardware added: {0}", hardware.Identifier);
-            hardware.SensorAdded += Hardware_SensorAdded;
-            hardware.SensorRemoved += Hardware_SensorRemoved;
+            hardware.SensorAdded += SensorAdded;
+            hardware.SensorRemoved += SensorRemoved;
             foreach (var sensor in hardware.Sensors)
             {
-                Hardware_SensorAdded(sensor);
+                SensorAdded(sensor);
             }
 
             foreach (var sub in hardware.SubHardware)
@@ -55,12 +63,13 @@ namespace OhmGraphite
 
         private void HardwareRemoved(IHardware hardware)
         {
+            _ids.TryRemove(hardware.Identifier, out _);
             Logger.Debug("Hardware removed: {0}", hardware.Identifier);
-            hardware.SensorAdded -= Hardware_SensorAdded;
-            hardware.SensorRemoved -= Hardware_SensorRemoved;
+            hardware.SensorAdded -= SensorAdded;
+            hardware.SensorRemoved -= SensorRemoved;
             foreach (var sensor in hardware.Sensors)
             {
-                Hardware_SensorRemoved(sensor);
+                SensorRemoved(sensor);
             }
 
             foreach (var sub in hardware.SubHardware)
@@ -69,22 +78,22 @@ namespace OhmGraphite
             }
         }
 
-        private void Hardware_SensorAdded(ISensor sensor)
+        private void SensorAdded(ISensor sensor)
         {
-            Logger.Debug("Sensor added: {0}", sensor.Identifier);
-            _sensors[sensor.Identifier] = sensor;
+            Logger.Debug(!_ids.TryAdd(sensor.Identifier, sensor) ?
+                    "Sensor previously added: {0}" : "Sensor added: {0}", sensor.Identifier);
         }
 
-        private void Hardware_SensorRemoved(ISensor sensor)
+        private void SensorRemoved(ISensor sensor)
         {
             Logger.Debug("Sensor removed: {0}", sensor.Identifier);
-            _sensors.Remove(sensor.Identifier);
+            _ids.TryRemove(sensor.Identifier, out _);
         }
 
         public IEnumerable<ReportedValue> ReadAllSensors()
         {
             _computer.Accept(_updateVisitor);
-            return _sensors.Values.SelectMany(ReportedValues);
+            return _ids.Values.OfType<ISensor>().SelectMany(ReportedValues);
         }
 
         private static IEnumerable<ReportedValue> ReportedValues(ISensor sensor)
