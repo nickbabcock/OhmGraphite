@@ -17,6 +17,7 @@
     <InformationalVersion>$(Major).$(Minor).$(Revision)</InformationalVersion>
     <Version>$(Major).$(Minor).$(Revision)</Version>
     <FileVersion>$(Major).$(Minor).$(Revision)</FileVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
