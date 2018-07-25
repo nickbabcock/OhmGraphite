@@ -12,9 +12,14 @@ OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardwa
 ## Who's this for?
 
 - People who are familiar with Graphite / InfluxDB / Grafana and may have an instance running on their home or cloud server. If you're not familiar with those applications, it may be overwhelming to setup and maintain them. If you're just looking for a UI for hardware sensors, I'd recommend [HWINFO](https://www.hwinfo.com/)
-- People who have administrative privileges
 - People who know how to execute commands on Windows Command Prompt or other terminal
 - People who like lightweight (8MB of RAM and neglible CPU usage), portable (can run off usb), and straightforward applications
+
+## System Recommendations
+
+- Windows
+- .NET v4.6.1. If you have Windows 10 you are all set. If not, you may have to download a more recent version.
+- Administrator privileges
 
 ## Introduction
 
