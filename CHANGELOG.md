@@ -1,8 +1,8 @@
-## 0.5.0 - TBA
+## 0.5.0 - 2018-07-26
 
 * Add [Prometheus](https://prometheus.io/) support
   * OhmGraphite now requires .NET v4.6.1 (up from .NET v4.6). Most users should be unaffected by this change.
-* More metrics! OhmGraphite now takes advantage of metrics that the underlying hardware library detects during runtime. Some users may see a significant jump in the number of metrics, others may not.
+* More metrics! OhmGraphite now takes advantage of metrics that the underlying hardware library detects at runtime.
 
 ## 0.4.0 - 2018-07-15
 
