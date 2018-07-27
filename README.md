@@ -2,7 +2,7 @@
 
 # OhmGraphite
 
-OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) (or [InfluxdDB](https://www.influxdata.com/)) compatible format. OhmGraphite is for those missing any of the following in [Grafana](https://grafana.com/) or (other time series UI):
+OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) (or [InfluxdDB](https://www.influxdata.com/) / [Prometheus](https://prometheus.io/)) compatible format. OhmGraphite is for those missing any of the following in [Grafana](https://grafana.com/) or (other time series UI):
 
 - Breakdown of GPU utilization
 - Fan speed
@@ -11,7 +11,7 @@ OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardwa
 
 ## Who's this for?
 
-- People who are familiar with Graphite / InfluxDB / Grafana and may have an instance running on their home or cloud server. If you're not familiar with those applications, it may be overwhelming to setup and maintain them. If you're just looking for a UI for hardware sensors, I'd recommend [HWINFO](https://www.hwinfo.com/)
+- People who are familiar with Graphite (or InfluxDB / Prometheus) / Grafana and may have an instance running on their home or cloud server. If you're not familiar with those applications, it may be overwhelming to setup and maintain them. If you're just looking for a UI for hardware sensors, I'd recommend [HWINFO](https://www.hwinfo.com/)
 - People who know how to execute commands on Windows Command Prompt or other terminal
 - People who like lightweight (8MB of RAM and neglible CPU usage), portable (can run off usb), and straightforward applications
 
@@ -85,6 +85,21 @@ Graphite is the default export style, but if you're an InfluxDB user you can cha
     <add key="influx_password" value="mypassword" />
     <add key="interval" value="5" />
 -->
+  </appSettings>
+</configuration>
+```
+
+### Prometheus Configuration
+
+The Prometheus will create a server that listens on `prometheus_port`. The Prometheus configuration does not routinely poll the sensor instead it only polls them when a Prometheus server requests data.
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="type" value="prometheus" />
+    <add key="prometheus_port" value="4445" />
+    <add key="prometheus_host" value="*" />
   </appSettings>
 </configuration>
 ```
