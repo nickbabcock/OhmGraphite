@@ -69,6 +69,11 @@ namespace OhmGraphite
                 var server = new MetricServer(config.Prometheus.Host, config.Prometheus.Port);
                 return new PrometheusServer(server, collector, prometheusCollection);
             }
+            else if (config.Timescale != null)
+            {
+                var writer = new TimescaleWriter(config.Timescale, Environment.MachineName);
+                return new MetricTimer(config.Interval, collector, writer);
+            }
             else
             {
                 Logger.Info($"Influxdb address: {config.Influx.Address} db: {config.Influx.Db}");
