@@ -36,7 +36,20 @@ namespace OhmGraphite
                     await _conn.OpenAsync();
 
                     using (var cmd = new NpgsqlCommand(
-                        "CREATE TABLE IF NOT EXISTS ohm_stats (\r\n  time TIMESTAMPTZ NOT NULL,\r\n  host TEXT,\r\n  hardware TEXT,\r\n  hardware_type TEXT,\r\n  identifier TEXT,\r\n  sensor TEXT,\r\n  sensor_type TEXT,\r\n  sensor_index INT,\r\n  value REAL\r\n);\r\n\r\nSELECT create_hypertable(\'ohm_stats\', \'time\', if_not_exists => TRUE);",
+                        "CREATE TABLE IF NOT EXISTS ohm_stats (" +
+                        "   time TIMESTAMPTZ NOT NULL," +
+                        "   host TEXT,hardware TEXT," +
+                        "   hardware_type TEXT," +
+                        "   identifier TEXT," +
+                        "   sensor TEXT," +
+                        "   sensor_type TEXT," +
+                        "   sensor_index INT," +
+                        "   value REAL" +
+                        ");" +
+                        "" +
+                        @"SELECT create_hypertable('ohm_stats', 'time', if_not_exists => TRUE);" +
+                        "CREATE INDEX IF NOT EXISTS idx_ohm_host ON ohm_stats (host);" +
+                        "CREATE INDEX IF NOT EXISTS idx_ohm_identifier ON ohm_stats (identifier);",
                         _conn))
                     {
                         await cmd.ExecuteNonQueryAsync();
