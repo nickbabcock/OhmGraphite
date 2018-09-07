@@ -58,8 +58,8 @@ namespace OhmGraphite
 
                 using (var cmd = new NpgsqlCommand(
                     "INSERT INTO ohm_stats " +
-                    "(time, host, hardware, hardware_type, identifier, sensor, sensor_index, value) VALUES " +
-                    "(@time, @host, @hardware, @hardware_type, @identifier, @sensor, @sensor_index, @value)",
+                    "(time, host, hardware, hardware_type, identifier, sensor, sensor_type, sensor_index, value) VALUES " +
+                    "(@time, @host, @hardware, @hardware_type, @identifier, @sensor, @sensor_type, @sensor_index, @value)",
                     _conn))
                 {
                     // Note that all parameters must be set before calling Prepare()
@@ -87,7 +87,7 @@ namespace OhmGraphite
                         cmd.Parameters["hardware_type"].Value = Enum.GetName(typeof(HardwareType), sensor.HardwareType);
                         cmd.Parameters["identifier"].Value = sensor.Identifier;
                         cmd.Parameters["sensor"].Value = sensor.Sensor;
-                        cmd.Parameters["sensor_type"].Value = sensor.SensorType;
+                        cmd.Parameters["sensor_type"].Value = Enum.GetName(typeof(SensorType), sensor.SensorType);
                         cmd.Parameters["value"].Value = sensor.Value;
                         cmd.Parameters["sensor_index"].Value = sensor.SensorIndex;
 
