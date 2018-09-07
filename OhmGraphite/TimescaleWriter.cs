@@ -60,6 +60,7 @@ namespace OhmGraphite
                     cmd.Parameters.Add("hardware_type", NpgsqlDbType.Text);
                     cmd.Parameters.Add("identifier", NpgsqlDbType.Text);
                     cmd.Parameters.Add("sensor", NpgsqlDbType.Text);
+                    cmd.Parameters.Add("sensor_type", NpgsqlDbType.Text);
                     cmd.Parameters.Add("value", NpgsqlDbType.Real);
                     cmd.Parameters.Add("sensor_index", NpgsqlDbType.Integer);
 
@@ -73,6 +74,7 @@ namespace OhmGraphite
                         cmd.Parameters["hardware_type"].Value = Enum.GetName(typeof(HardwareType), sensor.HardwareType);
                         cmd.Parameters["identifier"].Value = sensor.Identifier;
                         cmd.Parameters["sensor"].Value = sensor.Sensor;
+                        cmd.Parameters["sensor_type"].Value = sensor.SensorType;
                         cmd.Parameters["value"].Value = sensor.Value;
                         cmd.Parameters["sensor_index"].Value = sensor.SensorIndex;
 
