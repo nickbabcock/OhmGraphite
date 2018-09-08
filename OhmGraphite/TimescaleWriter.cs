@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using Npgsql;
@@ -56,10 +57,16 @@ namespace OhmGraphite
                     }
                 }
 
+                var values = sensors.ToList();
+
+                var sqlColumns = values.Select((x, i) =>
+                    $"(@time{i}, @host{i}, @hardware{i}, @hardware_type{i}, @identifier{i}, @sensor{i}, @sensor_type{i}, @sensor_index{i}, @value{i})");
+                var columns = string.Join(", ", sqlColumns);
+
                 using (var cmd = new NpgsqlCommand(
                     "INSERT INTO ohm_stats " +
                     "(time, host, hardware, hardware_type, identifier, sensor, sensor_type, sensor_index, value) VALUES " +
-                    "(@time, @host, @hardware, @hardware_type, @identifier, @sensor, @sensor_type, @sensor_index, @value)",
+                    columns,
                     _conn))
                 {
                     // Note that all parameters must be set before calling Prepare()
@@ -67,32 +74,36 @@ namespace OhmGraphite
                     // and used to effectively plan the statement. You must also set
                     // the DbType or NpgsqlDbType on your parameters to unambiguously
                     // specify the data type (setting the value isn't support)
-                    cmd.Parameters.Add("time", NpgsqlDbType.TimestampTz);
-                    cmd.Parameters.Add("host", NpgsqlDbType.Text);
-                    cmd.Parameters.Add("hardware", NpgsqlDbType.Text);
-                    cmd.Parameters.Add("hardware_type", NpgsqlDbType.Text);
-                    cmd.Parameters.Add("identifier", NpgsqlDbType.Text);
-                    cmd.Parameters.Add("sensor", NpgsqlDbType.Text);
-                    cmd.Parameters.Add("sensor_type", NpgsqlDbType.Text);
-                    cmd.Parameters.Add("value", NpgsqlDbType.Real);
-                    cmd.Parameters.Add("sensor_index", NpgsqlDbType.Integer);
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        cmd.Parameters.Add($"time{i}", NpgsqlDbType.TimestampTz);
+                        cmd.Parameters.Add($"host{i}", NpgsqlDbType.Text);
+                        cmd.Parameters.Add($"hardware{i}", NpgsqlDbType.Text);
+                        cmd.Parameters.Add($"hardware_type{i}", NpgsqlDbType.Text);
+                        cmd.Parameters.Add($"identifier{i}", NpgsqlDbType.Text);
+                        cmd.Parameters.Add($"sensor{i}", NpgsqlDbType.Text);
+                        cmd.Parameters.Add($"sensor_type{i}", NpgsqlDbType.Text);
+                        cmd.Parameters.Add($"value{i}", NpgsqlDbType.Real);
+                        cmd.Parameters.Add($"sensor_index{i}", NpgsqlDbType.Integer);
+                    }
 
                     await cmd.PrepareAsync();
 
-                    foreach (var sensor in sensors)
+                    for (int i = 0; i < values.Count; i++)
                     {
-                        cmd.Parameters["time"].Value = reportTime;
-                        cmd.Parameters["host"].Value = _localHost;
-                        cmd.Parameters["hardware"].Value = sensor.Hardware;
-                        cmd.Parameters["hardware_type"].Value = Enum.GetName(typeof(HardwareType), sensor.HardwareType);
-                        cmd.Parameters["identifier"].Value = sensor.Identifier;
-                        cmd.Parameters["sensor"].Value = sensor.Sensor;
-                        cmd.Parameters["sensor_type"].Value = Enum.GetName(typeof(SensorType), sensor.SensorType);
-                        cmd.Parameters["value"].Value = sensor.Value;
-                        cmd.Parameters["sensor_index"].Value = sensor.SensorIndex;
-
-                        await cmd.ExecuteNonQueryAsync();
+                        var sensor = values[i];
+                        cmd.Parameters[$"time{i}"].Value = reportTime;
+                        cmd.Parameters[$"host{i}"].Value = _localHost;
+                        cmd.Parameters[$"hardware{i}"].Value = sensor.Hardware;
+                        cmd.Parameters[$"hardware_type{i}"].Value = Enum.GetName(typeof(HardwareType), sensor.HardwareType);
+                        cmd.Parameters[$"identifier{i}"].Value = sensor.Identifier;
+                        cmd.Parameters[$"sensor{i}"].Value = sensor.Sensor;
+                        cmd.Parameters[$"sensor_type{i}"].Value = Enum.GetName(typeof(SensorType), sensor.SensorType);
+                        cmd.Parameters[$"value{i}"].Value = sensor.Value;
+                        cmd.Parameters[$"sensor_index{i}"].Value = sensor.SensorIndex;
                     }
+
+                    await cmd.ExecuteNonQueryAsync();
                 }
 
                 _failure = false;
