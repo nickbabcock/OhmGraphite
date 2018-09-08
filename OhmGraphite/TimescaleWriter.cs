@@ -58,16 +58,7 @@ namespace OhmGraphite
                 }
 
                 var values = sensors.ToList();
-
-                var sqlColumns = values.Select((x, i) =>
-                    $"(@time{i}, @host{i}, @hardware{i}, @hardware_type{i}, @identifier{i}, @sensor{i}, @sensor_type{i}, @sensor_index{i}, @value{i})");
-                var columns = string.Join(", ", sqlColumns);
-
-                using (var cmd = new NpgsqlCommand(
-                    "INSERT INTO ohm_stats " +
-                    "(time, host, hardware, hardware_type, identifier, sensor, sensor_type, sensor_index, value) VALUES " +
-                    columns,
-                    _conn))
+                using (var cmd = new NpgsqlCommand(BatchedInsertSql(values), _conn))
                 {
                     // Note that all parameters must be set before calling Prepare()
                     // they are part of the information transmitted to PostgreSQL
@@ -87,6 +78,8 @@ namespace OhmGraphite
                         cmd.Parameters.Add($"sensor_index{i}", NpgsqlDbType.Integer);
                     }
 
+                    // A majority of the time, the same number of sensors will be
+                    // reported on, so it's important to prepare the statement
                     await cmd.PrepareAsync();
 
                     for (int i = 0; i < values.Count; i++)
@@ -113,6 +106,22 @@ namespace OhmGraphite
                 _failure = true;
                 throw;
             }
+        }
+
+        // Returns a SQL INSERT statement that will insert all the reported values in one go.
+        // Since there is no batched insert API that is part of Npgsql, we simulate one by
+        // creating a unique set of sql parameters for each reported value by it's index.
+        // Sending one insert of 70 values was nearly 10x faster than 70 inserts of 1 value,
+        // so this circumnavigation around a lack of native batched insert statements is
+        // worth it.
+        private static string BatchedInsertSql(IEnumerable<ReportedValue> values)
+        {
+            var sqlColumns = values.Select((x, i) =>
+                $"(@time{i}, @host{i}, @hardware{i}, @hardware_type{i}, @identifier{i}, @sensor{i}, @sensor_type{i}, @sensor_index{i}, @value{i})");
+            var columns = string.Join(", ", sqlColumns);
+            return "INSERT INTO ohm_stats " +
+                   "(time, host, hardware, hardware_type, identifier, sensor, sensor_type, sensor_index, value) VALUES " +
+                   columns;
         }
     }
 }
