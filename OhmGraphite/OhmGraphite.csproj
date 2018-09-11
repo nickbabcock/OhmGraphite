@@ -28,9 +28,9 @@
 
   <ItemGroup>
     <PackageReference Include="ILRepack" Version="2.0.16" />
-    <PackageReference Include="NLog.Config" Version="4.5.6" />
-    <PackageReference Include="Npgsql" Version="4.0.2" />
-    <PackageReference Include="prometheus-net" Version="2.1.0" />
+    <PackageReference Include="NLog.Config" Version="4.5.9" />
+    <PackageReference Include="Npgsql" Version="4.0.3" />
+    <PackageReference Include="prometheus-net" Version="2.1.2" />
     <PackageReference Include="TopShelf" Version="4.0.4" />
     <PackageReference Include="Topshelf.NLog" Version="4.0.4" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.0" />
@@ -45,7 +45,7 @@
 
   <Target Name="ILPack" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
     <Exec Command="&quot;$(NuGetPackageRoot)ilrepack\2.0.15\tools\ILRepack.exe&quot; /lib:$(OutputPath) /out:$(BaseOutputPath)OhmGraphite.exe $(OutputPath)OhmGraphite.exe $(OutputPath)Topshelf.dll $(OutputPath)Topshelf.NLog.dll $(OutputPath)NLog.dll $(OutputPath)OpenHardwareMonitorLib.dll $(OutputPath)InfluxDB.LineProtocol.dll $(OutputPath)HidLibrary.dll $(OutputPath)protobuf-net.dll $(OutputPath)Prometheus.NetStandard.dll" />
-    <Copy SourceFiles="$(OutputPath)NLog.config" DestinationFolder="$(BaseOutputPath)" />
+    <Copy SourceFiles="$(OutputPath)NLog.config;$(OutputPath)Npgsql.dll;$(OutputPath)System.Runtime.CompilerServices.Unsafe.dll;$(OutputPath)System.Threading.Tasks.Extensions.dll" DestinationFolder="$(BaseOutputPath)" />
     <Zip Files="$(BaseOutputPath)OhmGraphite.exe;$(BaseOutputPath)OhmGraphite.exe.config;$(BaseOutputPath)NLog.config" WorkingDirectory="$(BaseOutputPath)" ZipFileName="$(BaseOutputPath)OhmGraphite-$(Major).$(Minor).$(Revision).zip" />
   </Target>
 </Project>
