@@ -1,3 +1,7 @@
+## 0.6.0 - TBA
+
+* Add [TimescaleDB](https://www.timescale.com/) support
+
 ## 0.5.0 - 2018-07-26
 
 * Add [Prometheus](https://prometheus.io/) support
