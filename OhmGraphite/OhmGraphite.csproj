@@ -31,8 +31,8 @@
     <PackageReference Include="NLog.Config" Version="4.5.10" />
     <PackageReference Include="Npgsql" Version="4.0.3" />
     <PackageReference Include="prometheus-net" Version="2.1.2" />
-    <PackageReference Include="TopShelf" Version="4.0.4" />
-    <PackageReference Include="Topshelf.NLog" Version="4.0.4" />
+    <PackageReference Include="TopShelf" Version="4.1.0" />
+    <PackageReference Include="Topshelf.NLog" Version="4.1.0" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.0" />
     <PackageReference Include="MSBuildTasks" Version="1.5.0.235" />
   </ItemGroup>
