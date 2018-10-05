@@ -42,7 +42,7 @@ All patch notes:
 * Update inner dependencies:
   * Update Topshelf from 4.0.4 to 4.1.0
   * Update pometheus-net from 2.1.0 to 2.1.3
-  * Update ILRepack from 2.0.15 to 2.0.16
+* Switch packing executable from ILRepack to Costura, as ILRepack is unable to pack in Npgsql without type exceptions at runtime.
 
 ## 0.5.0 - 2018-07-26
 
