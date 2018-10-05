@@ -1,6 +1,48 @@
 ## 0.6.0 - TBA
 
+The big news for this release is [TimescaleDB](https://www.timescale.com/) support, so OhmGraphite now writes to a PostgreSQL database!
+
+One can configure OhmGraphite to send to Timescale with the following (configuration values will differ depending on your environment):
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="type" value="timescale" />
+    <add key="timescale_connection" value="Host=vm-ubuntu;Username=postgres;Password=123456;Database=postgres" />
+  </appSettings>
+</configuration>
+```
+
+OhmGraphite will create the following schema, so make sure the user connecting has appropriate permissions
+
+```sql
+CREATE TABLE IF NOT EXISTS ohm_stats (
+   time TIMESTAMPTZ NOT NULL,
+   host TEXT,
+   hardware TEXT,
+   hardware_type TEXT,
+   identifier TEXT,
+   sensor TEXT,
+   sensor_type TEXT,
+   sensor_index INT,
+   value REAL
+);
+
+SELECT create_hypertable('ohm_stats', 'time', if_not_exists => TRUE);
+CREATE INDEX IF NOT EXISTS idx_ohm_host ON ohm_stats (host);
+CREATE INDEX IF NOT EXISTS idx_ohm_identifier ON ohm_stats (identifier);
+```
+
+Currenlty the schema and the columns are not configurable.
+
+All patch notes:
+
 * Add [TimescaleDB](https://www.timescale.com/) support
+* Update inner dependencies:
+  * Update Topshelf from 4.0.4 to 4.1.0
+  * Update pometheus-net from 2.1.0 to 2.1.3
+  * Update ILRepack from 2.0.15 to 2.0.16
 
 ## 0.5.0 - 2018-07-26
 
