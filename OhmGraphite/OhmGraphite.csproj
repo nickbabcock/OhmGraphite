@@ -43,7 +43,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
-  <Target Name="Pack" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+  <Target Name="PackExecutable" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
     <Zip Files="$(OutputPath)OhmGraphite.exe;$(OutputPath)OhmGraphite.exe.config;$(OutputPath)NLog.config" WorkingDirectory="$(OutputPath)" ZipFileName="$(BaseOutputPath)OhmGraphite-$(Major).$(Minor).$(Revision).zip" />
   </Target>
 </Project>
