@@ -2,7 +2,7 @@
 
 # OhmGraphite
 
-OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) (or [InfluxdDB](https://www.influxdata.com/) / [Prometheus](https://prometheus.io/)) compatible format. OhmGraphite is for those missing any of the following in [Grafana](https://grafana.com/) or (other time series UI):
+OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) (or [InfluxdDB](https://www.influxdata.com/) / [Prometheus](https://prometheus.io/) / [TimescaleDB](https://www.timescale.com/)) compatible format. OhmGraphite is for those missing any of the following in [Grafana](https://grafana.com/) or (other time series UI):
 
 - Breakdown of GPU utilization
 - Fan speed
@@ -11,7 +11,7 @@ OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardwa
 
 ## Who's this for?
 
-- People who are familiar with Graphite (or InfluxDB / Prometheus) / Grafana and may have an instance running on their home or cloud server. If you're not familiar with those applications, it may be overwhelming to setup and maintain them. If you're just looking for a UI for hardware sensors, I'd recommend [HWINFO](https://www.hwinfo.com/)
+- People who are familiar with Graphite (or InfluxDB / Prometheus / TimescaleDB) / Grafana and may have an instance running on their home or cloud server. If you're not familiar with those applications, it may be overwhelming to setup and maintain them. If you're just looking for a UI for hardware sensors, I'd recommend [HWINFO](https://www.hwinfo.com/)
 - People who know how to execute commands on Windows Command Prompt or other terminal
 - People who like lightweight (8MB of RAM and neglible CPU usage), portable (can run off usb), and straightforward applications
 
@@ -103,6 +103,43 @@ The Prometheus will create a server that listens on `prometheus_port`. The Prome
   </appSettings>
 </configuration>
 ```
+
+### TimescaleDB Configuration
+
+
+One can configure OhmGraphite to send to Timescale with the following (configuration values will differ depending on your environment):
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="type" value="timescale" />
+    <add key="timescale_connection" value="Host=vm-ubuntu;Username=postgres;Password=123456;Database=postgres" />
+  </appSettings>
+</configuration>
+```
+
+OhmGraphite will create the following schema, so make sure the user connecting has appropriate permissions
+
+```sql
+CREATE TABLE IF NOT EXISTS ohm_stats (
+   time TIMESTAMPTZ NOT NULL,
+   host TEXT,
+   hardware TEXT,
+   hardware_type TEXT,
+   identifier TEXT,
+   sensor TEXT,
+   sensor_type TEXT,
+   sensor_index INT,
+   value REAL
+);
+
+SELECT create_hypertable('ohm_stats', 'time', if_not_exists => TRUE);
+CREATE INDEX IF NOT EXISTS idx_ohm_host ON ohm_stats (host);
+CREATE INDEX IF NOT EXISTS idx_ohm_identifier ON ohm_stats (identifier);
+```
+
+Currenlty the schema and the columns are not configurable.
 
 ### Upgrades
 
