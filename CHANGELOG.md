@@ -1,4 +1,4 @@
-## 0.6.0 - TBA
+## 0.6.0 - 2018-10-07
 
 The big news for this release is [TimescaleDB](https://www.timescale.com/) support, so OhmGraphite now writes to a PostgreSQL database!
 
