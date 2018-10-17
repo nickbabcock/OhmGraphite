@@ -1,6 +1,6 @@
 ## 0.6.0 - 2018-10-07
 
-The big news for this release is [TimescaleDB](https://www.timescale.com/) support, so OhmGraphite now writes to a PostgreSQL database!
+The big news for this release is [TimescaleDB](https://www.timescale.com/) support, so OhmGraphite can now writes to a PostgreSQL database!
 
 One can configure OhmGraphite to send to Timescale with the following (configuration values will differ depending on your environment):
 

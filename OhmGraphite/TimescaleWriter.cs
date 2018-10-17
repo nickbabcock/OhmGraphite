@@ -15,13 +15,15 @@ namespace OhmGraphite
 
         private readonly string _connStr;
         private readonly string _localHost;
+        private readonly bool _setupTable;
         private NpgsqlConnection _conn;
         private bool _failure = true;
 
-        public TimescaleWriter(string connStr, string localHost)
+        public TimescaleWriter(string connStr, bool setupTable, string localHost)
         {
             _connStr = connStr;
             _localHost = localHost;
+            _setupTable = setupTable;
             _conn = new NpgsqlConnection(_connStr);
         }
 
@@ -36,24 +38,28 @@ namespace OhmGraphite
                     Logger.Debug("New timescale connection");
                     await _conn.OpenAsync();
 
-                    using (var cmd = new NpgsqlCommand(
-                        "CREATE TABLE IF NOT EXISTS ohm_stats (" +
-                        "   time TIMESTAMPTZ NOT NULL," +
-                        "   host TEXT,hardware TEXT," +
-                        "   hardware_type TEXT," +
-                        "   identifier TEXT," +
-                        "   sensor TEXT," +
-                        "   sensor_type TEXT," +
-                        "   sensor_index INT," +
-                        "   value REAL" +
-                        ");" +
-                        "" +
-                        @"SELECT create_hypertable('ohm_stats', 'time', if_not_exists => TRUE);" +
-                        "CREATE INDEX IF NOT EXISTS idx_ohm_host ON ohm_stats (host);" +
-                        "CREATE INDEX IF NOT EXISTS idx_ohm_identifier ON ohm_stats (identifier);",
-                        _conn))
+                    if (_setupTable)
                     {
-                        await cmd.ExecuteNonQueryAsync();
+                        using (var cmd = new NpgsqlCommand(
+                            "CREATE TABLE IF NOT EXISTS ohm_stats (" +
+                            "   time TIMESTAMPTZ NOT NULL," +
+                            "   host TEXT," +
+                            "   hardware TEXT," +
+                            "   hardware_type TEXT," +
+                            "   identifier TEXT," +
+                            "   sensor TEXT," +
+                            "   sensor_type TEXT," +
+                            "   sensor_index INT," +
+                            "   value REAL" +
+                            ");" +
+                            "" +
+                            @"SELECT create_hypertable('ohm_stats', 'time', if_not_exists => TRUE);" +
+                            "CREATE INDEX IF NOT EXISTS idx_ohm_host ON ohm_stats (host);" +
+                            "CREATE INDEX IF NOT EXISTS idx_ohm_identifier ON ohm_stats (identifier);",
+                            _conn))
+                        {
+                            await cmd.ExecuteNonQueryAsync();
+                        }
                     }
                 }
 

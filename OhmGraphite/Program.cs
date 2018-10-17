@@ -71,7 +71,7 @@ namespace OhmGraphite
             }
             else if (config.Timescale != null)
             {
-                var writer = new TimescaleWriter(config.Timescale, Environment.MachineName);
+                var writer = new TimescaleWriter(config.Timescale.Connection, config.Timescale.SetupTable, Environment.MachineName);
                 return new MetricTimer(config.Interval, collector, writer);
             }
             else

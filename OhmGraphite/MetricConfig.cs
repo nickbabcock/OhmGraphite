@@ -4,7 +4,7 @@ namespace OhmGraphite
 {
     public class MetricConfig
     {
-        public MetricConfig(TimeSpan interval, GraphiteConfig graphite, InfluxConfig influx, PrometheusConfig prometheus, string timescale)
+        public MetricConfig(TimeSpan interval, GraphiteConfig graphite, InfluxConfig influx, PrometheusConfig prometheus, TimescaleConfig timescale)
         {
             Interval = interval;
             Graphite = graphite;
@@ -17,7 +17,7 @@ namespace OhmGraphite
         public GraphiteConfig Graphite { get; }
         public InfluxConfig Influx { get; }
         public PrometheusConfig Prometheus { get; }
-        public string Timescale { get; }
+        public TimescaleConfig Timescale { get; }
 
         public static MetricConfig ParseAppSettings(IAppConfig config)
         {
@@ -32,7 +32,7 @@ namespace OhmGraphite
             GraphiteConfig gconfig = null;
             InfluxConfig iconfig = null;
             PrometheusConfig pconfig = null;
-            string timescale = null;
+            TimescaleConfig timescale = null;
 
             switch (type.ToLowerInvariant())
             {
@@ -48,7 +48,7 @@ namespace OhmGraphite
                     break;
                 case "timescale":
                 case "timescaledb":
-                    timescale = config["timescale_connection"];
+                    timescale = TimescaleConfig.ParseAppSettings(config);
                     break;
             }
 
