@@ -106,7 +106,6 @@ The Prometheus will create a server that listens on `prometheus_port`. The Prome
 
 ### TimescaleDB Configuration
 
-
 One can configure OhmGraphite to send to Timescale with the following (configuration values will differ depending on your environment):
 
 ```xml
@@ -114,12 +113,38 @@ One can configure OhmGraphite to send to Timescale with the following (configura
 <configuration>
   <appSettings>
     <add key="type" value="timescale" />
-    <add key="timescale_connection" value="Host=vm-ubuntu;Username=postgres;Password=123456;Database=postgres" />
+    <add key="timescale_connection" value="Host=vm-ubuntu;Username=ohm;Password=123456;Database=postgres" />
+    <add key="timescale_setup" value="false" />
   </appSettings>
 </configuration>
 ```
 
-OhmGraphite will create the following schema, so make sure the user connecting has appropriate permissions
+By leaving `timescale_setup` to `false` (the default) OhmGraphite will be expecting the following table structure to insert into:
+
+```sql
+CREATE TABLE IF NOT EXISTS ohm_stats (
+   time TIMESTAMPTZ NOT NULL,
+   host TEXT,
+   hardware TEXT,
+   hardware_type TEXT,
+   identifier TEXT,
+   sensor TEXT,
+   sensor_type TEXT,
+   sensor_index INT,
+   value REAL
+);
+```
+
+Then give the `ohm` user appropriate permissions:
+
+```sql
+CREATE USER ohm WITH PASSWORD 'xxx';
+GRANT INSERT ON ohm_stats TO ohm;
+```
+
+In this mode, Postgres is supported.
+
+If `timescale_setup` is `true` then OhmGraphite will create the following schema, so make sure the user connecting has appropriate permissions
 
 ```sql
 CREATE TABLE IF NOT EXISTS ohm_stats (
