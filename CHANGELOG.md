@@ -1,3 +1,24 @@
+## 0.7.0 - 2018-10-17
+
+This is strictly a breaking change for [TimescaleDB](https://www.timescale.com/) users (nothing else has changed). Previously OhmGraphite would create a schema and initialize the Timescale table. While convenient, creating tables, indices, etc automatically is not desirable for an application that could be installed on many client machines. In production, one may want to create indices on other columns, omit an index on the `host` column, or create custom constraints. OhmGraphite shouldn't dictate everything. In fact, OhmGraphite should be able to function with a minimal amount of permissions. That is why with the 0.7 release, automatic creation of tables, etc is **opt-in** via the new `timescale_setup` option.
+
+Recommendation: create a user that can **only** insert into the `ohm_stats` table
+
+```sql
+CREATE USER ohm WITH PASSWORD 'xxx';
+GRANT INSERT ON ohm_stats TO ohm;
+```
+
+Then initialize the `ohm_stats` appropriately.
+
+If one desires OhmGraphite to automatically setup the table structure then update the configuration to include `timescale_setup`
+
+```xml
+  <add key="timescale_setup" value="true" />
+```
+
+A side benefit of this update is that OhmGraphite can now insert into traditional PostgreSQL databases.
+
 ## 0.6.0 - 2018-10-07
 
 The big news for this release is [TimescaleDB](https://www.timescale.com/) support, so OhmGraphite can now writes to a PostgreSQL database!
