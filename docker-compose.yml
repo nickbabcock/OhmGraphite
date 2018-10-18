@@ -1,0 +1,15 @@
+version: '3'
+services:
+  graphite:
+    image: graphiteapp/graphite-statsd
+  timescale:
+    build:
+      dockerfile: Dockerfile.timescale
+      context: .
+    environment:
+      POSTGRES_PASSWORD: 123456
+  app:
+    build:
+      dockerfile: Dockerfile.tests
+      context: .
+    command: ./assets/wait-for-it.sh timescale:5432 -- ./assets/wait-for-it.sh graphite:80 -- mono /root/.nuget/packages/xunit.runner.console/2.4.0/tools/net461/xunit.console.exe OhmGraphite.Test/bin/Debug/net461/OhmGraphite.Test.dll

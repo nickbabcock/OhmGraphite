@@ -1,0 +1,5 @@
+language: rust
+sudo: required
+services:
+  - docker
+script: sudo docker-compose up --abort-on-container-exit --renew-anon-volumes --build --exit-code-from app
