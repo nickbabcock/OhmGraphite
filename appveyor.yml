@@ -1,6 +1,9 @@
 image: 'Visual Studio 2017'
 install:
   - git submodule update --init --recursive
-  - dotnet restore
+  - msbuild /t:restore
 build:
   project: OhmGraphite.sln
+
+before_test:
+  - docker run --rm -e POSTGRES_PASSWORD=123456 -p 5432:5432 -ti timescale/timescaledb

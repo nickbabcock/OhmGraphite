@@ -9,7 +9,7 @@ using OpenHardwareMonitor.Hardware;
 
 namespace OhmGraphite
 {
-    class TimescaleWriter : IWriteMetrics
+    public class TimescaleWriter : IWriteMetrics
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
