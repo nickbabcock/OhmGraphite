@@ -5,5 +5,7 @@ install:
 build:
   project: OhmGraphite.sln
 
-before_test:
-  - docker run --rm -e POSTGRES_PASSWORD=123456 -p 5432:5432 -ti timescale/timescaledb
+test:
+  categories:
+    except:
+      - integration
