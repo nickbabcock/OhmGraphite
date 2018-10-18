@@ -19,7 +19,7 @@ namespace OhmGraphite.Test
             var resp = await client.GetAsync("http://graphite/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1");
             Assert.True(resp.IsSuccessStatusCode);
             var content = await resp.Content.ReadAsStringAsync();
-            Assert.True(content.Contains("ohm.my-pc.intelcpu.0.temperature.cpucore.1"));
+            Assert.Contains("ohm.my-pc.intelcpu.0.temperature.cpucore.1", content);
         }
     }
 }
