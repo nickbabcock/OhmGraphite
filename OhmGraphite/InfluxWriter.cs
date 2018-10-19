@@ -9,7 +9,7 @@ using OpenHardwareMonitor.Hardware;
 
 namespace OhmGraphite
 {
-    class InfluxWriter : IWriteMetrics
+    public class InfluxWriter : IWriteMetrics
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
