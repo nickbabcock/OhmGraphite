@@ -1,0 +1,2 @@
+FROM graphiteapp/graphite-statsd
+COPY local_settings.py /opt/graphite/webapp/graphite/

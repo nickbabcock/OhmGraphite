@@ -1,15 +1,24 @@
 version: '3'
 services:
+  redis:
+    image: redis:alpine
   graphite:
-    image: graphiteapp/graphite-statsd
+    build:
+      dockerfile: Dockerfile.graphite
+      context: ci
+    depends_on:
+      - redis
   timescale:
     build:
-      dockerfile: Dockerfile.timescale
+      dockerfile: ci/Dockerfile.timescale
       context: .
     environment:
       POSTGRES_PASSWORD: 123456
   app:
     build:
-      dockerfile: Dockerfile.tests
+      dockerfile: ci/Dockerfile.tests
       context: .
-    command: ./assets/wait-for-it.sh timescale:5432 -- ./assets/wait-for-it.sh graphite:80 -- mono /root/.nuget/packages/xunit.runner.console/2.4.0/tools/net461/xunit.console.exe OhmGraphite.Test/bin/Debug/net461/OhmGraphite.Test.dll
+    depends_on:
+      - timescale
+      - graphite
+    command: ./ci/wait-for-it.sh timescale:5432 -- ./ci/wait-for-it.sh graphite:80 -- mono /root/.nuget/packages/xunit.runner.console/2.4.0/tools/net461/xunit.console.exe OhmGraphite.Test/bin/Debug/net461/OhmGraphite.Test.dll
