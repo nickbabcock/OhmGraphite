@@ -9,7 +9,7 @@ namespace OhmGraphite.Test
         [Fact]
         public void CanParseGraphiteConfig()
         {
-            var configMap = new ExeConfigurationFileMap {ExeConfigFilename = "test.config"};
+            var configMap = new ExeConfigurationFileMap {ExeConfigFilename = "assets/graphite.config"};
             var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
             var customConfig = new CustomConfig(config);
             var results = MetricConfig.ParseAppSettings(customConfig);
@@ -25,7 +25,7 @@ namespace OhmGraphite.Test
         [Fact]
         public void CanParseNullConfig()
         {
-            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "testdefault.config" };
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/default.config" };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
             var customConfig = new CustomConfig(config);
             var results = MetricConfig.ParseAppSettings(customConfig);
@@ -41,7 +41,7 @@ namespace OhmGraphite.Test
         [Fact]
         public void CanParseInfluxDbConfig()
         {
-            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "influxtest.config" };
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/influx.config" };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
             var customConfig = new CustomConfig(config);
             var results = MetricConfig.ParseAppSettings(customConfig);
@@ -58,7 +58,7 @@ namespace OhmGraphite.Test
         [Fact]
         public void CanParsePrometheusConfig()
         {
-            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "prometheus.config" };
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/prometheus.config" };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
             var customConfig = new CustomConfig(config);
             var results = MetricConfig.ParseAppSettings(customConfig);
@@ -73,7 +73,7 @@ namespace OhmGraphite.Test
         [Fact]
         public void CanParseTimescaleConfig()
         {
-            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "timescale.config" };
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/timescale.config" };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
             var customConfig = new CustomConfig(config);
             var results = MetricConfig.ParseAppSettings(customConfig);

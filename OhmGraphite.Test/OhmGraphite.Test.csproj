@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="timescale.config" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="prometheus.config" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="influxtest.config" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="testdefault.config" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="test.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\timescale.config" Link="assets/timescale.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\prometheus.config" Link="assets/prometheus.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\influx.config" Link="assets/influx.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\default.config" Link="assets/default.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\graphite.config" Link="assets/graphite.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
