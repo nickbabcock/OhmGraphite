@@ -20,18 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="prometheus.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="influxtest.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="testdefault.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="test.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Update="timescale.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="prometheus.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="influxtest.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="testdefault.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="test.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

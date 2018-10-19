@@ -69,5 +69,21 @@ namespace OhmGraphite.Test
             Assert.Equal(4446, results.Prometheus.Port);
             Assert.Equal("127.0.0.1", results.Prometheus.Host);
         }
+
+        [Fact]
+        public void CanParseTimescaleConfig()
+        {
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "timescale.config" };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            var customConfig = new CustomConfig(config);
+            var results = MetricConfig.ParseAppSettings(customConfig);
+
+            Assert.Null(results.Graphite);
+            Assert.Null(results.Influx);
+            Assert.Null(results.Prometheus);
+            Assert.NotNull(results.Timescale);
+            Assert.Equal("Host=vm-ubuntu;Username=ohm;Password=123456", results.Timescale.Connection);
+            Assert.False(results.Timescale.SetupTable);
+        }
     }
 }
