@@ -24,7 +24,7 @@ namespace OhmGraphite.Test
             {
                 collector.Open();
                 var firstCount = collector.ReadAllSensors().Count();
-                Assert.True(firstCount > 0);
+                Assert.True(firstCount > 0, "firstCount > 0");
 
                 computer.MainboardEnabled = true;
                 computer.FanControllerEnabled = true;
@@ -32,7 +32,7 @@ namespace OhmGraphite.Test
                 computer.RAMEnabled = true;
 
                 var secondCount = collector.ReadAllSensors().Count();
-                Assert.True(secondCount > firstCount);
+                Assert.True(secondCount > firstCount, "secondCount > firstCount");
 
                 computer.MainboardEnabled = false;
                 computer.FanControllerEnabled = false;
@@ -40,8 +40,8 @@ namespace OhmGraphite.Test
                 computer.RAMEnabled = false;
 
                 var thirdCount = collector.ReadAllSensors().Count();
-                Assert.True(thirdCount < secondCount);
-                Assert.True(thirdCount > 0);
+                Assert.True(thirdCount < secondCount, "thirdCount < secondCount");
+                Assert.True(thirdCount > 0, "thirdCount > 0");
             }
             finally
             {

@@ -24,6 +24,7 @@ services:
     build:
       dockerfile: ci/Dockerfile.tests
       context: .
+    privileged: true
     depends_on:
       - timescale
       - graphite
