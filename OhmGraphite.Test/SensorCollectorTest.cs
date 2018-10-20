@@ -19,7 +19,6 @@ namespace OhmGraphite.Test
 
                 computer.CPUEnabled = true;
                 computer.MainboardEnabled = true;
-                computer.FanControllerEnabled = true;
                 computer.HDDEnabled = true;
                 computer.RAMEnabled = true;
 
@@ -28,7 +27,6 @@ namespace OhmGraphite.Test
 
                 computer.CPUEnabled = false;
                 computer.MainboardEnabled = false;
-                computer.FanControllerEnabled = false;
                 computer.HDDEnabled = false;
                 computer.RAMEnabled = false;
 
