@@ -6,7 +6,7 @@ using OpenHardwareMonitor.Hardware;
 
 namespace OhmGraphite
 {
-    public class SensorCollector
+    public class SensorCollector : IGiveSensors
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Computer _computer;
@@ -38,6 +38,9 @@ namespace OhmGraphite
             }
             _computer.Close();
         }
+
+        public void Start() => Open();
+        public void Stop() => Close();
 
         private void HardwareAdded(IHardware hardware)
         {

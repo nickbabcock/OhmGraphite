@@ -9,12 +9,12 @@ namespace OhmGraphite
     public class MetricTimer : IManage
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly SensorCollector _collector;
+        private readonly IGiveSensors _collector;
 
         private readonly Timer _timer;
         private readonly IWriteMetrics _writer;
 
-        public MetricTimer(TimeSpan interval, SensorCollector collector, IWriteMetrics writer)
+        public MetricTimer(TimeSpan interval, IGiveSensors collector, IWriteMetrics writer)
         {
             _timer = new Timer(interval.TotalMilliseconds) {AutoReset = true};
             _timer.Elapsed += ReportMetrics;
@@ -26,7 +26,7 @@ namespace OhmGraphite
         {
             Logger.LogAction("starting metric timer", () =>
             {
-                _collector.Open();
+                _collector.Start();
                 _timer.Start();
             });
         }
@@ -35,7 +35,7 @@ namespace OhmGraphite
         {
             Logger.LogAction("stopping metric timer", () =>
             {
-                _collector.Close();
+                _collector.Stop();
                 _timer.Stop();
             });
         }

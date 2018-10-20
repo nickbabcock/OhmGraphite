@@ -1,6 +1,6 @@
 ﻿namespace OhmGraphite
 {
-    interface IManage
+    public interface IManage
     {
         void Start();
         void Stop();

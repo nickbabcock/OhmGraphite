@@ -9,10 +9,10 @@ namespace OhmGraphite
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly MetricServer _server;
-        private readonly SensorCollector _collector;
+        private readonly IGiveSensors _collector;
         private readonly PrometheusCollection _prometheusCollection;
 
-        public PrometheusServer(MetricServer server, SensorCollector collector, PrometheusCollection prometheusCollection)
+        public PrometheusServer(MetricServer server, IGiveSensors collector, PrometheusCollection prometheusCollection)
         {
             _server = server;
             _collector = collector;
@@ -24,7 +24,7 @@ namespace OhmGraphite
             Logger.LogAction("starting prometheus server", () =>
             {
                 DefaultCollectorRegistry.Instance.RegisterOnDemandCollectors(_prometheusCollection);
-                _collector.Open();
+                _collector.Start();
                 _server.Start();
             });
         }
@@ -33,7 +33,7 @@ namespace OhmGraphite
         {
             Logger.LogAction("stopping prometheus server", () =>
             {
-                _collector.Close();
+                _collector.Stop();
                 _server.Stop();
             });
         }

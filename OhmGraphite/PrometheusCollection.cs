@@ -9,11 +9,11 @@ namespace OhmGraphite
     public class PrometheusCollection : IOnDemandCollector
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly SensorCollector _collector;
+        private readonly IGiveSensors _collector;
         private readonly string _localHost;
         private MetricFactory _metrics;
 
-        public PrometheusCollection(SensorCollector collector, string localHost)
+        public PrometheusCollection(IGiveSensors collector, string localHost)
         {
             _collector = collector;
             _localHost = localHost;
