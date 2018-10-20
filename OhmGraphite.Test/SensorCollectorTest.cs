@@ -18,7 +18,6 @@ namespace OhmGraphite.Test
                 var unused = collector.ReadAllSensors().Count();
 
                 computer.CPUEnabled = true;
-                computer.FanControllerEnabled = true;
                 computer.MainboardEnabled = true;
                 computer.FanControllerEnabled = true;
                 computer.HDDEnabled = true;
@@ -28,7 +27,6 @@ namespace OhmGraphite.Test
                 Assert.True(addedCount > 0, "addedCount > 0");
 
                 computer.CPUEnabled = false;
-                computer.FanControllerEnabled = false;
                 computer.MainboardEnabled = false;
                 computer.FanControllerEnabled = false;
                 computer.HDDEnabled = false;
