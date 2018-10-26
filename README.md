@@ -23,7 +23,7 @@ OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardwa
 
 ## Introduction
 
-OhmGraphite functions as a console app (cross platform) or a Windows service that periodically polls the hardware. My recommendation is that even though OhmGraphite can be run via Mono / Docker, many hardware sensors aren't available in those modes.
+OhmGraphite functions as a console app or a Windows service that periodically polls the hardware. My recommendation is that even though OhmGraphite can be run via Mono / Docker, many hardware sensors aren't available in those modes.
 
 I use this every day to create beautiful dashboards. Keep in mind, Open Hardware Monitor supported components will determine what metrics are available. Below are graphs / stats made with OhmGraphite (couple of the panels are complemented with [telegraf](https://github.com/influxdata/telegraf) as demonstrated in [Monitoring Windows system metrics with grafana](https://nbsoftsolutions.com/blog/monitoring-windows-system-metrics-with-grafana))
 
@@ -176,14 +176,4 @@ Currenlty the schema and the columns are not configurable.
 
 - Stop OhmGraphite service `.\OhmGraphite.exe stop`
 - Run uninstall command `.\OhmGraphite.exe uninstall`
-
-## Getting Started (Docker)
-
-Since the full gambit of metrics aren't available in a Docker container, I've refrained from putting the project on docker hub lest it misleads people to think otherwise.
-
-```bash
-docker build -t nickbabcock/ohm-graphite .
-docker run -v $PWD/app.config:/opt/OhmGraphite/OhmGraphite.exe.config:ro nickbabcock/ohm-graphite
-```
-
-`app.config` is in the same format as the above configuration.
+- Remove files
