@@ -38,6 +38,38 @@ namespace OhmGraphite
                     Logger.Debug("New timescale connection");
                     await _conn.OpenAsync();
 
+                    // The reason behind unpreparing is a doozy.
+                    //
+                    // Npgsql persists prepared statements across connections, reason: "This allows
+                    // you to benefit from statements prepared in previous lifetimes, providing all
+                    // the performance benefits to applications using connection pools" -
+                    // http://www.roji.org/prepared-statements-in-npgsql-3-2. I have found this to
+                    // be the correct behavior in 99% situations when either client or server is
+                    // restart, as the normal flow of exceptions reported on the client when the
+                    // server restarts seems to be:
+                    //
+                    // - System.IO.EndOfStreamException: Attempted to read past the end of the stream
+                    // - 57P03: the database system is starting up
+                    // - Back to normal
+                    //
+                    // However, on 2018-11-29 while upgrading timescale db (0.12.1 to 1.0.0) I
+                    // encountered a bizarre sequence of events
+                    //
+                    // - <start upgrade by restarting server>
+                    // - System.IO.EndOfStreamException: Attempted to read past the end of the stream
+                    // - 57P03: the database system is starting up
+                    // - 58P01: could not access file "timescaledb-0.12.1": No such file or directory
+                    // - <finished with: "ALTER EXTENSION timescaledb UPDATE;">
+                    // - 26000: prepared statement "_p1" does not exist
+                    //
+                    // OhmGraphite could never recover because Npgsql seemed adamant that the
+                    // prepared statement existed. And since Npgsql persists prepared statements in
+                    // it's connection pool all future connections are "poisioned" with this
+                    // prepared statement. The best solution appears to be unpreparing everything on
+                    // db failure. For our use case, recreating these prepared statements is a small
+                    // price to pay even if preparation is redundant.
+                    _conn.UnprepareAll();
+
                     if (_setupTable)
                     {
                         var setupSql = Resourcer.Resource.AsString("schema.sql");
