@@ -1,3 +1,7 @@
+## 0.7.1 - 2018-11-29
+
+Bugfix for the postgres / timescaledb users who have experienced the rare bug of "26000: prepared statement "_p1" does not exist" during database operations. It is unknown whether this is a bug in the C# postgres driver or intended behavior. Regardless, OhmGraphite would enter an infinite loop trying to insert sensor data. The fix is to now on db failure, in addition to re-instantiating a connection, to purge all persisted prepared statements.
+
 ## 0.7.0 - 2018-10-17
 
 This is strictly a breaking change for [TimescaleDB](https://www.timescale.com/) users (nothing else has changed). Previously OhmGraphite would create a schema and initialize the Timescale table. While convenient, creating tables, indices, etc automatically is not desirable for an application that could be installed on many client machines. In production, one may want to create indices on other columns, omit an index on the `host` column, or create custom constraints. OhmGraphite shouldn't dictate everything. In fact, OhmGraphite should be able to function with a minimal amount of permissions. That is why with the 0.7 release, automatic creation of tables, etc is **opt-in** via the new `timescale_setup` option.
