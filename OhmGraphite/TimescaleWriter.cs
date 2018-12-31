@@ -27,7 +27,7 @@ namespace OhmGraphite
             _conn = new NpgsqlConnection(_connStr);
         }
 
-        public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        public Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace OhmGraphite
                     _conn.Close();
                     _conn = new NpgsqlConnection(_connStr);
                     Logger.Debug("New timescale connection");
-                    await _conn.OpenAsync();
+                    _conn.Open();
 
                     // The reason behind unpreparing is a doozy.
                     //
@@ -45,7 +45,7 @@ namespace OhmGraphite
                     // the performance benefits to applications using connection pools" -
                     // http://www.roji.org/prepared-statements-in-npgsql-3-2. I have found this to
                     // be the correct behavior in 99% situations when either client or server is
-                    // restart, as the normal flow of exceptions reported on the client when the
+                    // restarted, as the normal flow of exceptions reported on the client when the
                     // server restarts seems to be:
                     //
                     // - System.IO.EndOfStreamException: Attempted to read past the end of the stream
@@ -75,7 +75,7 @@ namespace OhmGraphite
                         var setupSql = Resourcer.Resource.AsString("schema.sql");
                         using (var cmd = new NpgsqlCommand(setupSql, _conn))
                         {
-                            await cmd.ExecuteNonQueryAsync();
+                            cmd.ExecuteNonQuery();
                         }
                     }
                 }
@@ -103,7 +103,7 @@ namespace OhmGraphite
 
                     // A majority of the time, the same number of sensors will be
                     // reported on, so it's important to prepare the statement
-                    await cmd.PrepareAsync();
+                    cmd.Prepare();
 
                     for (int i = 0; i < values.Count; i++)
                     {
@@ -119,10 +119,14 @@ namespace OhmGraphite
                         cmd.Parameters[$"sensor_index{i}"].Value = sensor.SensorIndex;
                     }
 
-                    await cmd.ExecuteNonQueryAsync();
+                    cmd.ExecuteNonQuery();
                 }
 
                 _failure = false;
+
+                // The synchronous versions of npgsql are more battle tested than asynchronous:
+                // https://github.com/npgsql/npgsql/issues/2266
+                return Task.CompletedTask;
             }
             catch (Exception)
             {
