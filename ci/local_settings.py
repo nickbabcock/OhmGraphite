@@ -1,3 +1,4 @@
+TAGDB = 'graphite.tags.redis.RedisTagDB'
 TAGDB_REDIS_HOST = 'redis'
 TAGDB_REDIS_PORT = 6379
 TAGDB_REDIS_DB = 0
