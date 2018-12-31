@@ -1,6 +1,11 @@
+## 0.7.2 - 2018-12-31
+
+* Bugfix for postgres / timescaledb users. This release eschews the asynchronous npgsql APIs in favor of the synchronous ones due to reliability issues.
+* Update Npgsql from 4.0.3 to 4.0.4
+
 ## 0.7.1 - 2018-11-29
 
-Bugfix for the postgres / timescaledb users who have experienced the rare bug of "26000: prepared statement "_p1" does not exist" during database operations. It is unknown whether this is a bug in the C# postgres driver or intended behavior. Regardless, OhmGraphite would enter an infinite loop trying to insert sensor data. The fix is to now on db failure, in addition to re-instantiating a connection, to purge all persisted prepared statements.
+Bugfix for the postgres / timescaledb users who have experienced the rare bug of "26000: prepared statement "\_p1" does not exist" during database operations. It is unknown whether this is a bug in the C# postgres driver or intended behavior. Regardless, OhmGraphite would enter an infinite loop trying to insert sensor data. The fix is to now on db failure, in addition to re-instantiating a connection, to purge all persisted prepared statements.
 
 ## 0.7.0 - 2018-10-17
 
