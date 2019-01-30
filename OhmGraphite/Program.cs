@@ -25,7 +25,8 @@ namespace OhmGraphite
                         CPUEnabled = true,
                         RAMEnabled = true,
                         FanControllerEnabled = true,
-                        HDDEnabled = true
+                        HDDEnabled = true,
+                        NICEnabled = true
                     };
 
                     var collector = new SensorCollector(computer);
