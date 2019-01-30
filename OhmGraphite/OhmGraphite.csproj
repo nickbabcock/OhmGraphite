@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="3.2.2" />
+    <PackageReference Include="Costura.Fody" Version="3.3.2" />
     <PackageReference Include="NLog.Config" Version="4.5.11" />
     <PackageReference Include="Npgsql" Version="4.0.4" />
     <PackageReference Include="prometheus-net" Version="2.1.3" />
