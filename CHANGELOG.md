@@ -1,3 +1,16 @@
+## 0.8.0
+
+* Update LibreHardwareMonitor to [98969e](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/98969ebc3e5fa9d896f0942a68fb2b8b27cba1ac)
+  * Add: Network (NIC) sensors (data downloaded, etc)
+  * Add: AsRock B85M-DGS support for Voltage sensors
+  * Add: Asus ROG Maximus Apex Mobo support
+  * Add: Intel SSD Airflow temperature support
+  * Add: Nuvoton NCT6798D support
+  * Add: Z390 mobos and IT8688E chip support
+  * Add: Nvidia power usage monitor via NVML (you'll need to install Nvidia's CUDA toolkit)
+* Internal dependency update:
+  * Bump TopShelf from 4.1.0 to 4.2.0
+
 ## 0.7.2 - 2018-12-31
 
 * Bugfix for postgres / timescaledb users. This release eschews the asynchronous npgsql APIs in favor of the synchronous ones due to reliability issues.
