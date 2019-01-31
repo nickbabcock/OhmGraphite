@@ -1,4 +1,4 @@
-## 0.8.0
+## 0.8.0 - 2019-01-30
 
 * Update LibreHardwareMonitor to [98969e](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/98969ebc3e5fa9d896f0942a68fb2b8b27cba1ac)
   * Add: Network (NIC) sensors (data downloaded, etc)
