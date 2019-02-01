@@ -6,14 +6,10 @@ services:
       INFLUXDB_DB: "mydb"
       INFLUXDB_USER: "my_user"
       INFLUXDB_USER_PASSWORD: "my_pass"
-  redis:
-    image: redis:alpine
   graphite:
-    build:
-      dockerfile: Dockerfile.graphite
-      context: ci
-    depends_on:
-      - redis
+    image: graphiteapp/graphite-statsd
+    environment:
+      REDIS_TAGDB: "y"
   timescale:
     build:
       dockerfile: ci/Dockerfile.timescale
