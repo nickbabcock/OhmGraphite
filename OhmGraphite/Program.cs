@@ -66,9 +66,9 @@ namespace OhmGraphite
             else if (config.Prometheus != null)
             {
                 Logger.Info($"Prometheus port: {config.Prometheus.Port}");
-                var prometheusCollection = new PrometheusCollection(collector, Environment.MachineName);
+                var prometheusCollection = new PrometheusCollection(collector, Environment.MachineName, Metrics.DefaultRegistry);
                 var server = new MetricServer(config.Prometheus.Host, config.Prometheus.Port);
-                return new PrometheusServer(server, collector, prometheusCollection);
+                return new PrometheusServer(server, collector);
             }
             else if (config.Timescale != null)
             {

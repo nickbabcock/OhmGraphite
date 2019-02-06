@@ -2,25 +2,21 @@
 using NLog;
 using OpenHardwareMonitor.Hardware;
 using Prometheus;
-using Prometheus.Advanced;
 
 namespace OhmGraphite
 {
-    public class PrometheusCollection : IOnDemandCollector
+    public class PrometheusCollection
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IGiveSensors _collector;
         private readonly string _localHost;
         private MetricFactory _metrics;
 
-        public PrometheusCollection(IGiveSensors collector, string localHost)
+        public PrometheusCollection(IGiveSensors collector, string localHost, CollectorRegistry registry)
         {
             _collector = collector;
             _localHost = localHost;
-        }
-
-        public void RegisterMetrics(ICollectorRegistry registry)
-        {
+            registry.AddBeforeCollectCallback(UpdateMetrics);
             _metrics = Metrics.WithCustomRegistry(registry);
         }
 

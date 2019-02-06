@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using OpenHardwareMonitor.Hardware;
+﻿using System.Net.Http;
 using Prometheus;
 using Xunit;
 
@@ -16,9 +10,9 @@ namespace OhmGraphite.Test
         public async void PrometheusTestServer()
         {
             var collector = new TestSensorCreator();
-            var prometheusCollection = new PrometheusCollection(collector, "my-pc");
+            var prometheusCollection = new PrometheusCollection(collector, "my-pc", Metrics.DefaultRegistry);
             var mserver = new MetricServer("localhost", 21881);
-            var server = new PrometheusServer(mserver, collector, prometheusCollection);
+            var server = new PrometheusServer(mserver, collector);
             try
             {
                 server.Start();
