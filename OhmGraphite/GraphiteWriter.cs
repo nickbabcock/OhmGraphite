@@ -81,7 +81,7 @@ namespace OhmGraphite
             // since some names are like "cpucore#2", turn them into
             // separate metrics by replacing "#" with "."
             string identifier = sensor.Identifier.Replace('/', '.').Substring(1);
-            identifier = identifier.Remove(identifier.LastIndexOf('.'));
+            identifier = identifier.Remove(identifier.LastIndexOf('.')).Replace("{", null).Replace("}", null);
             string name = sensor.Sensor.ToLower().Replace(" ", null).Replace('#', '.');
             return $"ohm.{host}.{identifier}.{name}";
         }
@@ -125,7 +125,7 @@ namespace OhmGraphite
                    $"sensor_type={Enum.GetName(typeof(SensorType), data.SensorType)};" +
                    $"sensor_index={data.SensorIndex};" +
                    $"raw_name={GraphiteEscape(data.Sensor)} " +
-                   $"{data.Value} {epoch:d}";
+                   Invariant($"{data.Value} {epoch:d}");
         }
     }
 }
