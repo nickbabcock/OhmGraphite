@@ -14,10 +14,10 @@ namespace OhmGraphite.Test
             await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
 
             // wait for carbon to sync to disk
-            Thread.Sleep(TimeSpan.FromSeconds(1));
+            Thread.Sleep(TimeSpan.FromSeconds(4));
+
             var client = new HttpClient();
             var resp = await client.GetAsync("http://graphite/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1");
-            Assert.True(resp.IsSuccessStatusCode);
             var content = await resp.Content.ReadAsStringAsync();
             Assert.Contains("ohm.my-pc.intelcpu.0.temperature.cpucore.1", content);
         }
@@ -25,14 +25,17 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async void InsertTagGraphiteTest()
         {
+            // Let the tag engine time to breathe
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+
             var writer = new GraphiteWriter("graphite", 2003, "my-pc", tags: true);
             await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
 
             // wait for carbon to sync to disk
-            Thread.Sleep(TimeSpan.FromSeconds(2));
+            Thread.Sleep(TimeSpan.FromSeconds(4));
+
             var client = new HttpClient();
             var resp = await client.GetAsync("http://graphite/render?format=csv&target=seriesByTag('sensor_type=Temperature','hardware_type=CPU')");
-            Assert.True(resp.IsSuccessStatusCode);
             var content = await resp.Content.ReadAsStringAsync();
             Assert.Contains("host=my-pc", content);
             Assert.Contains("app=ohm", content);
