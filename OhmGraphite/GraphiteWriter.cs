@@ -125,7 +125,7 @@ namespace OhmGraphite
                    $"sensor_type={Enum.GetName(typeof(SensorType), data.SensorType)};" +
                    $"sensor_index={data.SensorIndex};" +
                    $"raw_name={GraphiteEscape(data.Sensor)} " +
-                   $"{data.Value} {epoch:d}";
+                   Invariant($"{data.Value} {epoch:d}");
         }
     }
 }
