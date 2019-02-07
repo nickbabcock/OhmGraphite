@@ -19,6 +19,16 @@ namespace OhmGraphite.Test
         }
 
         [Fact]
+        public void FormatGraphiteWithSpecialCharacters()
+        {
+            var writer = new GraphiteWriter("localhost", 2003, "MY-PC", false);
+            var epoch = new DateTimeOffset(new DateTime(2001, 1, 13), TimeSpan.Zero).ToUnixTimeSeconds();
+            var sensor = new ReportedValue("/nic/{my-guid}/throughput/7", "Bluetooth Network Connection 2", 1.06f, SensorType.Throughput, "cpu", HardwareType.NIC, 7);
+            string actual = writer.FormatGraphiteData(epoch, sensor);
+            Assert.Equal("ohm.MY-PC.nic.my-guid.throughput.bluetoothnetworkconnection2 1.06 979344000", actual);
+        }
+
+        [Fact]
         public void FormatCultureInvariant()
         {
             var writer = new GraphiteWriter("localhost", 2003, "MY-PC", false);
