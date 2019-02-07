@@ -1,4 +1,4 @@
-## 0.8.1 - 2019-02-97
+## 0.8.1 - 2019-02-07
 
 * Fix: graphite: remove NIC guids in squirrelly parentheses
 * Fix: graphite: when graphite tag functionality is enabled, format number with culture invariant
