@@ -1,3 +1,10 @@
+## 0.8.2 - 2019-02-25
+
+Bugfix release for our Prometheus users
+
+* Sanitize additional metric names for Prometheus ([#43](https://github.com/nickbabcock/OhmGraphite/issues/43))
+* Bump prometheus-net from 3.0.1 to 3.0.3 for bugfixes
+
 ## 0.8.1 - 2019-02-07
 
 * Fix: graphite: remove NIC guids in squirrelly parentheses
