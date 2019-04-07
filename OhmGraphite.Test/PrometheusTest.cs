@@ -35,13 +35,13 @@ namespace OhmGraphite.Test
         {
             var collector = new NicGuidSensor();
             var prometheusCollection = new PrometheusCollection(collector, "my-pc", Metrics.DefaultRegistry);
-            var mserver = new MetricServer("localhost", 21881);
+            var mserver = new MetricServer("localhost", 21882);
             var server = new PrometheusServer(mserver, collector);
             try
             {
                 server.Start();
                 var client = new HttpClient();
-                var resp = await client.GetAsync("http://localhost:21881/metrics");
+                var resp = await client.GetAsync("http://localhost:21882/metrics");
                 Assert.True(resp.IsSuccessStatusCode);
                 var content = await resp.Content.ReadAsStringAsync();
                 Assert.Contains("Bluetooth Network Connection 2", content);
