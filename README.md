@@ -39,6 +39,21 @@ I use this every day to create beautiful dashboards. Keep in mind, Open Hardware
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
 - To start the app after installation: `.\OhmGraphite.exe start` or your favorite Windows service management tool
 
+### Hostname Resolution
+
+When OhmGraphite sends metrics to the desired sink, it includes the computers hostname for additional context to allow scenarios where one has a grafana template variable based on hostname. There two possible ways for OhmGraphite to resolved the hostname: NetBIOS (the default) and DNS. It's hard to say exactly how a machine's NetBIOS name and internet host name will differ, but to give an example, a NetBIOS name of `TINI` can have a host name of `Tini`.
+
+To switch to DNS hostname resolution, update the configuration to include `name_lookup`
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="name_lookup" value="dns" />
+  </appSettings>
+</configuration>
+```
+
 ### Graphite Configuration
 
 The config below polls our hardware every `5` seconds and sends the results to a graphite server listening on `localhost:2003`.
@@ -55,7 +70,7 @@ The config below polls our hardware every `5` seconds and sends the results to a
 </configuration>
 ```
 
-Starting with 1.1.0, Graphite supports tags (similar to InfluxDB's tags). When enabled in OhmGraphite the data format switches from `<name> <value> <timestamp>` to `<name>;tag1=a;tag2=b <value> <timestamp>`.  Since tags are such a new feature, OhmGraphite has it disabled by default to prevent cumbersome usage with Graphite 0.9 and 1.0 installations.
+Starting with Graphite v1.1.0, Graphite supports tags (similar to InfluxDB's tags). When enabled in OhmGraphite the data format switches from `<name> <value> <timestamp>` to `<name>;tag1=a;tag2=b <value> <timestamp>`.  Since tags are such a new feature, OhmGraphite has it disabled by default to prevent cumbersome usage with Graphite 0.9 and 1.0 installations.
 
 Examples of types of tags used (same for InfluxDB):
 

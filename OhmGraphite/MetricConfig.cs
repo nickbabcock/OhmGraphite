@@ -4,8 +4,12 @@ namespace OhmGraphite
 {
     public class MetricConfig
     {
-        public MetricConfig(TimeSpan interval, GraphiteConfig graphite, InfluxConfig influx, PrometheusConfig prometheus, TimescaleConfig timescale)
+        private readonly INameResolution _nameLookup;
+
+        public MetricConfig(TimeSpan interval, INameResolution nameLookup, GraphiteConfig graphite, InfluxConfig influx,
+            PrometheusConfig prometheus, TimescaleConfig timescale)
         {
+            _nameLookup = nameLookup;
             Interval = interval;
             Graphite = graphite;
             Influx = influx;
@@ -13,6 +17,7 @@ namespace OhmGraphite
             Timescale = timescale;
         }
 
+        public string LookupName() => _nameLookup.LookupName();
         public TimeSpan Interval { get; }
         public GraphiteConfig Graphite { get; }
         public InfluxConfig Influx { get; }
@@ -27,6 +32,18 @@ namespace OhmGraphite
             }
 
             var interval = TimeSpan.FromSeconds(seconds);
+
+            var lookup = config["name_lookup"] ?? "netbios";
+            INameResolution nameLookup;
+            switch (lookup.ToLowerInvariant())
+            {
+                case "dns":
+                    nameLookup = new DnsResolution();
+                    break;
+                default:
+                    nameLookup = new NetBiosResolution();
+                    break;
+            }
 
             var type = config["type"] ?? "graphite";
             GraphiteConfig gconfig = null;
@@ -52,7 +69,7 @@ namespace OhmGraphite
                     break;
             }
 
-            return new MetricConfig(interval, gconfig, iconfig, pconfig, timescale);
+            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale);
         }
     }
 }
