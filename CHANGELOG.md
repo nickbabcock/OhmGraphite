@@ -1,3 +1,22 @@
+## 0.8.3 - 2019-04-08
+
+* Allow one to switch from sending NetBIOS machine name to sending internet host name to metric sink.
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="name_lookup" value="dns" />
+  </appSettings>
+</configuration>
+```
+
+* Improve postgres connection attempts in edge cases
+* Update internal dependencies:
+  * Bump prometheus-net from 3.0.3 to 3.1.0 (no apparent changes for OhmGraphite)
+  * Bump Npgsql from 4.0.4 to 4.0.5 (fixes bugs)
+  * Bump NLog.Config from 4.5.11 to 4.6.2 (more logging configurations for those who want it)
+
 ## 0.8.2 - 2019-02-25
 
 Bugfix release for our Prometheus users
