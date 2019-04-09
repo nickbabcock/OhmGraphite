@@ -11,6 +11,8 @@
 </configuration>
 ```
 
+(If you opt into this configuration, expect metric names / paths to change (eg: if the metric host was previously `TINI`, it may change to `Tini`) (ref: https://github.com/nickbabcock/OhmGraphite/issues/53))
+
 * Improve postgres connection attempts in edge cases
 * Update internal dependencies:
   * Bump prometheus-net from 3.0.3 to 3.1.0 (no apparent changes for OhmGraphite)
