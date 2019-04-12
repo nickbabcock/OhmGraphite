@@ -106,7 +106,19 @@ namespace OhmGraphite
             // Only report a value if the sensor was able to get a value
             // as 0 is different than "didn't read". For example, are the
             // fans really spinning at 0 RPM or was the value not read.
-            if (sensor.Value.HasValue)
+            if (!sensor.Value.HasValue)
+            {
+                Logger.Debug($"{id} did not have a value");
+            }
+            else if (float.IsNaN(sensor.Value.Value))
+            {
+                Logger.Debug($"{id} had a NaN value");
+            }
+            else if (float.IsInfinity(sensor.Value.Value))
+            {
+                Logger.Debug($"{id} had an infinite value");
+            }
+            else
             {
                 yield return new ReportedValue(id,
                     sensor.Name,
@@ -115,10 +127,6 @@ namespace OhmGraphite
                     sensor.Hardware.Name,
                     sensor.Hardware.HardwareType,
                     sensor.Index);
-            }
-            else
-            {
-                Logger.Debug($"{id} did not have a value");
             }
         }
     }
