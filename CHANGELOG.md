@@ -1,3 +1,7 @@
+## TBD
+
+* Only allow non-NaN and finite sensor values to be reported. Previously, NaN and infinite values could be reported which may cause downstream issues. For instance, Postgres / Prometheus will accept NaN values but Grafana will error out with a body json marshal error. These unexpected values should be quite rare, as out of the 25 million data points over the past week, 14 of those over 2 seconds were reported as NaN. It only takes a single NaN value to ruin a dashboard, so it's been fixed, and if a NaN value were to occur again, the sensor id would be logged under `DEBUG` before being discarded.
+
 ## 0.8.3 - 2019-04-08
 
 * Allow one to switch from sending NetBIOS machine name to sending internet host name to metric sink.
