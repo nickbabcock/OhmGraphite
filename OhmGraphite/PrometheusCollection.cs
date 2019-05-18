@@ -30,11 +30,7 @@ namespace OhmGraphite
             foreach (var sensor in _collector.ReadAllSensors())
             {
                 _metrics.CreateGauge(
-                        sensor.Identifier.Substring(1)
-                            .Replace('/', '_')
-                            .Replace("{", null)
-                            .Replace("}", null)
-                            .Replace('-', '_'),
+                        "ohm_" + sensor.SensorType.ToString().ToLower(),
                         "Metric reported by open hardware sensor",
                         "host", "app", "hardware", "hardware_type", "sensor", "sensor_index")
                     .WithLabels(_localHost, "ohm", sensor.Hardware,
