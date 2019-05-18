@@ -9,13 +9,11 @@ namespace OhmGraphite
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IGiveSensors _collector;
-        private readonly string _localHost;
         private MetricFactory _metrics;
 
-        public PrometheusCollection(IGiveSensors collector, string localHost, CollectorRegistry registry)
+        public PrometheusCollection(IGiveSensors collector, CollectorRegistry registry)
         {
             _collector = collector;
-            _localHost = localHost;
             registry.AddBeforeCollectCallback(UpdateMetrics);
             _metrics = Metrics.WithCustomRegistry(registry);
         }
@@ -32,8 +30,8 @@ namespace OhmGraphite
                 _metrics.CreateGauge(
                         "ohm_" + sensor.SensorType.ToString().ToLower(),
                         "Metric reported by open hardware sensor",
-                        "host", "app", "hardware", "hardware_type", "sensor", "sensor_index")
-                    .WithLabels(_localHost, "ohm", sensor.Hardware,
+                        "hardware", "hardware_type", "sensor", "sensor_index")
+                    .WithLabels(sensor.Hardware,
                         Enum.GetName(typeof(HardwareType), sensor.HardwareType),
                         sensor.Sensor,
                         sensor.SensorIndex.ToString())

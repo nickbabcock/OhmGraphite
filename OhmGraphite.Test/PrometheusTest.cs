@@ -12,7 +12,7 @@ namespace OhmGraphite.Test
         public async void PrometheusTestServer()
         {
             var collector = new TestSensorCreator();
-            var prometheusCollection = new PrometheusCollection(collector, "my-pc", Metrics.DefaultRegistry);
+            var prometheusCollection = new PrometheusCollection(collector, Metrics.DefaultRegistry);
             var mserver = new MetricServer("localhost", 21881);
             var server = new PrometheusServer(mserver, collector);
             try
@@ -22,7 +22,7 @@ namespace OhmGraphite.Test
                 var resp = await client.GetAsync("http://localhost:21881/metrics");
                 Assert.True(resp.IsSuccessStatusCode);
                 var content = await resp.Content.ReadAsStringAsync();
-                Assert.Contains("# HELP intelcpu_0_temperature_0 Metric reported by open hardware sensor", content);
+                Assert.Contains("# HELP ohm_temperature Metric reported by open hardware sensor", content);
             }
             finally
             {
@@ -34,7 +34,7 @@ namespace OhmGraphite.Test
         public async void PrometheusNicGuid()
         {
             var collector = new NicGuidSensor();
-            var prometheusCollection = new PrometheusCollection(collector, "my-pc", Metrics.DefaultRegistry);
+            var prometheusCollection = new PrometheusCollection(collector, Metrics.DefaultRegistry);
             var mserver = new MetricServer("localhost", 21882);
             var server = new PrometheusServer(mserver, collector);
             try
