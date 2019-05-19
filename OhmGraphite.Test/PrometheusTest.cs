@@ -22,7 +22,7 @@ namespace OhmGraphite.Test
                 var resp = await client.GetAsync("http://localhost:21881/metrics");
                 Assert.True(resp.IsSuccessStatusCode);
                 var content = await resp.Content.ReadAsStringAsync();
-                Assert.Contains("# HELP ohm_temperature Metric reported by open hardware sensor", content);
+                Assert.Contains("# HELP ohm_cpu_temperature_celsius Metric reported by open hardware sensor", content);
             }
             finally
             {
