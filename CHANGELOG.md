@@ -1,5 +1,15 @@
 ## TBD
 
+* **Breaking Change for Prometheus**: OhmGraphite has not been following [Prometheus best practices](https://prometheus.io/docs/practices/naming/) when it came to naming metrics. Metric names now look like "ohm_cpu_celsius" with only the "hardware" and "sensor" labels remaining. The following changes have been implemented:
+  * `app` metric label has been removed in favor of a metric namespace prefix of "ohm"
+  * `hardware_type` metric label has been removed in favor of encapsulating it into the metric name (eg: "cpu", "nic").
+  * `sensor_index` metric label has been removed. This label proved superfluous as every sensor can be uniquely identified by it's name.
+  * `host` metric label has been removed: This falls in line with other prometheus exporters like node_exporter, which does not export the host as a label.
+  * base unit included in metric name: (like "bytes", "revolutions per minute", etc)
+  * The value that is exported to Prometheus is now converted into base units, such as converting GB (2^30) and MB (2^20) into bytes, MHz into hertz. Other units are unaffected. There are two candidates for this conversion that were unaffected:
+    - Flow rate is still liters per hour, even though liters per second may seem more "base-unity", but grafana contained the former but not the latter.
+    - Fan speed remains revolutions per minute, as I'm unaware of any manufacturer reporting fan speed as revolutions per second.
+  * Side note: OhmGraphite now follows the [official data model naming scheme](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels) by replacing invalid characters with an underscore. 
 * Only allow non-NaN and finite sensor values to be reported. Previously, NaN and infinite values could be reported which may cause downstream issues. For instance, Postgres / Prometheus will accept NaN values but Grafana will error out with a body json marshal error. These unexpected values should be quite rare, as out of the 25 million data points over the past week, 14 of those over 2 seconds were reported as NaN. It only takes a single NaN value to ruin a dashboard, so it's been fixed, and if a NaN value were to occur again, the sensor id would be logged under `DEBUG` before being discarded.
 
 ## 0.8.3 - 2019-04-08
