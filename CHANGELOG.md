@@ -1,4 +1,4 @@
-## TBD
+## 0.9.0 - 2019-06-09
 
 * **Breaking Change for Prometheus**: OhmGraphite has not been following [Prometheus best practices](https://prometheus.io/docs/practices/naming/) when it came to naming metrics. Metric names now look like "ohm_cpu_celsius" with only the "hardware" and "sensor" labels remaining. The following changes have been implemented:
   * `app` metric label has been removed in favor of a metric namespace prefix of "ohm"
@@ -11,6 +11,12 @@
     - Fan speed remains revolutions per minute, as I'm unaware of any manufacturer reporting fan speed as revolutions per second.
   * Side note: OhmGraphite now follows the [official data model naming scheme](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels) by replacing invalid characters with an underscore. 
 * Only allow non-NaN and finite sensor values to be reported. Previously, NaN and infinite values could be reported which may cause downstream issues. For instance, Postgres / Prometheus will accept NaN values but Grafana will error out with a body json marshal error. These unexpected values should be quite rare, as out of the 25 million data points over the past week, 14 of those over 2 seconds were reported as NaN. It only takes a single NaN value to ruin a dashboard, so it's been fixed, and if a NaN value were to occur again, the sensor id would be logged under `DEBUG` before being discarded.
+* Update LibreHardwareMonitor to [713fd30](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/713fd3071b48c54cfd7d61263c77c0b9df5224cf)
+  * Fix: Nvidia power usage monitor via NVML (you'll need to install Nvidia's CUDA toolkit)
+* Internal dependency update (no behavior changes should be expected):
+  * Bump prometheus-net from 3.1.0 to 3.1.3
+  * Bump Npgsql from 4.0.5 to 4.0.7
+  * Bump NLog.Config from 4.6.2 to 4.6.4
 
 ## 0.8.3 - 2019-04-08
 
