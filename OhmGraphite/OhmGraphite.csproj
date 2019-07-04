@@ -34,7 +34,7 @@
     <PackageReference Include="prometheus-net" Version="3.1.4" />
     <PackageReference Include="Resourcer.Fody" Version="1.7.3" />
     <PackageReference Include="TopShelf" Version="4.2.1" />
-    <PackageReference Include="Topshelf.NLog" Version="4.2.0" />
+    <PackageReference Include="Topshelf.NLog" Version="4.2.1" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.0" />
     <PackageReference Include="MSBuildTasks" Version="1.5.0.235" />
   </ItemGroup>
