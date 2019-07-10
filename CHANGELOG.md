@@ -1,3 +1,11 @@
+## 0.9.1 - 2019-07-10
+
+* Update LibreHardwareMonitor to [14021762](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/1402176289d2c2d70f332ba10a34e1fcc0aaccbc):
+  * More CPU, Mainboard, and GPU sensors
+* Internal dependency update (no behavior changes should be expected):
+  * Bump TopShelf from 4.2.0 to 4.2.1 
+  * Bump prometheus-net from 3.1.3 to 3.1.4 
+
 ## 0.9.0 - 2019-06-09
 
 * **Breaking Change for Prometheus**: OhmGraphite has not been following [Prometheus best practices](https://prometheus.io/docs/practices/naming/) when it came to naming metrics. Metric names now look like "ohm_cpu_celsius" with only the "hardware" and "sensor" labels remaining. The following changes have been implemented:
