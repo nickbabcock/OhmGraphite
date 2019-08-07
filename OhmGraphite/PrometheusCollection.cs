@@ -67,9 +67,11 @@ namespace OhmGraphite
                     case SensorType.Throughput: // B/s
                         return "bytes_per_second";
                     case SensorType.Load: // %
+                        return "load_percent";
                     case SensorType.Control: // %
+                        return "control_percent";
                     case SensorType.Level: // %
-                        return "percent";
+                        return "level_percent";
                     case SensorType.Fan: // RPM
                         return "revolutions_per_minute";
                     case SensorType.Flow: // L/h
