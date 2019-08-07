@@ -119,6 +119,14 @@ The Prometheus will create a server that listens on `prometheus_port`. The Prome
 </configuration>
 ```
 
+If the machine accessing the OhmGraphite metrics is not the same machine hosting the metrics, one may have to enable the port through the windows firewall.
+
+Here's one example of enabling it in powershell, though note that there are further ways to configure the firewall for additional tightening of access (ie: only allow certain IPs to connect).
+
+```powershell
+New-NetFirewallRule -DisplayName "Allow port 4445 for OhmGraphite" -Direction Inbound -LocalPort 4445 -Protocol TCP -Action Allow
+```
+
 ### TimescaleDB Configuration
 
 One can configure OhmGraphite to send to Timescale with the following (configuration values will differ depending on your environment):
@@ -192,3 +200,25 @@ Currenlty the schema and the columns are not configurable.
 - Stop OhmGraphite service `.\OhmGraphite.exe stop`
 - Run uninstall command `.\OhmGraphite.exe uninstall`
 - Remove files
+
+### Debugging Tips
+
+Something wrong? Try these steps
+
+- Enter the directory where OhmGraphite is installed
+- Examine `OhmGraphite.log`, do you see any lines with an "ERROR"? Fix the error.
+- If not, enable more verbose logging in `NLog.config`. Change the following line
+
+```xml
+    <logger name="*" minlevel="Info" writeTo="file" />
+```
+
+to
+
+```xml
+    <logger name="*" minlevel="Debug" writeTo="file" />
+```
+
+- Restart OhmGraphite for the logging changes to take effect
+- At the bottom of `OhmGraphite.log` `DEBUG` statements should be present informing one of all the hardware sensors detected and whenever metrics are pushed somewhere.
+- Stumped? Open an issue with relevant parts of the log included.
