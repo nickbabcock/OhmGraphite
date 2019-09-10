@@ -25,4 +25,4 @@ services:
       - timescale
       - graphite
       - influx
-    command: ./ci/wait-for-it.sh timescale:5432 -- ./ci/wait-for-it.sh graphite:2003 -- ./ci/wait-for-it.sh graphite:8080 -- ./ci/wait-for-it.sh graphite:80 -- mono /root/.nuget/packages/xunit.runner.console/2.4.1/tools/net461/xunit.console.exe OhmGraphite.Test/bin/Debug/net461/OhmGraphite.Test.dll
+    command: ./ci/wait-for-it.sh timescale:5432 -- ./ci/wait-for-it.sh influx:8086 -- ./ci/wait-for-it.sh graphite:2003 -- ./ci/wait-for-it.sh graphite:8080 -- ./ci/wait-for-it.sh graphite:80 -- mono /root/.nuget/packages/xunit.runner.console/2.4.1/tools/net461/xunit.console.exe OhmGraphite.Test/bin/Debug/net461/OhmGraphite.Test.dll
