@@ -41,9 +41,11 @@ I use this every day to create beautiful dashboards. Keep in mind, Open Hardware
 
 ### Hostname Resolution
 
-When OhmGraphite sends metrics to the desired sink, it includes the computers hostname for additional context to allow scenarios where one has a grafana template variable based on hostname. There two possible ways for OhmGraphite to resolved the hostname: NetBIOS (the default) and DNS. It's hard to say exactly how a machine's NetBIOS name and internet host name will differ, but to give an example, a NetBIOS name of `TINI` can have a host name of `Tini`.
+When OhmGraphite sends metrics to the desired sink, it includes the computers hostname for additional context to allow scenarios where one has a grafana template variable based on hostname. There are three possible ways for OhmGraphite to resolve the hostname: NetBIOS (the default), DNS, and a static user-configured name.
 
-To switch to DNS hostname resolution, update the configuration to include `name_lookup`
+> NOTE: It's hard to say exactly how a machine's NetBIOS name and internet host name will differ, but to give an example, a NetBIOS name of `TINI` can have a host name of `Tini`.
+
+To switch to DNS hostname resolution, update the configuration to include `name_lookup`, else any other value will be assumed to be a custom static name.
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>

@@ -85,5 +85,16 @@ namespace OhmGraphite.Test
             Assert.Equal("Host=vm-ubuntu;Username=ohm;Password=123456", results.Timescale.Connection);
             Assert.False(results.Timescale.SetupTable);
         }
+
+        [Fact]
+        public void CanParseStaticResolutionName()
+        {
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/static-name.config" };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            var customConfig = new CustomConfig(config);
+            var results = MetricConfig.ParseAppSettings(customConfig);
+
+            Assert.Equal("my-cool-machine", results.LookupName());
+        }
     }
 }
