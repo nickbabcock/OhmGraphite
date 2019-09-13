@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
@@ -25,6 +25,7 @@
     <None Include="..\assets\influx.config" Link="assets/influx.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\default.config" Link="assets/default.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\graphite.config" Link="assets/graphite.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\static-name.config" Link="assets/static-name.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

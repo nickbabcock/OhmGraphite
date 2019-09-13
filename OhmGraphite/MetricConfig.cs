@@ -33,17 +33,7 @@ namespace OhmGraphite
 
             var interval = TimeSpan.FromSeconds(seconds);
 
-            var lookup = config["name_lookup"] ?? "netbios";
-            INameResolution nameLookup;
-            switch (lookup.ToLowerInvariant())
-            {
-                case "dns":
-                    nameLookup = new DnsResolution();
-                    break;
-                default:
-                    nameLookup = new NetBiosResolution();
-                    break;
-            }
+            INameResolution nameLookup = NameLookup(config["name_lookup"] ?? "netbios");
 
             var type = config["type"] ?? "graphite";
             GraphiteConfig gconfig = null;
@@ -70,6 +60,19 @@ namespace OhmGraphite
             }
 
             return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale);
+        }
+
+        private static INameResolution NameLookup(string lookup)
+        {
+            switch (lookup.ToLowerInvariant())
+            {
+                case "dns":
+                    return new DnsResolution();
+                case "netbios":
+                    return new NetBiosResolution();
+                default:
+                    return new StaticResolution(lookup);
+            }
         }
     }
 }
