@@ -15,9 +15,9 @@ namespace OhmGraphite.Test
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21881, registry: registry);
             using (var server = new PrometheusServer(mserver, collector))
+            using (var client = new HttpClient())
             {
                 server.Start();
-                var client = new HttpClient();
                 var resp = await client.GetAsync("http://localhost:21881/metrics");
                 Assert.True(resp.IsSuccessStatusCode);
                 var content = await resp.Content.ReadAsStringAsync();
@@ -32,9 +32,9 @@ namespace OhmGraphite.Test
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21882, registry: registry);
             using (var server = new PrometheusServer(mserver, collector))
+            using (var client = new HttpClient())
             {
                 server.Start();
-                var client = new HttpClient();
                 var resp = await client.GetAsync("http://localhost:21882/metrics");
                 Assert.True(resp.IsSuccessStatusCode);
                 var content = await resp.Content.ReadAsStringAsync();
