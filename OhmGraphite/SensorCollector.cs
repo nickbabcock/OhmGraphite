@@ -120,12 +120,17 @@ namespace OhmGraphite
             }
             else
             {
+                var hwInstance = sensor.Hardware.Identifier.ToString();
+                var ind = hwInstance.LastIndexOf('/');
+                hwInstance = hwInstance.Substring(ind + 1);
+
                 yield return new ReportedValue(id,
                     sensor.Name,
                     sensor.Value.Value,
                     sensor.SensorType,
                     sensor.Hardware.Name,
                     sensor.Hardware.HardwareType,
+                    hwInstance,
                     sensor.Index);
             }
         }

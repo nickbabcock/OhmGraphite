@@ -100,8 +100,8 @@ namespace OhmGraphite
                 var (unit, value) = BaseReport(sensor);
                 var hw = Enum.GetName(typeof(HardwareType), sensor.HardwareType)?.ToLowerInvariant();
                 var name = Rx.Replace($"ohm_{hw}_{unit}", "_");
-                _metrics.CreateGauge(name, "Metric reported by open hardware sensor", "hardware", "sensor")
-                    .WithLabels(sensor.Hardware, sensor.Sensor)
+                _metrics.CreateGauge(name, "Metric reported by open hardware sensor", "hardware", "sensor", "hw_instance")
+                    .WithLabels(sensor.Hardware, sensor.Sensor, sensor.HardwareInstance)
                     .Set(value);
             }
         }
