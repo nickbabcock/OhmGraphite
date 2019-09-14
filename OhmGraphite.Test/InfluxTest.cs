@@ -11,12 +11,12 @@ namespace OhmGraphite.Test
         public async void CanInsertIntoInflux()
         {
             var config = new InfluxConfig(new Uri("http://influx:8086"), "mydb", "my_user", "my_pass");
-            var writer = new InfluxWriter(config, "my-pc");
-            await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
-
-            Thread.Sleep(TimeSpan.FromSeconds(1));
+            using (var writer = new InfluxWriter(config, "my-pc"))
             using (var client = new HttpClient())
             {
+                await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+
                 var resp = await client.GetAsync("http://influx:8086/query?pretty=true&db=mydb&q=SELECT%20*%20FROM%20Temperature");
                 Assert.True(resp.IsSuccessStatusCode);
                 var content = await resp.Content.ReadAsStringAsync();

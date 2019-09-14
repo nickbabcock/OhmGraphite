@@ -60,5 +60,9 @@ namespace OhmGraphite
 
             return new LineProtocolPoint(sensorType, fields, tags, reportTime.ToUniversalTime());
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

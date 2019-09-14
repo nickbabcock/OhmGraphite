@@ -56,6 +56,7 @@ namespace OhmGraphite
         {
             Logger.LogAction("stopping metric timer", () =>
             {
+                _writer?.Dispose();
                 _collector?.Dispose();
                 _timer?.Dispose();
             });
