@@ -10,11 +10,13 @@ namespace OhmGraphite.Test
         public async void CanSetupTimescale()
         {
             const string connStr = "Host=timescale;Username=postgres;Password=123456";
-            var writer = new TimescaleWriter(connStr, true, "my-pc");
             var epoch = new DateTime(2001, 1, 13);
-            await writer.ReportMetrics(epoch, TestSensorCreator.Values());
+
+            using (var writer = new TimescaleWriter(connStr, true, "my-pc"))
             using (var conn = new NpgsqlConnection(connStr))
             {
+                await writer.ReportMetrics(epoch, TestSensorCreator.Values());
+
                 conn.Open();
                 using (var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM ohm_stats", conn))
                 {
@@ -27,13 +29,14 @@ namespace OhmGraphite.Test
         public async void InsertOnlyTimescale()
         {
             const string selectStr = "Host=timescale;Username=postgres;Password=123456;Database=timescale_built";
+            var epoch = new DateTime(2001, 1, 13);
 
             const string connStr = "Host=timescale;Username=ohm;Password=itsohm;Database=timescale_built";
-            var writer = new TimescaleWriter(connStr, false, "my-pc");
-            var epoch = new DateTime(2001, 1, 13);
-            await writer.ReportMetrics(epoch, TestSensorCreator.Values());
+            using (var writer = new TimescaleWriter(connStr, false, "my-pc"))
             using (var conn = new NpgsqlConnection(selectStr))
             {
+                await writer.ReportMetrics(epoch, TestSensorCreator.Values());
+
                 conn.Open();
                 using (var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM ohm_stats", conn))
                 {

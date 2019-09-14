@@ -127,5 +127,10 @@ namespace OhmGraphite
                    $"raw_name={GraphiteEscape(data.Sensor)} " +
                    Invariant($"{data.Value} {epoch:d}");
         }
+
+        public void Dispose()
+        {
+            _client?.Dispose();
+        }
     }
 }

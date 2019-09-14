@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace OhmGraphite
 {
-    public interface IWriteMetrics
+    public interface IWriteMetrics : IDisposable
     {
         Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors);
     }

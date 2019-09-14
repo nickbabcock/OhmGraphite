@@ -153,5 +153,10 @@ namespace OhmGraphite
                    "(time, host, hardware, hardware_type, identifier, sensor, sensor_type, sensor_index, value) VALUES " +
                    columns;
         }
+
+        public void Dispose()
+        {
+            NpgsqlConnection.ClearPool(new NpgsqlConnection(_connStr));
+        }
     }
 }
