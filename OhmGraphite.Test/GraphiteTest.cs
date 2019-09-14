@@ -16,10 +16,12 @@ namespace OhmGraphite.Test
             // wait for carbon to sync to disk
             Thread.Sleep(TimeSpan.FromSeconds(4));
 
-            var client = new HttpClient();
-            var resp = await client.GetAsync("http://graphite/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1");
-            var content = await resp.Content.ReadAsStringAsync();
-            Assert.Contains("ohm.my-pc.intelcpu.0.temperature.cpucore.1", content);
+            using (var client = new HttpClient())
+            {
+                var resp = await client.GetAsync("http://graphite/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1");
+                var content = await resp.Content.ReadAsStringAsync();
+                Assert.Contains("ohm.my-pc.intelcpu.0.temperature.cpucore.1", content);
+            }
         }
 
         [Fact, Trait("Category", "integration")]
@@ -34,12 +36,14 @@ namespace OhmGraphite.Test
             // wait for carbon to sync to disk
             Thread.Sleep(TimeSpan.FromSeconds(4));
 
-            var client = new HttpClient();
-            var resp = await client.GetAsync("http://graphite/render?format=csv&target=seriesByTag('sensor_type=Temperature','hardware_type=CPU')");
-            var content = await resp.Content.ReadAsStringAsync();
-            Assert.Contains("host=my-pc", content);
-            Assert.Contains("app=ohm", content);
-            Assert.Contains("sensor_type=Temperature", content);
+            using (var client = new HttpClient())
+            {
+                var resp = await client.GetAsync("http://graphite/render?format=csv&target=seriesByTag('sensor_type=Temperature','hardware_type=CPU')");
+                var content = await resp.Content.ReadAsStringAsync();
+                Assert.Contains("host=my-pc", content);
+                Assert.Contains("app=ohm", content);
+                Assert.Contains("sensor_type=Temperature", content);
+            }
         }
     }
 }
