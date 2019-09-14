@@ -25,11 +25,11 @@ namespace OhmGraphite
             });
         }
 
-        public void Stop()
+        public void Dispose()
         {
             Logger.LogAction("stopping prometheus server", () =>
             {
-                _collector.Stop();
+                _collector?.Dispose();
                 _server.Stop();
             });
         }

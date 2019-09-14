@@ -14,8 +14,7 @@ namespace OhmGraphite.Test
             var collector = new TestSensorCreator();
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21881, registry: registry);
-            var server = new PrometheusServer(mserver, collector);
-            try
+            using (var server = new PrometheusServer(mserver, collector))
             {
                 server.Start();
                 var client = new HttpClient();
@@ -23,10 +22,6 @@ namespace OhmGraphite.Test
                 Assert.True(resp.IsSuccessStatusCode);
                 var content = await resp.Content.ReadAsStringAsync();
                 Assert.Contains("# HELP ohm_cpu_celsius Metric reported by open hardware sensor", content);
-            }
-            finally
-            {
-                server.Stop();
             }
         }
 
@@ -36,8 +31,7 @@ namespace OhmGraphite.Test
             var collector = new NicGuidSensor();
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21882, registry: registry);
-            var server = new PrometheusServer(mserver, collector);
-            try
+            using (var server = new PrometheusServer(mserver, collector))
             {
                 server.Start();
                 var client = new HttpClient();
@@ -46,10 +40,19 @@ namespace OhmGraphite.Test
                 var content = await resp.Content.ReadAsStringAsync();
                 Assert.Contains("Bluetooth Network Connection 2", content);
             }
-            finally
-            {
-                server.Stop();
-            }
+        }
+
+        [Fact]
+        public void PrometheusStopServerWithoutStarting()
+        {
+            var collector = new NicGuidSensor();
+            var registry = PrometheusCollection.SetupDefault(collector);
+            var mserver = new MetricServer("localhost", 21883, registry: registry);
+            var server = new PrometheusServer(mserver, collector);
+
+            // Asserting that the following doesn't throw when the server
+            // is disposed before starting
+            server.Dispose();
         }
 
         public class NicGuidSensor : IGiveSensors
@@ -63,7 +66,7 @@ namespace OhmGraphite.Test
             {
             }
 
-            public void Stop()
+            public void Dispose()
             {
             }
         }

@@ -37,7 +37,7 @@ namespace OhmGraphite
 
                     s.ConstructUsing(name => metricsManager);
                     s.WhenStarted(tc => tc.Start());
-                    s.WhenStopped(tc => tc.Stop());
+                    s.WhenStopped(tc => tc.Dispose());
                 });
                 x.UseNLog();
                 x.RunAsLocalSystem();

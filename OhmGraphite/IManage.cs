@@ -1,8 +1,9 @@
-﻿namespace OhmGraphite
+﻿using System;
+
+namespace OhmGraphite
 {
-    public interface IManage
+    public interface IManage : IDisposable
     {
         void Start();
-        void Stop();
     }
 }

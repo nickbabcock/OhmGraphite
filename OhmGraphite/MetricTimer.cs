@@ -31,15 +31,6 @@ namespace OhmGraphite
             });
         }
 
-        public void Stop()
-        {
-            Logger.LogAction("stopping metric timer", () =>
-            {
-                _collector.Stop();
-                _timer.Stop();
-            });
-        }
-
         private async void ReportMetrics(object sender, ElapsedEventArgs e)
         {
             Logger.Debug("Starting to report metrics");
@@ -59,6 +50,15 @@ namespace OhmGraphite
             {
                 Logger.Error(ex, "Unable to send metrics");
             }
+        }
+
+        public void Dispose()
+        {
+            Logger.LogAction("stopping metric timer", () =>
+            {
+                _collector?.Dispose();
+                _timer?.Dispose();
+            });
         }
     }
 }

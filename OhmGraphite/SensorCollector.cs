@@ -40,7 +40,7 @@ namespace OhmGraphite
         }
 
         public void Start() => Open();
-        public void Stop() => Close();
+        public void Dispose() => Close();
 
         private void HardwareAdded(IHardware hardware)
         {
