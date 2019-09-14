@@ -59,7 +59,7 @@ namespace OhmGraphite.Test
         {
             public IEnumerable<ReportedValue> ReadAllSensors()
             {
-                yield return new ReportedValue("/nic/{my-guid}/throughput/7", "Bluetooth Network Connection 2", 1.06f, SensorType.Throughput, "cpu", HardwareType.NIC, 7);
+                yield return new ReportedValue("/nic/{my-guid}/throughput/7", "Bluetooth Network Connection 2", 1.06f, SensorType.Throughput, "cpu", HardwareType.NIC, "{my-guid}", 7);
             }
 
             public void Start()

@@ -10,6 +10,7 @@ namespace OhmGraphite
             SensorType sensorType,
             string hardware,
             HardwareType hardwareType,
+            string hwInstance,
             int sensorIndex)
         {
             Identifier = identifier;
@@ -19,6 +20,7 @@ namespace OhmGraphite
             Hardware = hardware;
             HardwareType = hardwareType;
             SensorIndex = sensorIndex;
+            HardwareInstance = hwInstance;
         }
 
         public string Identifier { get; }
@@ -28,5 +30,7 @@ namespace OhmGraphite
         public string Hardware { get; }
         public HardwareType HardwareType { get; }
         public int SensorIndex { get; }
+        public string HardwareInstance { get; }
+
     }
 }
