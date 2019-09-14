@@ -9,15 +9,23 @@ namespace OhmGraphite
     public class PrometheusCollection
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static readonly Regex rx = new Regex("[^a-zA-Z0-9_:]", RegexOptions.Compiled);
+        private static readonly Regex Rx = new Regex("[^a-zA-Z0-9_:]", RegexOptions.Compiled);
         private readonly IGiveSensors _collector;
-        private MetricFactory _metrics;
+        private readonly MetricFactory _metrics;
 
-        public PrometheusCollection(IGiveSensors collector, CollectorRegistry registry)
+        public PrometheusCollection(IGiveSensors collector, MetricFactory metrics)
         {
             _collector = collector;
-            registry.AddBeforeCollectCallback(UpdateMetrics);
-            _metrics = Metrics.WithCustomRegistry(registry);
+            _metrics = metrics;
+        }
+
+        public static CollectorRegistry SetupDefault(IGiveSensors collector)
+        {
+            var registry = Metrics.DefaultRegistry;
+            var metrics = Metrics.WithCustomRegistry(registry);
+            var prometheusCollection = new PrometheusCollection(collector, metrics);
+            registry.AddBeforeCollectCallback(() => prometheusCollection.UpdateMetrics());
+            return registry;
         }
 
         public void UpdateMetrics()
@@ -25,7 +33,7 @@ namespace OhmGraphite
             Logger.LogAction("prometheus update metrics", PollSensors);
         }
 
-        private (string, double) BaseReport(ReportedValue report)
+        private static (string, double) BaseReport(ReportedValue report)
         {
             // Convert reported value into a base value by converting MB and GB into bytes, etc.
             // Flow rate is still liters per hour, even though liters per second may seem more
@@ -90,8 +98,8 @@ namespace OhmGraphite
             foreach (var sensor in _collector.ReadAllSensors())
             {
                 var (unit, value) = BaseReport(sensor);
-                var hw = Enum.GetName(typeof(HardwareType), sensor.HardwareType).ToLowerInvariant();
-                var name = rx.Replace($"ohm_{hw}_{unit}", "_");
+                var hw = Enum.GetName(typeof(HardwareType), sensor.HardwareType)?.ToLowerInvariant();
+                var name = Rx.Replace($"ohm_{hw}_{unit}", "_");
                 _metrics.CreateGauge(name, "Metric reported by open hardware sensor", "hardware", "sensor")
                     .WithLabels(sensor.Hardware, sensor.Sensor)
                     .Set(value);

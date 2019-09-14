@@ -1,5 +1,4 @@
-﻿
-namespace OhmGraphite
+﻿namespace OhmGraphite
 {
     public class PrometheusConfig
     {

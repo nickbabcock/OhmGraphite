@@ -45,7 +45,7 @@ namespace OhmGraphite
             Logger.Debug("Starting to report metrics");
             try
             {
-                // Every 5 seconds (or superceding interval) we connect to graphite
+                // Every 5 seconds (or superseding interval) we connect to graphite
                 // and poll the hardware. It may be inefficient to open a new connection
                 // every 5 seconds, and there are ways to optimize this, but opening a
                 // new connection is the easiest way to ensure that previous failures

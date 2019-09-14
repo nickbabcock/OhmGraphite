@@ -75,7 +75,7 @@ namespace OhmGraphite
         private static string NormalizedIdentifier(string host, ReportedValue sensor)
         {
             // Take the sensor's identifier (eg. /nvidiagpu/0/load/0)
-            // and tranform into nvidiagpu.0.load.<name> where <name>
+            // and transform into nvidiagpu.0.load.<name> where <name>
             // is the name of the sensor lowercased with spaces removed.
             // A name like "GPU Core" is turned into "gpucore". Also
             // since some names are like "cpucore#2", turn them into
