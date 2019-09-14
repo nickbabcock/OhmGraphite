@@ -12,8 +12,8 @@ namespace OhmGraphite.Test
         public async void PrometheusTestServer()
         {
             var collector = new TestSensorCreator();
-            _ = new PrometheusCollection(collector, Metrics.DefaultRegistry);
-            var mserver = new MetricServer("localhost", 21881);
+            var registry = PrometheusCollection.SetupDefault(collector);
+            var mserver = new MetricServer("localhost", 21881, registry: registry);
             var server = new PrometheusServer(mserver, collector);
             try
             {
@@ -34,8 +34,8 @@ namespace OhmGraphite.Test
         public async void PrometheusNicGuid()
         {
             var collector = new NicGuidSensor();
-            _ = new PrometheusCollection(collector, Metrics.DefaultRegistry);
-            var mserver = new MetricServer("localhost", 21882);
+            var registry = PrometheusCollection.SetupDefault(collector);
+            var mserver = new MetricServer("localhost", 21882, registry: registry);
             var server = new PrometheusServer(mserver, collector);
             try
             {

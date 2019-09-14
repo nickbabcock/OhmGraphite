@@ -66,7 +66,7 @@ namespace OhmGraphite
                         //
                         // OhmGraphite could never recover because Npgsql seemed adamant that the
                         // prepared statement existed. And since Npgsql persists prepared statements in
-                        // it's connection pool all future connections are "poisioned" with this
+                        // it's connection pool all future connections are "poisoned" with this
                         // prepared statement. The best solution appears to be unpreparing everything on
                         // db failure. For our use case, recreating these prepared statements is a small
                         // price to pay even if preparation is redundant.

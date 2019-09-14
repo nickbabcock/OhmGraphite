@@ -1,5 +1,4 @@
-﻿using System;
-using NLog;
+﻿using NLog;
 using OpenHardwareMonitor.Hardware;
 using Prometheus;
 using Topshelf;
@@ -10,7 +9,7 @@ namespace OhmGraphite
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             HostFactory.Run(x =>
             {
@@ -67,8 +66,8 @@ namespace OhmGraphite
             else if (config.Prometheus != null)
             {
                 Logger.Info($"Prometheus port: {config.Prometheus.Port}");
-                var prometheusCollection = new PrometheusCollection(collector, Metrics.DefaultRegistry);
-                var server = new MetricServer(config.Prometheus.Host, config.Prometheus.Port);
+                var registry = PrometheusCollection.SetupDefault(collector);
+                var server = new MetricServer(config.Prometheus.Host, config.Prometheus.Port, registry: registry);
                 return new PrometheusServer(server, collector);
             }
             else if (config.Timescale != null)
