@@ -1,3 +1,19 @@
+## 0.10.0 - 2019-09-14
+
+* **Breaking Change for Prometheus**:
+  * Sub categorize percent metrics to prevent overriding values. For instance, `ohm_gpunvidia_percent` has been split into `ohm_gpunvidia_control_percent` and `ohm_gpunvidia_load_percent`.
+  * Include a "hw_instance" (hardware_instance) label to prometheus metrics. In a multi cpu, gpu, hdd system where the name of the hardware would be the same (ie: two graphics cards of "NVIDIA GeForce GTX 1070"), the metric values would clobber each other. The fix is to transmit the hardware's identifier as a metric label. These identifiers will often be an number representing the index of hardware (eg: "0" and "1"). Nics will use their guid's. I'm hoping future improvements could transmit the hard disk's mount point (eg: "C:\", "D:\"), as indices can non-intuitive. Other metric reporters should not be susceptible to this issue as the sensor's identifier is transmitted as well, so no breaking change for them now, but if the hardware identifier notion proves fruitful then these changes will be ported to the other metric reporters.
+* Allow one to assign a static hostname instead of DNS name or NetBIOS lookup. This is accomplished by setting an arbitrary value to `name_lookup` in the config (eg: `<add key="name_lookup" value="my-cool-machine" />`)
+* Update LibreHardwareMonitor to [63dcfe9](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/63dcfe94b58c60cdf203f972fdb3d76f7babeeaa):
+  * Much improved list of supported NVMe drives!
+  * Support for cores / threads greater than 254
+  * Update for Ryzen 3000
+  * Add support for MSI B450-A Pro
+  * Add missing ATI GPU temperatures
+* Internal dependency bump:
+  * Bump NLog.Config from 4.6.5 to 4.6.7
+  * Bump Npgsql from 4.0.7 to 4.0.10
+
 ## 0.9.1 - 2019-07-10
 
 * Update LibreHardwareMonitor to [14021762](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/1402176289d2c2d70f332ba10a34e1fcc0aaccbc):
