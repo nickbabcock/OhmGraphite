@@ -18,7 +18,7 @@ namespace OhmGraphite.Test
         {
         }
 
-        public void Stop()
+        public void Dispose()
         {
         }
     }
