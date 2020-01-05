@@ -127,9 +127,9 @@ namespace OhmGraphite
                 yield return new ReportedValue(id,
                     sensor.Name,
                     sensor.Value.Value,
-                    sensor.SensorType,
+                    sensor.SensorType.ToOwnSensor(),
                     sensor.Hardware.Name,
-                    sensor.Hardware.HardwareType,
+                    sensor.Hardware.HardwareType.ToOwnHardware(),
                     hwInstance,
                     sensor.Index);
             }
