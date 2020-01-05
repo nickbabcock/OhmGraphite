@@ -1,4 +1,4 @@
-﻿namespace OhmGraphite
+namespace OhmGraphite
 {
     public class ReportedValue
     {

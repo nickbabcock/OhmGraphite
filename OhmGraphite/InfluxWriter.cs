@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using InfluxDB.LineProtocol.Client;
 using InfluxDB.LineProtocol.Payload;
 using NLog;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 
 namespace OhmGraphite
 {

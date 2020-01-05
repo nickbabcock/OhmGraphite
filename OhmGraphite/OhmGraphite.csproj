@@ -38,12 +38,9 @@
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.0" />
     <PackageReference Include="MSBuildTasks" Version="1.5.0.235" />
   </ItemGroup>
+
   <ItemGroup>
-    <!-- May need to add in "AdditionalProperties="TargetFramework=net461"" or something
-         like that in the future as errors arising from Hidl library about not being
-         compatible with netstandard 2.0 is annoying (but doesn't break the build).
-         For inspiration, see: https://stackoverflow.com/a/48530388/433785 -->
-    <ProjectReference Include="..\LibreHardwareMonitor\OpenHardwareMonitorLib.csproj" />
+    <ProjectReference Include="..\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

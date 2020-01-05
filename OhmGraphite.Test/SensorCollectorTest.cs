@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using Xunit;
 
 namespace OhmGraphite.Test
@@ -17,10 +17,10 @@ namespace OhmGraphite.Test
                 collector.Open();
                 var unused = collector.ReadAllSensors().Count();
 
-                computer.CPUEnabled = true;
-                computer.MainboardEnabled = true;
-                computer.HDDEnabled = true;
-                computer.RAMEnabled = true;
+                computer.IsCpuEnabled = true;
+                computer.IsMotherboardEnabled = true;
+                computer.IsStorageEnabled = true;
+                computer.IsMemoryEnabled = true;
 
                 var addedCount = collector.ReadAllSensors().Count();
 
@@ -30,10 +30,10 @@ namespace OhmGraphite.Test
                     return;
                 }
 
-                computer.CPUEnabled = false;
-                computer.MainboardEnabled = false;
-                computer.HDDEnabled = false;
-                computer.RAMEnabled = false;
+                computer.IsCpuEnabled = false;
+                computer.IsMotherboardEnabled = false;
+                computer.IsStorageEnabled = false;
+                computer.IsMemoryEnabled = false;
 
                 var removedCount = collector.ReadAllSensors().Count();
                 Assert.True(addedCount > removedCount, "addedCount > removedCount");
