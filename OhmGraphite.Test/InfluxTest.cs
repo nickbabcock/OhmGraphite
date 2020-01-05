@@ -14,13 +14,29 @@ namespace OhmGraphite.Test
             using (var writer = new InfluxWriter(config, "my-pc"))
             using (var client = new HttpClient())
             {
-                await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
-                Thread.Sleep(TimeSpan.FromSeconds(1));
+                for (int attempts = 0; ; attempts++)
+                {
+                    try
+                    {
+                        await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
 
-                var resp = await client.GetAsync("http://influx:8086/query?pretty=true&db=mydb&q=SELECT%20*%20FROM%20Temperature");
-                Assert.True(resp.IsSuccessStatusCode);
-                var content = await resp.Content.ReadAsStringAsync();
-                Assert.Contains("/intelcpu/0/temperature/0", content);
+                        var resp = await client.GetAsync(
+                            "http://influx:8086/query?pretty=true&db=mydb&q=SELECT%20*%20FROM%20Temperature");
+                        Assert.True(resp.IsSuccessStatusCode);
+                        var content = await resp.Content.ReadAsStringAsync();
+                        Assert.Contains("/intelcpu/0/temperature/0", content);
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        if (attempts >= 10)
+                        {
+                            throw;
+                        }
+
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                    }
+                }
             }
         }
     }
