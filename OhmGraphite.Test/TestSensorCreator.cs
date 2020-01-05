@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using OpenHardwareMonitor.Hardware;
 
 namespace OhmGraphite.Test
 {

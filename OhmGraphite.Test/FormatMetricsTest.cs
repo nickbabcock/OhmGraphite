@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using OpenHardwareMonitor.Hardware;
 using Xunit;
 
 namespace OhmGraphite.Test
