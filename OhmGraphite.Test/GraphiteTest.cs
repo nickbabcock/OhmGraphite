@@ -13,15 +13,27 @@ namespace OhmGraphite.Test
             using (var writer = new GraphiteWriter("graphite", 2003, "my-pc", tags: false))
             using (var client = new HttpClient())
             {
-                await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
-
-                // wait for carbon to sync to disk
-                Thread.Sleep(TimeSpan.FromSeconds(4));
-
+                for (int attempts = 0; ; attempts++)
                 {
-                    var resp = await client.GetAsync("http://graphite/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1");
-                    var content = await resp.Content.ReadAsStringAsync();
-                    Assert.Contains("ohm.my-pc.intelcpu.0.temperature.cpucore.1", content);
+                    try
+                    {
+                        await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
+
+                        var resp = await client.GetAsync(
+                            "http://graphite/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1");
+                        var content = await resp.Content.ReadAsStringAsync();
+                        Assert.Contains("ohm.my-pc.intelcpu.0.temperature.cpucore.1", content);
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        if (attempts >= 10)
+                        {
+                            throw;
+                        }
+
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                    }
                 }
             }
 
@@ -35,19 +47,29 @@ namespace OhmGraphite.Test
 
             using (var writer = new GraphiteWriter("graphite", 2003, "my-pc", tags: true))
             using (var client = new HttpClient())
-
             {
-                await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
-
-                // wait for carbon to sync to disk
-                Thread.Sleep(TimeSpan.FromSeconds(4));
-
+                for (int attempts = 0; ; attempts++)
                 {
-                    var resp = await client.GetAsync("http://graphite/render?format=csv&target=seriesByTag('sensor_type=Temperature','hardware_type=CPU')");
-                    var content = await resp.Content.ReadAsStringAsync();
-                    Assert.Contains("host=my-pc", content);
-                    Assert.Contains("app=ohm", content);
-                    Assert.Contains("sensor_type=Temperature", content);
+                    try
+                    {
+                        await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
+
+                        var resp = await client.GetAsync("http://graphite/render?format=csv&target=seriesByTag('sensor_type=Temperature','hardware_type=CPU')");
+                        var content = await resp.Content.ReadAsStringAsync();
+                        Assert.Contains("host=my-pc", content);
+                        Assert.Contains("app=ohm", content);
+                        Assert.Contains("sensor_type=Temperature", content);
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        if (attempts >= 10)
+                        {
+                            throw;
+                        }
+
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                    }
                 }
             }
         }
