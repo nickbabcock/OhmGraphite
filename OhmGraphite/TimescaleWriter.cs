@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using NLog;
 using Npgsql;
 using NpgsqlTypes;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 
 namespace OhmGraphite
 {

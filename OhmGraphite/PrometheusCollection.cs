@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using NLog;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using Prometheus;
 
 namespace OhmGraphite

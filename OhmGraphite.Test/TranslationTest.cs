@@ -8,20 +8,20 @@ namespace OhmGraphite.Test
         [Fact]
         public void TranslateAllSensorTypes()
         {
-            var values = Enum.GetValues(typeof(OpenHardwareMonitor.Hardware.SensorType));
+            var values = Enum.GetValues(typeof(LibreHardwareMonitor.Hardware.SensorType));
             foreach (var value in values)
             {
-                Assert.IsType<SensorType>(((OpenHardwareMonitor.Hardware.SensorType)value).ToOwnSensor());
+                Assert.IsType<SensorType>(((LibreHardwareMonitor.Hardware.SensorType)value).ToOwnSensor());
             }
         }
 
         [Fact]
         public void TranslateAllHardwareTypes()
         {
-            var values = Enum.GetValues(typeof(OpenHardwareMonitor.Hardware.HardwareType));
+            var values = Enum.GetValues(typeof(LibreHardwareMonitor.Hardware.HardwareType));
             foreach (var value in values)
             {
-                Assert.IsType<HardwareType>(((OpenHardwareMonitor.Hardware.HardwareType)value).ToOwnHardware());
+                Assert.IsType<HardwareType>(((LibreHardwareMonitor.Hardware.HardwareType)value).ToOwnHardware());
             }
         }
     }

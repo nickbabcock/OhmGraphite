@@ -1,5 +1,5 @@
 ﻿using NLog;
-using OpenHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware;
 using Prometheus;
 using Topshelf;
 
@@ -19,15 +19,14 @@ namespace OhmGraphite
                     // to send to graphite
                     var computer = new Computer
                     {
-                        GPUEnabled = true,
-                        MainboardEnabled = true,
-                        CPUEnabled = true,
-                        RAMEnabled = true,
-                        FanControllerEnabled = true,
-                        HDDEnabled = true,
-                        NICEnabled = true
+                        IsGpuEnabled = true,
+                        IsMotherboardEnabled = true,
+                        IsCpuEnabled = true,
+                        IsMemoryEnabled = true,
+                        IsNetworkEnabled = true,
+                        IsStorageEnabled = true,
+                        IsControllerEnabled = true
                     };
-
                     var collector = new SensorCollector(computer);
 
                     // We need to know where the graphite server lives and how often
