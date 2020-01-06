@@ -1,3 +1,32 @@
+## 0.11.0 - 2020-01-06
+
+Big update to the underlying LibreHardwareMonitor library, I've tried to
+ensure that backwards compatibility is maintained in respect to the
+metric names that are generated; however, there some breakages may slip
+through. For instance, I believe that the CPU DRAM power sensor for
+intel chips have been relabed to "CPU Memory", so one should double
+check and adjust their dashboards as needed.
+
+Other changes to LibreHardwareMonitor:
+
+- Add SoC voltage for Ryzen 2
+- Add support for AMD / ATI rx5700 GPUs
+- Fix Ryzen temperature offsets
+- Add motherboard: B350 Gaming Plus
+- Add motherboard: X470 AORUS GAMING 7 WIFI-CF
+- Add motherboard: ITE IT8792E
+- Add liquid + plx temperatures and power usage for AMD / ATI GPUs.
+- Bugfix for Asrock Pro / Steel Legend B450 motherboards
+- Add detection for additional Intel architectures:
+  - Goldmont
+  - Goldmont Plus
+  - Cannon Lake
+  - Ice Lake
+  - Tiger Lake
+  - Tremont
+- Add basic support for Aquacomputer's MPS (USB high flow)
+- Discard out of range temperatures for NVMe drives (-1000, 1000)
+
 ## 0.10.0 - 2019-09-14
 
 * **Breaking Change for Prometheus**:
