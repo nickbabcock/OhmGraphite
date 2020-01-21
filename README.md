@@ -56,6 +56,13 @@ To switch to DNS hostname resolution, update the configuration to include `name_
 </configuration>
 ```
 
+### Grafana Configuration
+
+While not necessary, there are dashboards tailored to OhmGraphite that one can use in Grafana to jump start their own dashboards:
+
+- [Prometheus](https://grafana.com/grafana/dashboards/11587)
+- [Influxdb (User submitted)](https://github.com/nickbabcock/OhmGraphite/blob/30ce8d09d465aa492990013286a7283b331a744a/dashboard-example.json)
+
 ### Graphite Configuration
 
 The config below polls our hardware every `5` seconds and sends the results to a graphite server listening on `localhost:2003`.
