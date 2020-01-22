@@ -48,11 +48,12 @@
       }
     ]
   },
+  "description": "A Graphite dashboard for viewing sensor data exported by OhmGraphite",
   "editable": true,
-  "gnetId": null,
+  "gnetId": 11591,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1579610297784,
+  "iteration": 1579696621028,
   "links": [],
   "panels": [
     {
@@ -328,7 +329,7 @@
       "targets": [
         {
           "refId": "A",
-          "target": "aliasByTags(seriesByTag('app=ohm', 'sensor_type=Load', 'hardware_type=CPU', 'host=$instance'), 'raw_name')"
+          "target": "aliasByTags(exclude(seriesByTag('app=ohm', 'sensor_type=Load', 'hardware_type=CPU', 'host=$instance'), 'Total'), 'raw_name')"
         }
       ],
       "thresholds": [],
@@ -1370,7 +1371,7 @@
         {
           "refCount": 0,
           "refId": "A",
-          "target": "aliasByTags(seriesByTag('app=ohm', 'host=$instance', 'sensor_type=Clock', 'hardware_type=$hertz'), 'raw_name')"
+          "target": "aliasByTags(scale(seriesByTag('app=ohm', 'host=$instance', 'sensor_type=Clock', 'hardware_type=$hertz'), 1000000), 'raw_name')"
         }
       ],
       "thresholds": [],
@@ -1618,7 +1619,7 @@
     ]
   },
   "timezone": "",
-  "title": "ohm-graphite",
+  "title": "OhmGraphite",
   "uid": "TBXZunsZk",
-  "version": 13
+  "version": 1
 }
