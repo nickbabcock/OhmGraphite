@@ -33,7 +33,7 @@ I use this every day to create beautiful dashboards. Keep in mind, Open Hardware
 
 - Create a directory that will be the home base for OhmGraphite (I use C:\Apps\OhmGraphite).
 - Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory.
-- Update app configuration (located at `OhmGraphite.exe.config`) using either the Graphite config or InfluxDB config
+- Update app configuration (located at `OhmGraphite.exe.config`). See configs for [Graphite](#graphite-configuration), [InfluxDB](#influxdb-configuration), [Prometheus](#prometheus-configuration), [Timescale / Postgres](#timescaledb-configuration)
 - This config can be updated in the future, but will require a restart of the app for effect.
 - The app can be ran interactively by executing `.\OhmGraphite.exe run`. Executing as administrator will most likely increase the number of sensors found (OhmGraphite will log how many sensors are found).
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
@@ -141,7 +141,7 @@ New-NetFirewallRule -DisplayName "Allow port 4445 for OhmGraphite" -Direction In
 
 ### TimescaleDB Configuration
 
-One can configure OhmGraphite to send to Timescale with the following (configuration values will differ depending on your environment):
+One can configure OhmGraphite to send to Timescale / Postgres with the following (configuration values will differ depending on your environment):
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -154,7 +154,7 @@ One can configure OhmGraphite to send to Timescale with the following (configura
 </configuration>
 ```
 
-By leaving `timescale_setup` to `false` (the default) OhmGraphite will be expecting the following table structure to insert into:
+By leaving `timescale_setup` to `false` (the default) OhmGraphite can insert into any plain Postgres table that follows this table structure:
 
 ```sql
 CREATE TABLE IF NOT EXISTS ohm_stats (
@@ -170,16 +170,14 @@ CREATE TABLE IF NOT EXISTS ohm_stats (
 );
 ```
 
-Then give the `ohm` user appropriate permissions:
+Ensure that the OhmGraphite user that inserts the metrics (`ohm` in our example) has appropriate permissions:
 
 ```sql
 CREATE USER ohm WITH PASSWORD 'xxx';
 GRANT INSERT ON ohm_stats TO ohm;
 ```
 
-In this mode, Postgres is supported.
-
-If `timescale_setup` is `true` then OhmGraphite will create the following schema, so make sure the user connecting has appropriate permissions
+If `timescale_setup` is `true` then OhmGraphite will create the following schema, so make sure Timescale is enabled on the server and the user connecting has appropriate permissions
 
 ```sql
 CREATE TABLE IF NOT EXISTS ohm_stats (
@@ -199,7 +197,7 @@ CREATE INDEX IF NOT EXISTS idx_ohm_host ON ohm_stats (host);
 CREATE INDEX IF NOT EXISTS idx_ohm_identifier ON ohm_stats (identifier);
 ```
 
-Currenlty the schema and the columns are not configurable.
+Currently the schema and the columns are not configurable.
 
 ### Upgrades
 
