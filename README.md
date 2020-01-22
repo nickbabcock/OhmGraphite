@@ -63,6 +63,7 @@ While not necessary, there are dashboards tailored to OhmGraphite that one can u
 - [Prometheus](https://grafana.com/grafana/dashboards/11587)
 - [Graphite](https://grafana.com/grafana/dashboards/11591)
 - [Postgres / Timescale](https://grafana.com/grafana/dashboards/11599)
+- [Influxdb](https://grafana.com/grafana/dashboards/11601)
 - [Influxdb (User submitted)](https://github.com/nickbabcock/OhmGraphite/blob/30ce8d09d465aa492990013286a7283b331a744a/dashboard-example.json)
 
 ### Graphite Configuration
