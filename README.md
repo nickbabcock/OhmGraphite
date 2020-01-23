@@ -118,7 +118,7 @@ Graphite is the default export style, but if you're an InfluxDB user you can cha
 
 ### Prometheus Configuration
 
-The Prometheus will create a server that listens on `prometheus_port`. The Prometheus configuration does not routinely poll the sensor instead it only polls them when a Prometheus server requests data.
+Configuring the Prometheus exporter will create a server that listens on `prometheus_port`. Instead of creating outbound data like the other exporters, OhmGraphite's Prometheus config creates inbound data. OhmGraphite will only poll the hardware sensors when scraped by the Prometheus service.
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -126,14 +126,18 @@ The Prometheus will create a server that listens on `prometheus_port`. The Prome
   <appSettings>
     <add key="type" value="prometheus" />
     <add key="prometheus_port" value="4445" />
+    
+    <!-- This is the host that OhmGraphite listens on.
+         `*` means that it will listen on all interfaces.
+         Consider restricting to a given IP address -->
     <add key="prometheus_host" value="*" />
   </appSettings>
 </configuration>
 ```
 
-If the machine accessing the OhmGraphite metrics is not the same machine hosting the metrics, one may have to enable the port through the windows firewall.
+If the Prometheus service accessing OhmGraphite are not on the same machine, one may have to enable the port through the windows firewall.
 
-Here's one example of enabling it in powershell, though note that there are further ways to configure the firewall for additional tightening of access (ie: only allow certain IPs to connect).
+Here's one example of enabling it in powershell. Note that there are further ways to configure the firewall for additional tightening of access (ie: only allow certain IPs to connect).
 
 ```powershell
 New-NetFirewallRule -DisplayName "Allow port 4445 for OhmGraphite" -Direction Inbound -LocalPort 4445 -Protocol TCP -Action Allow
