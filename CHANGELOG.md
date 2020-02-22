@@ -1,3 +1,36 @@
+## 0.12.0 - 2020-02-22
+
+This is a smaller update to the sensor library: LibreHardwareMonitor, but this
+is still being denoted in OhmGraphite as a minor version bump to communicate
+that metric values may have changed. Here are the changes to the sensor
+library.
+
+- Add AMD Zen 2 CCD temperatures
+- Fix possible exceptions when waking from sleep
+- Capture fan rpm sensors on motherboards even if they are at 0 rpm
+- Support for 7th fan for NCT6797 and NCT6798
+- Support for Asrock X570 Pro4 (NCT6796D-R)
+- Support for X570 AORUS MASTER
+- The "Standby +3.3V" voltage sensor has been renamed "3VSB"
+- Fix swapped sensor readings for Nvidia GPUs in SLI
+
+This had the following effects on a personal dashboard (AMD 2700, gtx 1070, m.2, asrock itx):
+
+- Even though I only have a single fan connected to the mobo (cpu fan), I now see 5 more fans (all set to 0 rpm), so with more exposed sensors, there will be more disk space usage (usually this is a non-issue, but having "useless" sensors take up disk space can be disconcerting)
+- Nonsensical temperatures are no longer reported for my mobo (I had one being reported at -50 degrees)
+- Even though I have a Zen 1 cpu, Core (Tdie) and Core (Tctl) were still combined under Core (Tctl/Tdie)
+
+The only other change for this release is a internal dependency bump to the Postgres / TimecaleDB driver that ensures better stability.
+
+You may have missed it, but there are now starter dashboards for visualizing OhmGraphite data.
+
+- [Prometheus](https://grafana.com/grafana/dashboards/11587)
+- [Graphite](https://grafana.com/grafana/dashboards/11591)
+- [Postgres / Timescale](https://grafana.com/grafana/dashboards/11599)
+- [Influxdb](https://grafana.com/grafana/dashboards/11601)
+
+These are designed to jump start your own dashboard!
+
 ## 0.11.0 - 2020-01-06
 
 Big update to the underlying LibreHardwareMonitor library, I've tried to
@@ -48,8 +81,8 @@ Other changes to LibreHardwareMonitor:
 * Update LibreHardwareMonitor to [14021762](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/1402176289d2c2d70f332ba10a34e1fcc0aaccbc):
   * More CPU, Mainboard, and GPU sensors
 * Internal dependency update (no behavior changes should be expected):
-  * Bump TopShelf from 4.2.0 to 4.2.1 
-  * Bump prometheus-net from 3.1.3 to 3.1.4 
+  * Bump TopShelf from 4.2.0 to 4.2.1
+  * Bump prometheus-net from 3.1.3 to 3.1.4
 
 ## 0.9.0 - 2019-06-09
 
@@ -62,7 +95,7 @@ Other changes to LibreHardwareMonitor:
   * The value that is exported to Prometheus is now converted into base units, such as converting GB (2^30) and MB (2^20) into bytes, MHz into hertz. Other units are unaffected. There are two candidates for this conversion that were unaffected:
     - Flow rate is still liters per hour, even though liters per second may seem more "base-unity", but grafana contained the former but not the latter.
     - Fan speed remains revolutions per minute, as I'm unaware of any manufacturer reporting fan speed as revolutions per second.
-  * Side note: OhmGraphite now follows the [official data model naming scheme](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels) by replacing invalid characters with an underscore. 
+  * Side note: OhmGraphite now follows the [official data model naming scheme](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels) by replacing invalid characters with an underscore.
 * Only allow non-NaN and finite sensor values to be reported. Previously, NaN and infinite values could be reported which may cause downstream issues. For instance, Postgres / Prometheus will accept NaN values but Grafana will error out with a body json marshal error. These unexpected values should be quite rare, as out of the 25 million data points over the past week, 14 of those over 2 seconds were reported as NaN. It only takes a single NaN value to ruin a dashboard, so it's been fixed, and if a NaN value were to occur again, the sensor id would be logged under `DEBUG` before being discarded.
 * Update LibreHardwareMonitor to [713fd30](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/713fd3071b48c54cfd7d61263c77c0b9df5224cf)
   * Fix: Nvidia power usage monitor via NVML (you'll need to install Nvidia's CUDA toolkit)
