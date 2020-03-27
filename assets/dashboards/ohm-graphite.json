@@ -946,7 +946,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$volts Temperatures",
+      "title": "$volts Volts",
       "tooltip": {
         "shared": true,
         "sort": 0,

@@ -1442,7 +1442,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$temperature Wattage",
+      "title": "$temperature Temperatures",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1604,7 +1604,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$volts Wattage",
+      "title": "$volts Volts",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1772,7 +1772,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$network Wattage",
+      "title": "$network Throughput",
       "tooltip": {
         "shared": true,
         "sort": 0,
