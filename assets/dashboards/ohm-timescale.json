@@ -1835,7 +1835,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$temperature Temperature",
+      "title": "$temperature Temperatures",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2619,7 +2619,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "$control Fan RPM",
+      "title": "$control Control",
       "tooltip": {
         "shared": true,
         "sort": 0,
