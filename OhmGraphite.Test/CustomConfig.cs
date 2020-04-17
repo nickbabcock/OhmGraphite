@@ -12,5 +12,6 @@ namespace OhmGraphite.Test
         }
 
         public string this[string name] => _config.AppSettings.Settings[name]?.Value;
+        public string[] GetKeys() => _config.AppSettings.Settings.AllKeys;
     }
 }

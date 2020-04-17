@@ -10,12 +10,18 @@ namespace OhmGraphite
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Computer _computer;
+        private readonly MetricConfig _config;
         private readonly IVisitor _updateVisitor = new UpdateVisitor();
 
         private readonly ConcurrentDictionary<Identifier, object> _ids =
             new ConcurrentDictionary<Identifier, object>();
 
-        public SensorCollector(Computer computer) => _computer = computer;
+        public SensorCollector(Computer computer, MetricConfig config)
+        {
+            _computer = computer;
+            _config = config;
+        }
+
         public void Open()
         {
             foreach (var hardware in _computer.Hardware)
@@ -99,7 +105,7 @@ namespace OhmGraphite
             return _ids.Values.OfType<ISensor>().SelectMany(ReportedValues);
         }
 
-        private static IEnumerable<ReportedValue> ReportedValues(ISensor sensor)
+        private IEnumerable<ReportedValue> ReportedValues(ISensor sensor)
         {
             string id = sensor.Identifier.ToString();
 
@@ -124,8 +130,10 @@ namespace OhmGraphite
                 var ind = hwInstance.LastIndexOf('/');
                 hwInstance = hwInstance.Substring(ind + 1);
 
+                var name = _config.TryGetAlias(sensor.Identifier.ToString(), out string alias) ? alias : sensor.Name;
+
                 yield return new ReportedValue(id,
-                    sensor.Name,
+                    name,
                     sensor.Value.Value,
                     sensor.SensorType.ToOwnSensor(),
                     sensor.Hardware.Name,
