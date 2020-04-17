@@ -10,7 +10,7 @@ namespace OhmGraphite.Test
         public void SensorsAddedWhenHardwareAdded()
         {
             var computer = new Computer();
-            var collector = new SensorCollector(computer);
+            var collector = new SensorCollector(computer, MetricConfig.ParseAppSettings(new BlankConfig()));
 
             try
             {

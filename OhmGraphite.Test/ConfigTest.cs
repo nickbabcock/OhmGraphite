@@ -96,5 +96,20 @@ namespace OhmGraphite.Test
 
             Assert.Equal("my-cool-machine", results.LookupName());
         }
+
+        [Fact]
+        public void CanParseSensorAlias()
+        {
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/rename.config" };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            var customConfig = new CustomConfig(config);
+            var results = MetricConfig.ParseAppSettings(customConfig);
+
+            Assert.True(results.TryGetAlias("/amdcpu/0/load/1", out string alias));
+            Assert.Equal("CPU Core 0 T0", alias);
+            Assert.True(results.TryGetAlias("/amdcpu/0/load/2", out alias));
+            Assert.Equal("CPU Core 0 T1", alias);
+            Assert.False(results.TryGetAlias("/amdcpu/0/load/3", out alias));
+        }
     }
 }

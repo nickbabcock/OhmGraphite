@@ -3,5 +3,6 @@
     public interface IAppConfig
     {
         string this[string name] { get; }
+        string[] GetKeys();
     }
 }

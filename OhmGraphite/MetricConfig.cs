@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OhmGraphite
 {
@@ -7,7 +9,7 @@ namespace OhmGraphite
         private readonly INameResolution _nameLookup;
 
         public MetricConfig(TimeSpan interval, INameResolution nameLookup, GraphiteConfig graphite, InfluxConfig influx,
-            PrometheusConfig prometheus, TimescaleConfig timescale)
+            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<String, String> aliases)
         {
             _nameLookup = nameLookup;
             Interval = interval;
@@ -15,6 +17,7 @@ namespace OhmGraphite
             Influx = influx;
             Prometheus = prometheus;
             Timescale = timescale;
+            Aliases = aliases;
         }
 
         public string LookupName() => _nameLookup.LookupName();
@@ -23,6 +26,7 @@ namespace OhmGraphite
         public InfluxConfig Influx { get; }
         public PrometheusConfig Prometheus { get; }
         public TimescaleConfig Timescale { get; }
+        public Dictionary<string, string> Aliases { get; }
 
         public static MetricConfig ParseAppSettings(IAppConfig config)
         {
@@ -59,7 +63,15 @@ namespace OhmGraphite
                     break;
             }
 
-            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale);
+            // Trim off the LibreHardwareMonitor "/name" suffix so that it is just the
+            // the sensor ID.
+            var aliases = config.GetKeys().Where(x => x.EndsWith("/name"))
+                .ToDictionary(
+                    x => x.Remove(x.LastIndexOf("/name", StringComparison.Ordinal)),
+                    x => config[x]
+                );
+
+            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases);
         }
 
         private static INameResolution NameLookup(string lookup)
@@ -74,5 +86,7 @@ namespace OhmGraphite
                     return new StaticResolution(lookup);
             }
         }
+
+        public bool TryGetAlias(string v, out string alias) => Aliases.TryGetValue(v, out alias);
     }
 }

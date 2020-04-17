@@ -27,13 +27,12 @@ namespace OhmGraphite
                         IsStorageEnabled = true,
                         IsControllerEnabled = true
                     };
-                    var collector = new SensorCollector(computer);
 
                     // We need to know where the graphite server lives and how often
                     // to poll the hardware
                     var config = Logger.LogFunction("parse config", () => MetricConfig.ParseAppSettings(new AppConfigManager()));
+                    var collector = new SensorCollector(computer, config);
                     var metricsManager = CreateManager(config, collector);
-
                     s.ConstructUsing(name => metricsManager);
                     s.WhenStarted(tc => tc.Start());
                     s.WhenStopped(tc => tc.Dispose());
