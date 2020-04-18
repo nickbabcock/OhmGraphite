@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware.Storage;
 
 namespace OhmGraphite
 {
@@ -15,6 +16,9 @@ namespace OhmGraphite
 
         private readonly ConcurrentDictionary<Identifier, object> _ids =
             new ConcurrentDictionary<Identifier, object>();
+
+        private readonly ConcurrentDictionary<Identifier, OhmNvme> _nvmes =
+            new ConcurrentDictionary<Identifier, OhmNvme>();
 
         public SensorCollector(Computer computer, MetricConfig config)
         {
@@ -64,6 +68,16 @@ namespace OhmGraphite
                 SensorAdded(sensor);
             }
 
+            if (hardware is NVMeGeneric nvme)
+            {
+                var ohmNvme = new OhmNvme(nvme);
+                _nvmes.TryAdd(hardware.Identifier, ohmNvme);
+                SensorAdded(ohmNvme.MediaErrors);
+                SensorAdded(ohmNvme.PowerCycles);
+                SensorAdded(ohmNvme.ErrorInfoLogEntryCount);
+                SensorAdded(ohmNvme.UnsafeShutdowns);
+            }
+
             foreach (var sub in hardware.SubHardware)
             {
                 HardwareAdded(sub);
@@ -79,6 +93,14 @@ namespace OhmGraphite
             foreach (var sensor in hardware.Sensors)
             {
                 SensorRemoved(sensor);
+            }
+
+            if (_nvmes.TryRemove(hardware.Identifier, out OhmNvme ohmNvme))
+            {
+                SensorRemoved(ohmNvme.MediaErrors);
+                SensorRemoved(ohmNvme.PowerCycles);
+                SensorRemoved(ohmNvme.ErrorInfoLogEntryCount);
+                SensorRemoved(ohmNvme.UnsafeShutdowns);
             }
 
             foreach (var sub in hardware.SubHardware)
@@ -103,6 +125,11 @@ namespace OhmGraphite
         public IEnumerable<ReportedValue> ReadAllSensors()
         {
             _computer.Accept(_updateVisitor);
+            foreach (var nvme in _nvmes.Values)
+            {
+                nvme.Update();
+            }
+
             return _ids.Values.OfType<ISensor>().SelectMany(ReportedValues);
         }
 
