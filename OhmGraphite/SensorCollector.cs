@@ -89,8 +89,9 @@ namespace OhmGraphite
 
         private void SensorAdded(ISensor sensor)
         {
-            Logger.Debug(!_ids.TryAdd(sensor.Identifier, sensor) ?
-                    "Sensor previously added: {0}" : "Sensor added: {0}", sensor.Identifier);
+            var added = _ids.TryAdd(sensor.Identifier, sensor);
+            var msg = added ? "Sensor added: {0} \"{1}\"" : "Sensor previously added: {0} \"{1}\"";
+            Logger.Info(msg, sensor.Identifier, sensor.Name);
         }
 
         private void SensorRemoved(ISensor sensor)
