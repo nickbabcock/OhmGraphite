@@ -203,19 +203,37 @@ CREATE INDEX IF NOT EXISTS idx_ohm_identifier ON ohm_stats (identifier);
 
 Currently the schema and the columns are not configurable.
 
-### Upgrades
+### Metric Name Aliasing
+
+It is possible that the sensor names exposed through OhmGraphite are not descriptive enough. For instance, "Fan #2" could have RPM exposed, but you know that a more descriptive name would be "CPU Fan". To have OhmGraphite export the sensor under the "CPU Fan" name, one will need to add the mapping from sensor id (+ `/name` suffix) to the desired name like so:
+
+```xml
+    <add key="/lpc/nct6792d/fan/1/name" value="CPU Fan" />
+```
+
+There are several ways to determine the sensor id of a metric:
+
+- Postgres / Timescale and Influxdb users can examine their data store for the sensor id
+- Perform the rename in LibreHardwareMonitor and copy and paste the line from `LibreHardwareMonitor.config` into `OhmGraphite.exe.config`.
+- Search the `OhmGraphite.log` for the sensor's name that you'd like to rename (in the example, I'd search for "Fan #2"):
+
+```
+Sensor added: /lpc/nct6792d/fan/1 "Fan #2"
+```
+
+## Upgrades
 
 - Stop OhmGraphite service `.\OhmGraphite.exe stop`
 - Unzip latest release and copy `OhmGraphite.exe` to your installation directory.
 - Start OhmGraphite service `.\OhmGraphite.exe start`
 
-### Uninstall
+## Uninstall
 
 - Stop OhmGraphite service `.\OhmGraphite.exe stop`
 - Run uninstall command `.\OhmGraphite.exe uninstall`
 - Remove files
 
-### Debugging Tips
+## Debugging Tips
 
 Something wrong? Try these steps
 
