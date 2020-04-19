@@ -1,3 +1,55 @@
+## 0.13.0 - 2020-04-19
+
+A few features in this update:
+
+- Allow exporting of aliased metric names
+- Expose some missing NVMe SMART attributes
+- Bump to LibreHardwareMonitor
+
+### Aliasing
+
+Aliasing was introduced as it is possible that the sensor names exposed through OhmGraphite are not descriptive enough. For instance, "Fan #2" could have RPM exposed, but you know that a more descriptive name would be "CPU Fan". To have OhmGraphite export the sensor under the "CPU Fan" name, one will need to add the mapping from sensor id (+ `/name` suffix) to the desired name like so:
+
+```xml
+    <add key="/lpc/nct6792d/fan/1/name" value="CPU Fan" />
+```
+
+There are several ways to determine the sensor id of a metric:
+
+- Postgres / Timescale and Influxdb users can examine their data store for the sensor id
+- Perform the rename in LibreHardwareMonitor and copy and paste the line from `LibreHardwareMonitor.config` into `OhmGraphite.exe.config`.
+- Search the `OhmGraphite.log` for the sensor's name that you'd like to rename (in the example, I'd search for "Fan #2"):
+
+### LibreHardwareMonitor Update
+
+The underlying sensor library has been updated, so as always there may be new
+sensors, renames, and bugfixes.
+
+Some updates:
+
+- Fix AMD Missing GPU Temperature
+- Add support for Intel Comet Lake
+- Improve IT8655E support
+
+For my personal dashboard:
+
+- new sensor "Nvidia GPU Bus Load"
+- motherboard 3VCC voltage sensor was renamed to +3.3V
+
+### NVMe SMART attributes
+
+NVMe drives expose SMART attributes but not all are transmitted. In this
+update, OhmGraphite is now exposing the following additional NVMe SMART
+sensors:
+
+- Error Info Log Entry Count
+- Media Errors
+- Power Cycles
+- Unsafe Shutdowns
+
+This doesn't cover all NVMe SMART attributes, so if there is one missing feel
+free to raise an issue.
+
 ## 0.12.0 - 2020-02-22
 
 This is a smaller update to the sensor library: LibreHardwareMonitor, but this
