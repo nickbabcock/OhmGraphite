@@ -1,3 +1,7 @@
+## 0.14.0 - 2020-04-26
+
+A very minor release, but since the underlying sensor library has been updated in the meantime, the usual caveats regarding new / renamed metrics apply, though in this case most users shouldn't notice anything different. The most impactful change in these last few days is the bugfix in detection of NVMe drives. While some could be detected perfectly fine (like a HP EX920), others would only be detected as a generic hard drive (like the newer HP EX950). This release should now detect more NVMe drives than previously, and as a result more metrics will be available.
+
 ## 0.13.0 - 2020-04-19
 
 A few features in this update:
