@@ -33,6 +33,7 @@ namespace OhmGraphite
         Mainboard,
         SuperIO,
         Aquacomputer,
+        AeroCool,
         CPU,
         RAM,
         GpuNvidia,
@@ -91,6 +92,8 @@ namespace OhmGraphite
                     return HardwareType.SuperIO;
                 case LibreHardwareMonitor.Hardware.HardwareType.AquaComputer:
                     return HardwareType.Aquacomputer;
+                case LibreHardwareMonitor.Hardware.HardwareType.AeroCool:
+                    return HardwareType.AeroCool;
                 case LibreHardwareMonitor.Hardware.HardwareType.Cpu:
                     return HardwareType.CPU;
                 case LibreHardwareMonitor.Hardware.HardwareType.Memory:
