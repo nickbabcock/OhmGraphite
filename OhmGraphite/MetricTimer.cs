@@ -14,12 +14,15 @@ namespace OhmGraphite
         private readonly Timer _timer;
         private readonly IWriteMetrics _writer;
 
+        private readonly Stopwatch _stopwatch;
+
         public MetricTimer(TimeSpan interval, IGiveSensors collector, IWriteMetrics writer)
         {
             _timer = new Timer(interval.TotalMilliseconds) {AutoReset = true};
             _timer.Elapsed += ReportMetrics;
             _collector = collector;
             _writer = writer;
+            _stopwatch = new Stopwatch();
         }
 
         public void Start()
@@ -41,10 +44,11 @@ namespace OhmGraphite
                 // every 5 seconds, and there are ways to optimize this, but opening a
                 // new connection is the easiest way to ensure that previous failures
                 // don't affect future results
-                var stopwatch = Stopwatch.StartNew();
-                var sensors = _collector.ReadAllSensors().ToList();
+                _stopwatch.Start();
+                var sensors = _collector.ReadAllSensors();
                 await _writer.ReportMetrics(e.SignalTime, sensors);
-                Logger.Info($"Sent {sensors.Count} metrics in {stopwatch.Elapsed.TotalMilliseconds}ms");
+                Logger.Info($"Sent {sensors.Count()} metrics in {_stopwatch.Elapsed.TotalMilliseconds}ms");
+                _stopwatch.Reset();
             }
             catch (Exception ex)
             {
