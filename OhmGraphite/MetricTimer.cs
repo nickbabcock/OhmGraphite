@@ -36,11 +36,9 @@ namespace OhmGraphite
             Logger.Debug("Starting to report metrics");
             try
             {
-                // Every 5 seconds (or superseding interval) we connect to graphite
-                // and poll the hardware. It may be inefficient to open a new connection
-                // every 5 seconds, and there are ways to optimize this, but opening a
-                // new connection is the easiest way to ensure that previous failures
-                // don't affect future results
+                // Read all the sensors into a list so that they are only polled once.
+                // Polling sensors can be relatively expensive so the intermediate
+                // list cuts down on the number of potential updates.
                 var stopwatch = Stopwatch.StartNew();
                 var sensors = _collector.ReadAllSensors().ToList();
                 await _writer.ReportMetrics(e.SignalTime, sensors);
