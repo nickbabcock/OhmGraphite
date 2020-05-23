@@ -211,6 +211,16 @@ It is possible that the sensor names exposed through OhmGraphite are not descrip
     <add key="/lpc/nct6792d/fan/1/name" value="CPU Fan" />
 ```
 
+### Hiding Sensors
+
+There may be a sensor that is faulty on a given machine. Maybe it reports negative temperatures. This can throw off monitoring software or make it harder to maintain with all the special cases. OhmGraphite allows one to exclude a sensor from being exported by modifying the OhmGraphite config and adding the `/hidden` suffix to the sensor id like so:
+
+```xml
+<add key="/lpc/nct6792d/temperature/1/hidden" />
+```
+
+### Determine Sensor Id
+
 There are several ways to determine the sensor id of a metric:
 
 - Postgres / Timescale and Influxdb users can examine their data store for the sensor id
