@@ -27,6 +27,7 @@
     <None Include="..\assets\graphite.config" Link="assets/graphite.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\static-name.config" Link="assets/static-name.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\rename.config" Link="assets/rename.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\hidden-sensors.config" Link="assets/hidden-sensors.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

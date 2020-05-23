@@ -9,7 +9,7 @@ namespace OhmGraphite
         private readonly INameResolution _nameLookup;
 
         public MetricConfig(TimeSpan interval, INameResolution nameLookup, GraphiteConfig graphite, InfluxConfig influx,
-            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<String, String> aliases)
+            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<string, string> aliases, ISet<string> hiddenSensors)
         {
             _nameLookup = nameLookup;
             Interval = interval;
@@ -18,6 +18,7 @@ namespace OhmGraphite
             Prometheus = prometheus;
             Timescale = timescale;
             Aliases = aliases;
+            HiddenSensors = hiddenSensors;
         }
 
         public string LookupName() => _nameLookup.LookupName();
@@ -27,6 +28,7 @@ namespace OhmGraphite
         public PrometheusConfig Prometheus { get; }
         public TimescaleConfig Timescale { get; }
         public Dictionary<string, string> Aliases { get; }
+        public ISet<string> HiddenSensors { get; }
 
         public static MetricConfig ParseAppSettings(IAppConfig config)
         {
@@ -71,7 +73,11 @@ namespace OhmGraphite
                     x => config[x]
                 );
 
-            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases);
+            var hidden = config.GetKeys().Where(x => x.EndsWith("/hidden"))
+                .Select(x => x.Remove(x.LastIndexOf("/hidden", StringComparison.Ordinal)));
+            var hiddenSensors = new HashSet<string>(hidden);
+
+            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases, hiddenSensors);
         }
 
         private static INameResolution NameLookup(string lookup)
@@ -88,5 +94,6 @@ namespace OhmGraphite
         }
 
         public bool TryGetAlias(string v, out string alias) => Aliases.TryGetValue(v, out alias);
+        public bool IsHidden(string id) => HiddenSensors.Contains(id);
     }
 }

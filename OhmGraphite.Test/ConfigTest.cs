@@ -111,5 +111,18 @@ namespace OhmGraphite.Test
             Assert.Equal("CPU Core 0 T1", alias);
             Assert.False(results.TryGetAlias("/amdcpu/0/load/3", out alias));
         }
+
+        [Fact]
+        public void CanParseHiddenSensors()
+        {
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/hidden-sensors.config" };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            var customConfig = new CustomConfig(config);
+            var results = MetricConfig.ParseAppSettings(customConfig);
+
+            Assert.True(results.IsHidden("/amdcpu/0/load/1"));
+            Assert.True(results.IsHidden("/amdcpu/0/load/2"));
+            Assert.False(results.IsHidden("/amdcpu/0/load/3"));
+        }
     }
 }
