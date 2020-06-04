@@ -1,3 +1,23 @@
+## 0.15.0 - 2020-06-04
+
+Two highlights from this release:
+
+### Hiding Sensors
+
+There may be a sensor that is faulty on a given machine. Maybe it reports negative temperatures. This can throw off monitoring software or make it harder to maintain with all the special cases. OhmGraphite allows one to exclude a sensor from being exported by modifying the OhmGraphite config and adding the `/hidden` suffix to the sensor id like so:
+
+```xml
+<add key="/lpc/nct6792d/temperature/1/hidden" />
+```
+
+### Sensor Library Update
+
+LibreHardwareMonitor has received a significant amount of work in the past month. The most jarring change will probably be that several hardware types (Aquacomputer, AeroCool, Heatmaster, and TBalancer) have been consolidated into a single hardware type (Cooler). This is will be an inconvenience to users relying on those metric names.
+
+Another inconvenience is that GPU sensor identifiers have also been updated, so depending on the dashboard, GPU graphs may need to be updated to reference this new identifier.
+
+In the end, for my own personal dashboards which are derived from the sample ones listed in the readme, the only change I've noticed is that the CPU bus speed is reported alongside CPU frequencies.
+
 ## 0.14.0 - 2020-04-26
 
 A very minor release, but since the underlying sensor library has been updated in the meantime, the usual caveats regarding new / renamed metrics apply, though in this case most users shouldn't notice anything different. The most impactful change in these last few days is the bugfix in detection of NVMe drives. While some could be detected perfectly fine (like a HP EX920), others would only be detected as a generic hard drive (like the newer HP EX950). This release should now detect more NVMe drives than previously, and as a result more metrics will be available.
