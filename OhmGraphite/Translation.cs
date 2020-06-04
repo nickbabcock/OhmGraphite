@@ -32,14 +32,11 @@ namespace OhmGraphite
     {
         Mainboard,
         SuperIO,
-        Aquacomputer,
-        AeroCool,
         CPU,
         RAM,
         GpuNvidia,
         GpuAti,
-        TBalancer,
-        Heatmaster,
+        Cooler,
         HDD,
         NIC
     }
@@ -90,10 +87,6 @@ namespace OhmGraphite
                     return HardwareType.Mainboard;
                 case LibreHardwareMonitor.Hardware.HardwareType.SuperIO:
                     return HardwareType.SuperIO;
-                case LibreHardwareMonitor.Hardware.HardwareType.AquaComputer:
-                    return HardwareType.Aquacomputer;
-                case LibreHardwareMonitor.Hardware.HardwareType.AeroCool:
-                    return HardwareType.AeroCool;
                 case LibreHardwareMonitor.Hardware.HardwareType.Cpu:
                     return HardwareType.CPU;
                 case LibreHardwareMonitor.Hardware.HardwareType.Memory:
@@ -102,10 +95,8 @@ namespace OhmGraphite
                     return HardwareType.GpuNvidia;
                 case LibreHardwareMonitor.Hardware.HardwareType.GpuAmd:
                     return HardwareType.GpuAti;
-                case LibreHardwareMonitor.Hardware.HardwareType.TBalancer:
-                    return HardwareType.TBalancer;
-                case LibreHardwareMonitor.Hardware.HardwareType.Heatmaster:
-                    return HardwareType.Heatmaster;
+                case LibreHardwareMonitor.Hardware.HardwareType.Cooler:
+                    return HardwareType.Cooler;
                 case LibreHardwareMonitor.Hardware.HardwareType.Storage:
                     return HardwareType.HDD;
                 case LibreHardwareMonitor.Hardware.HardwareType.Network:
