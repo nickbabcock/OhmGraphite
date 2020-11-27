@@ -1,0 +1,22 @@
+name: ci
+on:
+  pull_request:
+  push:
+  schedule:
+  - cron: '00 01 * * *'
+
+jobs:
+  test:
+    name: test
+    runs-on: windows-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: Build
+      shell: bash
+      run: |
+        msbuild /t:restore /p:TargetFrameworks=net461
+        msbuild /t:build /p:TargetFrameworks=net461
+        
