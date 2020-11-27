@@ -72,14 +72,14 @@ namespace OhmGraphite
                         // price to pay even if preparation is redundant.
                         conn.UnprepareAll();
 
-                        if (_setupTable)
-                        {
-                            var setupSql = Resourcer.Resource.AsString("schema.sql");
-                            using (var cmd = new NpgsqlCommand(setupSql, conn))
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
+                        //if (_setupTable)
+                        //{
+                        //    var setupSql = Resourcer.Resource.AsString("schema.sql");
+                        //    using (var cmd = new NpgsqlCommand(setupSql, conn))
+                        //    {
+                        //        cmd.ExecuteNonQuery();
+                        //    }
+                        //}
                     }
 
                     var values = sensors.ToList();
