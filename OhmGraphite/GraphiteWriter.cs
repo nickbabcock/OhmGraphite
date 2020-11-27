@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NLog;
-using LibreHardwareMonitor.Hardware;
 using static System.FormattableString;
 
 namespace OhmGraphite
@@ -13,6 +13,7 @@ namespace OhmGraphite
     public class GraphiteWriter : IWriteMetrics
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         private readonly string _localHost;
         private readonly string _remoteHost;
@@ -31,6 +32,30 @@ namespace OhmGraphite
         }
 
         public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        {
+            // Since the graphite writer keeps the same connection open across
+            // writes, we need to ensure that only one thread has access to
+            // the connection at a time. Multiple threads can be in this
+            // method when the time it takes to poll and write the data is
+            // longer than the interval time. However we don't want an
+            // unbounded number of threads stuck waiting to write, so
+            // jettison any attempt after waiting for more than a second.
+            if (!await _semaphore.WaitAsync(TimeSpan.FromSeconds(1)))
+            {
+                throw new ApplicationException("unable to acquire lock on graphite connection");
+            }
+
+            try
+            {
+                await SendGraphite(reportTime, sensors);
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }
+
+        private async Task SendGraphite(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
             try
             {
