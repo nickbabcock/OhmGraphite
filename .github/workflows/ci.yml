@@ -18,10 +18,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
     - name: Build
       shell: bash
-      run: |
-        msbuild /t:restore /p:TargetFrameworks=net461
-        msbuild /t:build /p:TargetFrameworks=net461
-        
+      run: dotnet build
     - name: Test
       shell: bash
-      run: echo hello world
+      run: dotnet test
