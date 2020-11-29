@@ -1,3 +1,28 @@
+## 0.16.0 - 2020-11-29
+
+- Allow omission of password in config file for passwordless influxdb user
+- Bump LibreHardwareMonitor to latest
+  - Better support for Ryzen 5000
+  - More accurate Ryzen 3000 CCD Temperatures
+  - Add Processor Cache to SMBios
+  - Fix possible exception when waking from standby
+  - Added support for NCT6687D
+  - Fix network exception when disabling IPv4
+- Update internal client dependencies (prometheus and postgres) to latest major versions.
+
+### Fix Graphite Connection Write Contention
+
+If polling for sensors + writing to graphite takes longer than the
+configured interval, then it is possible for two threads to be writing
+data to the same graphite connection. This will cause corrupted data to
+be sent to graphite.
+
+The fix is the limit the number of threads that have access to the
+connection to 1. Other threads that would have caused contention are
+forced to wait outside. To ensure there is not an unbounded number of
+threads waiting to write, if they can't acquire a lock in a second then
+they jettison the write attempt.
+
 ## 0.15.0 - 2020-06-04
 
 Two highlights from this release:
