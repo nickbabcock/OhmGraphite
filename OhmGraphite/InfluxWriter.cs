@@ -25,7 +25,8 @@ namespace OhmGraphite
         public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
             var payload = new LineProtocolPayload();
-            var client = new LineProtocolClient(_config.Address, _config.Db, _config.User, _config.Password);
+            var password = _config.User != null ? (_config.Password ?? "") : null;
+            var client = new LineProtocolClient(_config.Address, _config.Db, _config.User, password);
 
             foreach (var point in sensors.Select(x => NewPoint(reportTime, x)))
             {

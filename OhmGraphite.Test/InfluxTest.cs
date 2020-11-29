@@ -27,7 +27,7 @@ namespace OhmGraphite.Test
                         Assert.Contains("/intelcpu/0/temperature/0", content);
                         break;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (attempts >= 10)
                         {
@@ -39,5 +39,39 @@ namespace OhmGraphite.Test
                 }
             }
         }
+
+        [Fact, Trait("Category", "integration")]
+        public async void CanInsertIntoPasswordLessInfluxdb()
+        {
+            var config = new InfluxConfig(new Uri("http://influx-passwordless:8086"), "mydb", "my_user", null);
+            using (var writer = new InfluxWriter(config, "my-pc"))
+            using (var client = new HttpClient())
+            {
+                for (int attempts = 0; ; attempts++)
+                {
+                    try
+                    {
+                        await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
+
+                        var resp = await client.GetAsync(
+                            "http://influx-passwordless:8086/query?pretty=true&db=mydb&q=SELECT%20*%20FROM%20Temperature");
+                        Assert.True(resp.IsSuccessStatusCode);
+                        var content = await resp.Content.ReadAsStringAsync();
+                        Assert.Contains("/intelcpu/0/temperature/0", content);
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        if (attempts >= 10)
+                        {
+                            throw;
+                        }
+
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                    }
+                }
+            }
+        }
+
     }
 }
