@@ -6,6 +6,12 @@ services:
       INFLUXDB_DB: "mydb"
       INFLUXDB_USER: "my_user"
       INFLUXDB_USER_PASSWORD: "my_pass"
+  influx-passwordless:
+    image: influxdb:alpine
+    environment:
+      INFLUXDB_DB: "mydb"
+      INFLUXDB_USER: "my_user"
+      INFLUXDB_HTTP_AUTH_ENABLED: "false"
   graphite:
     image: graphiteapp/graphite-statsd
     environment:
