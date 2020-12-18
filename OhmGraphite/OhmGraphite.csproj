@@ -31,7 +31,7 @@
     <PackageReference Include="Costura.Fody" Version="3.3.2" />
     <PackageReference Include="NLog.Config" Version="4.7.6" />
     <PackageReference Include="Npgsql" Version="5.0.1.1" />
-    <PackageReference Include="prometheus-net" Version="4.0.0" />
+    <PackageReference Include="prometheus-net" Version="4.1.1" />
     <PackageReference Include="Resourcer.Fody" Version="1.7.3" />
     <PackageReference Include="TopShelf" Version="4.2.1" />
     <PackageReference Include="Topshelf.NLog" Version="4.2.1" />
