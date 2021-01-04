@@ -1,5 +1,9 @@
-﻿using NLog;
+﻿using System;
+using System.Configuration;
+using System.IO;
+using NLog;
 using LibreHardwareMonitor.Hardware;
+using OhmGraphite.Test;
 using Prometheus;
 using Topshelf;
 
@@ -11,6 +15,7 @@ namespace OhmGraphite
 
         private static void Main()
         {
+            string configPath = string.Empty;
             HostFactory.Run(x =>
             {
                 x.Service<IManage>(s =>
@@ -28,15 +33,19 @@ namespace OhmGraphite
                         IsControllerEnabled = true
                     };
 
-                    // We need to know where the graphite server lives and how often
-                    // to poll the hardware
-                    var config = Logger.LogFunction("parse config", () => MetricConfig.ParseAppSettings(new AppConfigManager()));
-                    var collector = new SensorCollector(computer, config);
-                    var metricsManager = CreateManager(config, collector);
-                    s.ConstructUsing(name => metricsManager);
+                    s.ConstructUsing(name =>
+                    {
+                        var configDisplay = string.IsNullOrEmpty(configPath) ? "default" : configPath;
+                        var config = Logger.LogFunction($"parse config {configDisplay}", () => MetricConfig.ParseAppSettings(CreateConfiguration(configPath)));
+                        var collector = new SensorCollector(computer, config);
+                        return CreateManager(config, collector);
+                    });
                     s.WhenStarted(tc => tc.Start());
                     s.WhenStopped(tc => tc.Dispose());
                 });
+
+                // Allow one to specify a command line argument when running interactively
+                x.AddCommandLineDefinition("config", v => configPath = v);
                 x.UseNLog();
                 x.RunAsLocalSystem();
                 x.SetDescription(
@@ -45,6 +54,23 @@ namespace OhmGraphite
                 x.SetServiceName("OhmGraphite");
                 x.OnException(ex => Logger.Error(ex, "OhmGraphite TopShelf encountered an error"));
             });
+        }
+
+        private static IAppConfig CreateConfiguration(string configPath)
+        {
+            if (string.IsNullOrEmpty(configPath))
+            {
+                return new AppConfigManager();
+            }
+
+            if (!File.Exists(configPath))
+            {
+                throw new ApplicationException($"unable to detect config: ${configPath}");
+            }
+
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = configPath };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            return new CustomConfig(config);
         }
 
         private static IManage CreateManager(MetricConfig config, SensorCollector collector)
