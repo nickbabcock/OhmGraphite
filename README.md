@@ -135,7 +135,20 @@ Configuring the Prometheus exporter will create a server that listens on `promet
 </configuration>
 ```
 
-If the Prometheus service accessing OhmGraphite are not on the same machine, one may have to enable the port through the windows firewall.
+Then you'll need add the OhmGraphite instance to your [Prometheus config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/). This can be done with the method of your choosing but for the sake of example here is a possible `prometheus.yml`:
+
+```yaml
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: 'ohmgraphite'
+    static_configs:
+    - targets: ['10.0.0.200:4445']
+```
+
+In the above example, the Prometheus server and OhmGraphite are not on the same machine, so Prometheus accesses OhmGraphite through the machine that is hosting OhmGraphite via the IP address (`10.0.0.200`).
+
+If the Prometheus service accessing OhmGraphite is not on the same machine, one may have to enable the port through the windows firewall.
 
 Here's one example of enabling it in powershell. Note that there are further ways to configure the firewall for additional tightening of access (ie: only allow certain IPs to connect).
 
