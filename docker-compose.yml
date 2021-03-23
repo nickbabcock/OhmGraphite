@@ -1,13 +1,13 @@
 version: '3'
 services:
   influx:
-    image: influxdb:alpine
+    image: influxdb:1.8-alpine
     environment:
       INFLUXDB_DB: "mydb"
       INFLUXDB_USER: "my_user"
       INFLUXDB_USER_PASSWORD: "my_pass"
   influx-passwordless:
-    image: influxdb:alpine
+    image: influxdb:1.8-alpine
     environment:
       INFLUXDB_DB: "mydb"
       INFLUXDB_USER: "my_user"
