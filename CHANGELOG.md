@@ -1,3 +1,15 @@
+## 0.17.0 - 2021-03-22
+
+- Allow configuration file parameter when run interactively
+- Bump LibreHardwareMonitor to latest
+	- Add support for ASRock X570 Phantom Gaming-ITX/TB3 (NCT6683D)
+	- Add support for ASRock X570 Taichi
+	- Add support for Asus X470-I Gaming
+	- Add fan control for IT8728F 
+	- Add fan control to Z390 M Gaming IT8688E 
+	- Fix readings for Samsung 980 Pro SSD
+- Bump internal dependencies
+
 ## 0.16.0 - 2020-11-29
 
 - Allow omission of password in config file for passwordless influxdb user
