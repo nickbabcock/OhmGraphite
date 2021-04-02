@@ -2,8 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Authors>Nick Babcock</Authors>
 
@@ -24,29 +29,34 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="..\assets\schema.sql" />
+    <EmbeddedResource Include="..\assets\schema.sql">
+      <LogicalName>schema.sql</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="3.3.2" />
-    <PackageReference Include="NLog.Config" Version="4.7.9" />
     <PackageReference Include="Npgsql" Version="5.0.4" />
     <PackageReference Include="prometheus-net" Version="4.1.1" />
-    <PackageReference Include="Resourcer.Fody" Version="1.7.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="TopShelf" Version="4.2.1" />
     <PackageReference Include="Topshelf.NLog" Version="4.2.1" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
-    <PackageReference Include="MSBuildTasks" Version="1.5.0.235" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
 
-  <Target Name="PackExecutable" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
-    <Zip Files="$(OutputPath)OhmGraphite.exe;$(OutputPath)OhmGraphite.exe.config;$(OutputPath)NLog.config" WorkingDirectory="$(OutputPath)" ZipFileName="$(BaseOutputPath)OhmGraphite-$(Major).$(Minor).$(Revision).zip" />
+  <Target Name="ZipOutputPath" AfterTargets="Publish">
+    <RemoveDir Directories="$(BaseOutputPath)tmp\" ContinueOnError="true" />
+    <MakeDir Directories="$(BaseOutputPath)tmp\"/>
+    <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.exe" DestinationFolder="$(BaseOutputPath)tmp\"/>
+    <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.dll.config" DestinationFiles="$(BaseOutputPath)tmp\OhmGraphite.exe.config"/>
+    <Copy SourceFiles="$(OutputPath)\publish\NLog.config" DestinationFolder="$(BaseOutputPath)tmp\"/>
+
+    <ZipDirectory
+      Overwrite="true"
+      SourceDirectory="$(BaseOutputPath)\tmp"
+      DestinationFile="$(BaseOutputPath)OhmGraphite-$(Major).$(Minor).$(Revision).zip" />
   </Target>
 </Project>

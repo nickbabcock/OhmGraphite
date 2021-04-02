@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using NLog;
 using Npgsql;
 using NpgsqlTypes;
-using LibreHardwareMonitor.Hardware;
 
 namespace OhmGraphite
 {
@@ -74,10 +75,19 @@ namespace OhmGraphite
 
                         if (_setupTable)
                         {
-                            var setupSql = Resourcer.Resource.AsString("schema.sql");
-                            using (var cmd = new NpgsqlCommand(setupSql, conn))
+                            var assembly = Assembly.GetExecutingAssembly();
+                            var path = assembly.GetManifestResourceNames()
+                                .Single(str => str.EndsWith("schema.sql"));
+
+                            using (var stream = assembly.GetManifestResourceStream(path))
+                            using (var reader = new StreamReader(stream))
                             {
-                                cmd.ExecuteNonQuery();
+                                var setupSql = reader.ReadToEnd();
+                                using (var cmd = new NpgsqlCommand(setupSql, conn))
+                                {
+                                    cmd.ExecuteNonQuery();
+
+                                }
                             }
                         }
                     }

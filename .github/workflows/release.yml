@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  pull_request:
+  push:
+    branches: ['master']
+    tags: ['v*']
+  schedule:
+  - cron: '00 01 * * *'
+
+jobs:
+  release:
+    name: release
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+    - run: dotnet publish -c Release .\OhmGraphite\
+    - name: Set artifact name
+      shell: bash
+      working-directory: OhmGraphite\bin
+      run: |
+        echo "ARTIFACT_NAME=$(echo *.zip)" >> $GITHUB_ENV
+    - uses: actions/upload-artifact@v2
+      with:
+        path: OhmGraphite\bin\*.zip
+        name: ${{ env.ARTIFACT_NAME }}
+        if-no-files-found: error
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: 'OhmGraphite\bin\*.zip'
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

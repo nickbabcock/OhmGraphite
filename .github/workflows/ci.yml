@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ['master']
+    tags: ['v*']
+  schedule:
+  - cron: '00 01 * * *'
+
+jobs:
+  test:
+    name: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest', 'windows-latest']
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+    - run: dotnet test
+      if: matrix.os == 'ubuntu-latest'
+    - run: dotnet test --filter 'Category!=integration'
+      if: matrix.os == 'windows-latest'
