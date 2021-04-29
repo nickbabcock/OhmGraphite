@@ -32,7 +32,7 @@
     <PackageReference Include="NLog.Config" Version="4.7.9" />
     <PackageReference Include="Npgsql" Version="5.0.4" />
     <PackageReference Include="prometheus-net" Version="4.1.1" />
-    <PackageReference Include="Resourcer.Fody" Version="1.7.3" />
+    <PackageReference Include="Resourcer.Fody" Version="1.8.0" />
     <PackageReference Include="TopShelf" Version="4.2.1" />
     <PackageReference Include="Topshelf.NLog" Version="4.2.1" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
