@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/c8b43wg7qtwicjj6/branch/master?svg=true)](https://ci.appveyor.com/project/nickbabcock/ohmgraphite/branch/master)
+[![CI](https://github.com/nickbabcock/OhmGraphite/actions/workflows/ci.yml/badge.svg)](https://github.com/nickbabcock/OhmGraphite/actions/workflows/ci.yml)
 
 # OhmGraphite
 
