@@ -38,8 +38,8 @@
     <PackageReference Include="Npgsql" Version="5.0.4" />
     <PackageReference Include="prometheus-net" Version="4.1.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
-    <PackageReference Include="TopShelf" Version="4.2.1" />
-    <PackageReference Include="Topshelf.NLog" Version="4.2.1" />
+    <PackageReference Include="TopShelf" Version="4.3.0" />
+    <PackageReference Include="Topshelf.NLog" Version="4.3.0" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
   </ItemGroup>
 
@@ -49,14 +49,11 @@
 
   <Target Name="ZipOutputPath" AfterTargets="Publish">
     <RemoveDir Directories="$(BaseOutputPath)tmp\" ContinueOnError="true" />
-    <MakeDir Directories="$(BaseOutputPath)tmp\"/>
-    <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.exe" DestinationFolder="$(BaseOutputPath)tmp\"/>
-    <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.dll.config" DestinationFiles="$(BaseOutputPath)tmp\OhmGraphite.exe.config"/>
-    <Copy SourceFiles="$(OutputPath)\publish\NLog.config" DestinationFolder="$(BaseOutputPath)tmp\"/>
+    <MakeDir Directories="$(BaseOutputPath)tmp\" />
+    <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.exe" DestinationFolder="$(BaseOutputPath)tmp\" />
+    <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.dll.config" DestinationFiles="$(BaseOutputPath)tmp\OhmGraphite.exe.config" />
+    <Copy SourceFiles="$(OutputPath)\publish\NLog.config" DestinationFolder="$(BaseOutputPath)tmp\" />
 
-    <ZipDirectory
-      Overwrite="true"
-      SourceDirectory="$(BaseOutputPath)\tmp"
-      DestinationFile="$(BaseOutputPath)OhmGraphite-$(Major).$(Minor).$(Revision).zip" />
+    <ZipDirectory Overwrite="true" SourceDirectory="$(BaseOutputPath)\tmp" DestinationFile="$(BaseOutputPath)OhmGraphite-$(Major).$(Minor).$(Revision).zip" />
   </Target>
 </Project>
