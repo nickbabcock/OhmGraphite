@@ -1,6 +1,6 @@
 ## 0.18.0 - 2021-05-08
 
-A purposively small release to test the new distribution. OhmGraphite is now
+A purposely small release to test the new distribution. OhmGraphite is now
 packaged as a single executable that does not depend on the system's .NET
 framework. This should allow more users to access OhmGraphite, but I'm not sure
 I've tracked all the downsides. One of the major downsides is that the
