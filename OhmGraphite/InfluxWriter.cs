@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
-using InfluxDB.LineProtocol.Client;
 using InfluxDB.LineProtocol.Payload;
 using NLog;
-using LibreHardwareMonitor.Hardware;
 
 namespace OhmGraphite
 {
     public class InfluxWriter : IWriteMetrics
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
+        private readonly HttpClient _client = new HttpClient();
         private readonly InfluxConfig _config;
         private readonly string _localHost;
 
@@ -20,23 +22,53 @@ namespace OhmGraphite
         {
             _config = config;
             _localHost = localHost;
+
+            if (!string.IsNullOrEmpty(_config.User) && !string.IsNullOrEmpty(_config.Password))
+            {
+                var raw = Encoding.UTF8.GetBytes($"{_config.User}:{_config.Password}");
+                var encoded = Convert.ToBase64String(raw);
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encoded);
+            }
         }
 
         public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
             var payload = new LineProtocolPayload();
-            var password = _config.User != null ? (_config.Password ?? "") : null;
-            var client = new LineProtocolClient(_config.Address, _config.Db, _config.User, password);
-
             foreach (var point in sensors.Select(x => NewPoint(reportTime, x)))
             {
                 payload.Add(point);
             }
 
-            var result = await client.WriteAsync(payload);
-            if (!result.Success)
+            // can't use influx db client as they don't have one that is both 1.x and 2.x compatible
+            // so we implement our own compatible client
+            var formattedData = new StringWriter();
+            payload.Format(formattedData);
+            formattedData.Flush();
+            var outData = Encoding.UTF8.GetBytes(formattedData.ToString());
+            var content = new ByteArrayContent(outData);
+
+            var queries = new List<string>();
+
+            // passwordless authentication
+            if (!string.IsNullOrEmpty(_config.User) && string.IsNullOrEmpty(_config.Password))
             {
-                Logger.Error("Influxdb encountered an error: {0}", result.ErrorMessage);
+                queries.Add($"u={_config.User}&p=");
+            }
+
+            if (!string.IsNullOrEmpty(_config.Db))
+            {
+                queries.Add($"db={_config.Db}");
+            }
+
+            var qs = string.Join("&", queries);
+            qs = !string.IsNullOrEmpty(qs) ? $"?{qs}" : "";
+            var addrPath = new Uri(_config.Address, "/write");
+            var url = $"{addrPath}{qs}";
+            var response = await _client.PostAsync(url, content);
+            if (!response.IsSuccessStatusCode)
+            {
+                var err = await response.Content.ReadAsStringAsync();
+                Logger.Error("Influxdb encountered an error: {0}", err);
             }
         }
 

@@ -13,15 +13,13 @@ namespace OhmGraphite.Test
             var collector = new TestSensorCreator();
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21881, registry: registry);
-            using (var server = new PrometheusServer(mserver, collector))
-            using (var client = new HttpClient())
-            {
-                server.Start();
-                var resp = await client.GetAsync("http://localhost:21881/metrics");
-                Assert.True(resp.IsSuccessStatusCode);
-                var content = await resp.Content.ReadAsStringAsync();
-                Assert.Contains("# HELP ohm_cpu_celsius Metric reported by open hardware sensor", content);
-            }
+            using var server = new PrometheusServer(mserver, collector);
+            using var client = new HttpClient();
+            server.Start();
+            var resp = await client.GetAsync("http://localhost:21881/metrics");
+            Assert.True(resp.IsSuccessStatusCode);
+            var content = await resp.Content.ReadAsStringAsync();
+            Assert.Contains("# HELP ohm_cpu_celsius Metric reported by open hardware sensor", content);
         }
 
         [Fact]
@@ -30,15 +28,13 @@ namespace OhmGraphite.Test
             var collector = new NicGuidSensor();
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21882, registry: registry);
-            using (var server = new PrometheusServer(mserver, collector))
-            using (var client = new HttpClient())
-            {
-                server.Start();
-                var resp = await client.GetAsync("http://localhost:21882/metrics");
-                Assert.True(resp.IsSuccessStatusCode);
-                var content = await resp.Content.ReadAsStringAsync();
-                Assert.Contains("Bluetooth Network Connection 2", content);
-            }
+            using var server = new PrometheusServer(mserver, collector);
+            using var client = new HttpClient();
+            server.Start();
+            var resp = await client.GetAsync("http://localhost:21882/metrics");
+            Assert.True(resp.IsSuccessStatusCode);
+            var content = await resp.Content.ReadAsStringAsync();
+            Assert.Contains("Bluetooth Network Connection 2", content);
         }
 
         [Fact]
