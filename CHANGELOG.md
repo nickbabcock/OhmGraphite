@@ -1,3 +1,8 @@
+## 0.18.1 - 2021-05-09
+
+Fix regression introduced with 0.18.0 where Intel NVMe drives would cause a
+failure to start.
+
 ## 0.18.0 - 2021-05-08
 
 A purposely small release to test the new distribution. OhmGraphite is now
