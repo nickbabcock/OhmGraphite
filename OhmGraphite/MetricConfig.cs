@@ -9,7 +9,7 @@ namespace OhmGraphite
         private readonly INameResolution _nameLookup;
 
         public MetricConfig(TimeSpan interval, INameResolution nameLookup, GraphiteConfig graphite, InfluxConfig influx,
-            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<string, string> aliases, ISet<string> hiddenSensors)
+            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<string, string> aliases, ISet<string> hiddenSensors, Influx2Config influx2)
         {
             _nameLookup = nameLookup;
             Interval = interval;
@@ -19,12 +19,14 @@ namespace OhmGraphite
             Timescale = timescale;
             Aliases = aliases;
             HiddenSensors = hiddenSensors;
+            Influx2 = influx2;
         }
 
         public string LookupName() => _nameLookup.LookupName();
         public TimeSpan Interval { get; }
         public GraphiteConfig Graphite { get; }
         public InfluxConfig Influx { get; }
+        public Influx2Config Influx2 { get; }
         public PrometheusConfig Prometheus { get; }
         public TimescaleConfig Timescale { get; }
         public Dictionary<string, string> Aliases { get; }
@@ -46,6 +48,7 @@ namespace OhmGraphite
             InfluxConfig iconfig = null;
             PrometheusConfig pconfig = null;
             TimescaleConfig timescale = null;
+            Influx2Config influx2 = null;
 
             switch (type.ToLowerInvariant())
             {
@@ -55,6 +58,9 @@ namespace OhmGraphite
                 case "influxdb":
                 case "influx":
                     iconfig = InfluxConfig.ParseAppSettings(config);
+                    break;
+                case "influx2":
+                    influx2 = Influx2Config.ParseAppSettings(config);
                     break;
                 case "prometheus":
                     pconfig = PrometheusConfig.ParseAppSettings(config);
@@ -77,7 +83,7 @@ namespace OhmGraphite
                 .Select(x => x.Remove(x.LastIndexOf("/hidden", StringComparison.Ordinal)));
             var hiddenSensors = new HashSet<string>(hidden);
 
-            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases, hiddenSensors);
+            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases, hiddenSensors, influx2);
         }
 
         private static INameResolution NameLookup(string lookup)
