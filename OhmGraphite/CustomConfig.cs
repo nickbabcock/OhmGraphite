@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace OhmGraphite.Test
+namespace OhmGraphite
 {
     class CustomConfig : IAppConfig
     {

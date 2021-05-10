@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using NLog;
 using LibreHardwareMonitor.Hardware;
-using OhmGraphite.Test;
 using Prometheus;
 using Topshelf;
 
