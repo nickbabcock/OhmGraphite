@@ -18,7 +18,6 @@ OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardwa
 ## System Recommendations
 
 - Windows
-- .NET v4.6.1. If you have Windows 10 you are all set. If not, you may have to download a more recent version.
 - Administrator privileges
 
 ## Introduction
