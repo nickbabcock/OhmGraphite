@@ -18,7 +18,7 @@ namespace OhmGraphite.Test
                 .WithEnvironment("POSTGRES_PASSWORD", "123456")
                 .WithPortBinding(5432, assignRandomHostPort: true)
                 .WithWaitStrategy(Wait.ForUnixContainer()
-                    .UntilCommandIsCompleted($"pg_isready -h 'localhost' -p '5432'"));
+                    .UntilCommandIsCompleted("pg_isready -h 'localhost' -p '5432'"));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
@@ -50,7 +50,7 @@ namespace OhmGraphite.Test
                 .WithEnvironment("POSTGRES_PASSWORD", "123456")
                 .WithPortBinding(5432, assignRandomHostPort: true)
                 .WithWaitStrategy(Wait.ForUnixContainer()
-                    .UntilCommandIsCompleted($"pg_isready -h 'localhost' -p '5432'"));
+                    .UntilCommandIsCompleted("pg_isready -h 'localhost' -p '5432'"));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
