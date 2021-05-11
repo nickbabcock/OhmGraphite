@@ -108,10 +108,16 @@ namespace OhmGraphite
                 var writer = new TimescaleWriter(config.Timescale.Connection, config.Timescale.SetupTable, hostname);
                 return new MetricTimer(config.Interval, collector, writer);
             }
-            else
+            else if (config.Influx != null)
             {
                 Logger.Info($"Influxdb address: {config.Influx.Address} db: {config.Influx.Db}");
                 var writer = new InfluxWriter(config.Influx, hostname);
+                return new MetricTimer(config.Interval, collector, writer);
+            }
+            else
+            {
+                Logger.Info($"Influx2 address: {config.Influx2.Options.Url}");
+                var writer = new Influx2Writer(config.Influx2, hostname);
                 return new MetricTimer(config.Interval, collector, writer);
             }
         }
