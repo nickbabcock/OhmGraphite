@@ -27,6 +27,7 @@
     <None Include="..\assets\static-name.config" Link="assets/static-name.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\rename.config" Link="assets/rename.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\hidden-sensors.config" Link="assets/hidden-sensors.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\influxdb-selfsigned.crt" Link="assets/influxdb-selfsigned.crt" CopyToOutputDirectory="PreserveNewest" />
 
     <None Include="..\ci\timescale.dockerfile" Link="docker/timescale.dockerfile" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\ci\setup-docker.sh" Link="docker/ci/setup-docker.sh" CopyToOutputDirectory="PreserveNewest" />
