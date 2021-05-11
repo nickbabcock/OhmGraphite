@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Net;
 using Xunit;
 
 namespace OhmGraphite.Test
@@ -123,6 +124,22 @@ namespace OhmGraphite.Test
             Assert.True(results.IsHidden("/amdcpu/0/load/1"));
             Assert.True(results.IsHidden("/amdcpu/0/load/2"));
             Assert.False(results.IsHidden("/amdcpu/0/load/3"));
+        }
+
+        [Fact]
+        public void CanInstallCertificateVerification()
+        {
+            var current = ServicePointManager.ServerCertificateValidationCallback;
+            MetricConfig.InstallCertificateVerification("true");
+            Assert.Equal(current, ServicePointManager.ServerCertificateValidationCallback);
+
+            MetricConfig.InstallCertificateVerification("false");
+            Assert.NotEqual(current, ServicePointManager.ServerCertificateValidationCallback);
+
+            MetricConfig.InstallCertificateVerification("assets/influxdb-selfsigned.crt");
+            Assert.NotEqual(current, ServicePointManager.ServerCertificateValidationCallback);
+
+            ServicePointManager.ServerCertificateValidationCallback = null;
         }
     }
 }

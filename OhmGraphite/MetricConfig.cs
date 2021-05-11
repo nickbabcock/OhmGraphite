@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace OhmGraphite
 {
@@ -42,6 +45,7 @@ namespace OhmGraphite
             var interval = TimeSpan.FromSeconds(seconds);
 
             INameResolution nameLookup = NameLookup(config["name_lookup"] ?? "netbios");
+            InstallCertificateVerification(config["certificate_verification"] ?? "True");
 
             var type = config["type"] ?? "graphite";
             GraphiteConfig gconfig = null;
@@ -96,6 +100,31 @@ namespace OhmGraphite
                     return new NetBiosResolution();
                 default:
                     return new StaticResolution(lookup);
+            }
+        }
+
+        public static void InstallCertificateVerification(string type)
+        {
+            switch (type.ToLowerInvariant())
+            {
+                // Do not change default .net behavior when given True
+                case "true":
+                    break;
+
+                // Do not verify certificate
+                case "false":
+                    ServicePointManager.ServerCertificateValidationCallback =
+                        (sender, certificate, chain, errors) => true;
+                    break;
+
+                // Else assume that it points to a file path of a self signed
+                // certificate that we will check against
+                default:
+                    var cert = new X509Certificate2(type);
+                    ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) =>
+                        errors == SslPolicyErrors.None ||
+                        string.Equals(cert.Thumbprint, certificate.GetCertHashString(), StringComparison.InvariantCultureIgnoreCase);
+                    break;
             }
         }
 
