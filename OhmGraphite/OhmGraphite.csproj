@@ -36,7 +36,7 @@
 
   <ItemGroup>
     <PackageReference Include="InfluxDB.Client" Version="1.18.0" />
-    <PackageReference Include="Npgsql" Version="5.0.4" />
+    <PackageReference Include="Npgsql" Version="5.0.5" />
     <PackageReference Include="prometheus-net" Version="4.1.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="TopShelf" Version="4.3.0" />
