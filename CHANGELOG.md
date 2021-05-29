@@ -1,3 +1,10 @@
+## 0.19.0 - 2021-05-29
+
+- Add influxdb 2 support (see docs for more information)
+- Add custom certificate verification for self signed cert setups (see docs for more information)
+- Fix slow WMI disk operations causing no sensors to be reported
+- Fix crash for intel nvme drives
+
 ## 0.18.1 - 2021-05-09
 
 Fix regression introduced with 0.18.0 where Intel NVMe drives would cause a
