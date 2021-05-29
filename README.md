@@ -115,6 +115,22 @@ Graphite is the default export style, but if you're an InfluxDB user you can cha
 </configuration>
 ```
 
+If OhmGraphite will be connecting to InfluxDB 2, the configuration will need to be changed accordingly.
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="type" value="influx2" />
+    <add key="influx2_address" value="http://localhost:8086" />
+    <add key="influx2_org" value="myorg" />
+    <add key="influx2_bucket" value="mydb" />
+    <add key="influx2_token" value="thisistheinfluxdbtoken" />
+    <add key="interval" value="5" />
+  </appSettings>
+</configuration>
+```
+
 ### Prometheus Configuration
 
 Configuring the Prometheus exporter will create a server that listens on `prometheus_port`. Instead of creating outbound data like the other exporters, OhmGraphite's Prometheus config creates inbound data. OhmGraphite will only poll the hardware sensors when scraped by the Prometheus service.
@@ -242,6 +258,28 @@ There are several ways to determine the sensor id of a metric:
 ```
 Sensor added: /lpc/nct6792d/fan/1 "Fan #2"
 ```
+
+### Certificates
+
+When connecting to a service that presents a self signed certificate, one can specify `certificate_verification`
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="certificate_verification"
+         value="C:\apps\OhmGraphite\influxdb-selfsigned.crt" />
+   </appSettings>
+</configuration>
+```
+
+The possible values:
+
+ - True (the default): all certificates are verified
+ - False: No certificates are verified (INSECURE)
+ - a file path of a certificate that the server is allowed to return and
+ still be considered a valid request (useful for self signed
+ certificates). Recommended to be an absolute file path.
 
 ## Upgrades
 
