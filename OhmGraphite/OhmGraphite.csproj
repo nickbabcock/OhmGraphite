@@ -15,8 +15,8 @@
     <Description>Extract hardware sensor data and exports it to a given host and port in a graphite compatible format</Description>
     <Copyright>Nick Babcock</Copyright>
     <Major>0</Major>
-    <Minor>18</Minor>
-    <Revision>1</Revision>
+    <Minor>19</Minor>
+    <Revision>0</Revision>
     <AssemblyVersion>$(Major).$(Minor).$(Revision)</AssemblyVersion>
     <AssemblyFileVersion>$(Major).$(Minor).$(Revision)</AssemblyFileVersion>
     <InformationalVersion>$(Major).$(Minor).$(Revision)</InformationalVersion>
