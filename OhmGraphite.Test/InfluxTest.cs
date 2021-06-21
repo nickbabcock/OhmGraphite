@@ -17,6 +17,7 @@ namespace OhmGraphite.Test
         public async void CanInsertIntoInflux()
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:1.8-alpine")
                 .WithEnvironment("INFLUXDB_DB", "mydb")
                 .WithEnvironment("INFLUXDB_USER", "my_user")
@@ -59,6 +60,7 @@ namespace OhmGraphite.Test
         public async void CanInsertIntoPasswordLessInfluxdb()
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:1.8-alpine")
                 .WithEnvironment("INFLUXDB_DB", "mydb")
                 .WithEnvironment("INFLUXDB_USER", "my_user")
@@ -101,6 +103,7 @@ namespace OhmGraphite.Test
         public async void CanInsertIntoInflux2()
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:2.0-alpine")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_USERNAME", "my-user")
@@ -152,6 +155,7 @@ namespace OhmGraphite.Test
         public async void CanInsertIntoInflux2Token()
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:2.0-alpine")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_USERNAME", "my-user")

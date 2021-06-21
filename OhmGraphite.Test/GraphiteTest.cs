@@ -14,6 +14,7 @@ namespace OhmGraphite.Test
         public async void InsertGraphiteTest()
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("graphiteapp/graphite-statsd")
                 .WithEnvironment("REDIS_TAGDB", "y")
                 .WithPortBinding(2003, assignRandomHostPort: true)
@@ -54,6 +55,7 @@ namespace OhmGraphite.Test
         public async void InsertTagGraphiteTest()
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("graphiteapp/graphite-statsd")
                 .WithEnvironment("REDIS_TAGDB", "y")
                 .WithPortBinding(2003, assignRandomHostPort: true)
