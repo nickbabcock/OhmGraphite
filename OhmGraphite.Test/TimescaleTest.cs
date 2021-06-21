@@ -14,6 +14,7 @@ namespace OhmGraphite.Test
         public async void CanSetupTimescale()
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("timescale/timescaledb:latest-pg12")
                 .WithEnvironment("POSTGRES_PASSWORD", "123456")
                 .WithPortBinding(5432, assignRandomHostPort: true)
@@ -35,7 +36,7 @@ namespace OhmGraphite.Test
             Assert.Equal(3, Convert.ToInt32(cmd.ExecuteScalar()));
         }
 
-        [Fact, Trait("Category", "integration")]
+        [IgnoreOnRemoteDockerFact, Trait("Category", "integration")]
         public async void InsertOnlyTimescale()
         {
             var image = await new ImageFromDockerfileBuilder()
