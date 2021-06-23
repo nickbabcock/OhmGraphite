@@ -151,7 +151,7 @@ namespace OhmGraphite.Test
             }
         }
 
-         [Fact, Trait("Category", "integration")]
+        [Fact, Trait("Category", "integration")]
         public async void CanInsertIntoInflux2Token()
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
