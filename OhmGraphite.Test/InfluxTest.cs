@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using DotNet.Testcontainers.Containers.Builders;
@@ -31,7 +32,7 @@ namespace OhmGraphite.Test
             var config = new InfluxConfig(new Uri(baseUrl), "mydb", "my_user", "my_pass");
             using var writer = new InfluxWriter(config, "my-pc");
             using var client = new HttpClient();
-            for (int attempts = 0; ; attempts++)
+            for (int attempts = 0;; attempts++)
             {
                 try
                 {
@@ -74,7 +75,7 @@ namespace OhmGraphite.Test
             var config = new InfluxConfig(new Uri(baseUrl), "mydb", "my_user", null);
             using var writer = new InfluxWriter(config, "my-pc");
             using var client = new HttpClient();
-            for (int attempts = 0; ; attempts++)
+            for (int attempts = 0;; attempts++)
             {
                 try
                 {
@@ -126,7 +127,7 @@ namespace OhmGraphite.Test
             var config = new Influx2Config(options);
 
             using var writer = new Influx2Writer(config, "my-pc");
-            for (int attempts = 0; ; attempts++)
+            for (int attempts = 0;; attempts++)
             {
                 try
                 {
@@ -177,7 +178,7 @@ namespace OhmGraphite.Test
             var results = MetricConfig.ParseAppSettings(customConfig);
 
             using var writer = new Influx2Writer(results.Influx2, "my-pc");
-            for (int attempts = 0; ; attempts++)
+            for (int attempts = 0;; attempts++)
             {
                 try
                 {
@@ -199,6 +200,81 @@ namespace OhmGraphite.Test
 
                     Thread.Sleep(TimeSpan.FromSeconds(1));
                 }
+            }
+        }
+
+        [Fact, Trait("Category", "integration")]
+        public async void CanInsertIntoInflux2TokenTls()
+        {
+            // We do some fancy docker footwork where we informally connect
+            // these two containers. In the future I believe test containers will
+            // be able to natively handle adding these to a docker network
+            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
+                .WithImage("influxdb:2.0-alpine")
+                .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
+                .WithEnvironment("DOCKER_INFLUXDB_INIT_USERNAME", "my-user")
+                .WithEnvironment("DOCKER_INFLUXDB_INIT_PASSWORD", "my-password")
+                .WithEnvironment("DOCKER_INFLUXDB_INIT_BUCKET", "mydb")
+                .WithEnvironment("DOCKER_INFLUXDB_INIT_ORG", "myorg")
+                .WithEnvironment("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN", "thisistheinfluxdbtoken")
+                .WithPortBinding(8086, assignRandomHostPort: true)
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8086));
+
+            await using var container = testContainersBuilder.Build();
+            await container.StartAsync();
+
+            var cmd = $"apk add openssl && openssl req -x509 -nodes -newkey rsa:4096 -keyout /tmp/key.pem -out /tmp/cert.pem -days 365 -subj '/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=www.example.com' && /usr/bin/ghostunnel server --listen=0.0.0.0:8087 --target={container.IpAddress}:8086 --unsafe-target --disable-authentication --key /tmp/key.pem --cert=/tmp/cert.pem";
+            var tlsContainerBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
+                .WithImage("squareup/ghostunnel")
+                .WithExposedPort(8087)
+                .WithPortBinding(8087, assignRandomHostPort: true)
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8087))
+                .WithEntrypoint("/bin/sh")
+                .WithCommand("-c", cmd);
+
+            await using var tlsContainer = tlsContainerBuilder.Build();
+            await tlsContainer.StartAsync();
+
+            var baseUrl = $"https://{tlsContainer.Hostname}:{tlsContainer.GetMappedPublicPort(8087)}";
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/influx2.config" };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            config.AppSettings.Settings["influx2_address"].Value = baseUrl;
+            var customConfig = new CustomConfig(config);
+            var results = MetricConfig.ParseAppSettings(customConfig);
+
+            MetricConfig.InstallCertificateVerification("false");
+            try
+            {
+                using var writer = new Influx2Writer(results.Influx2, "my-pc");
+                for (int attempts = 0;; attempts++)
+                {
+                    try
+                    {
+                        await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
+                        var influxDbClient = InfluxDBClientFactory.Create(results.Influx2.Options);
+                        var flux = "from(bucket:\"mydb\") |> range(start: -1h)";
+                        var queryApi = influxDbClient.GetQueryApi();
+                        var tables = await queryApi.QueryAsync(flux, "myorg");
+                        var fields = tables.SelectMany(x => x.Records).Select(x => x.GetValueByKey("identifier"));
+                        Assert.Contains("/intelcpu/0/temperature/0", fields);
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        if (attempts >= 10)
+                        {
+                            throw;
+                        }
+
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                    }
+                }
+            }
+            finally
+            {
+                ServicePointManager.ServerCertificateValidationCallback = null;
             }
         }
     }
