@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 
 namespace OhmGraphite
 {
@@ -12,7 +13,7 @@ namespace OhmGraphite
         private readonly INameResolution _nameLookup;
 
         public MetricConfig(TimeSpan interval, INameResolution nameLookup, GraphiteConfig graphite, InfluxConfig influx,
-            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<string, string> aliases, ISet<string> hiddenSensors, Influx2Config influx2)
+            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<string, string> aliases, List<Regex> hiddenSensors, Influx2Config influx2)
         {
             _nameLookup = nameLookup;
             Interval = interval;
@@ -33,7 +34,7 @@ namespace OhmGraphite
         public PrometheusConfig Prometheus { get; }
         public TimescaleConfig Timescale { get; }
         public Dictionary<string, string> Aliases { get; }
-        public ISet<string> HiddenSensors { get; }
+        public List<Regex> HiddenSensors { get; }
 
         public static MetricConfig ParseAppSettings(IAppConfig config)
         {
@@ -83,9 +84,17 @@ namespace OhmGraphite
                     x => config[x]
                 );
 
-            var hidden = config.GetKeys().Where(x => x.EndsWith("/hidden"))
-                .Select(x => x.Remove(x.LastIndexOf("/hidden", StringComparison.Ordinal)));
-            var hiddenSensors = new HashSet<string>(hidden);
+            // Do a similar trim with "/hidden" suffix except treat the prefix as a glob to hide
+            // a group of sensors like if one wants to hide all power sensors they can do:
+            // /*/power/*/hidden
+            // Code to detect interpret strings as globs is shamelessly taken from stackoverflow:
+            // https://stackoverflow.com/a/4146349/433785
+            var hiddenSensors = config.GetKeys().Where(x => x.EndsWith("/hidden"))
+                .Select(x => x.Remove(x.LastIndexOf("/hidden", StringComparison.Ordinal)))
+                .Select(pattern => new Regex(
+                    "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$",
+                    RegexOptions.IgnoreCase | RegexOptions.Singleline
+                )).ToList();
 
             return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases, hiddenSensors, influx2);
         }
@@ -129,6 +138,6 @@ namespace OhmGraphite
         }
 
         public bool TryGetAlias(string v, out string alias) => Aliases.TryGetValue(v, out alias);
-        public bool IsHidden(string id) => HiddenSensors.Contains(id);
+        public bool IsHidden(string id) => HiddenSensors.Any(x => x.IsMatch(id));
     }
 }
