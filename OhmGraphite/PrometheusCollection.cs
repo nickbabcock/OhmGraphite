@@ -83,6 +83,10 @@ namespace OhmGraphite
                         return "revolutions_per_minute";
                     case SensorType.Flow: // L/h
                         return "liters_per_hour";
+                    case SensorType.Current:
+                        return "amps";
+                    case SensorType.TimeSpan:
+                        return "seconds";
                     case SensorType.Factor: // 1
                     default:
                         return report.SensorType.ToString().ToLowerInvariant();
