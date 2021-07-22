@@ -1,3 +1,33 @@
+## 0.20.0 - 2021-07-22
+
+Allow hiding of sensors by glob. One can use globs to ignore a group of
+sensors. For instance, to hide all power sensors and hide clock sensors from an
+AMD CPU:
+
+```xml
+<add key="/amdcpu/*/clock/*/hidden" />
+<add key="/*/power/*/hidden" />
+```
+
+LibreHardwareMonitor (ie the sensor library) updated to latest:
+
+- Add D3D GPU Sensors
+- Add sensors for ASUS Crosshair VIII Hero
+- Fixes for ASUS C8H
+- Add embedded controller sensors for ROG STRIX X570-E GAMING
+- Fix AMD overdrive 8
+- Add ADL (fan) Sensor support
+- Add Ryzen SMU support
+- Add PSU sensors (only corsair)
+- Increased timeouts for WMI querying HDD data
+- Support reporting multiple GPU fans
+
+Changes detected on test system. Mileage will vary based on hardware:
+
+- Ryzen CPU package power renamed to CPU package
+- Nvidia GPU owners should see many new metrics (test system saw an increase of 5 to 24 load sensors).
+- All Nvidia GPU sensors appear to be reordered and so may show up as distinct metrics in your time series database of choice.
+
 ## 0.19.0 - 2021-05-29
 
 - Add influxdb 2 support (see docs for more information)
