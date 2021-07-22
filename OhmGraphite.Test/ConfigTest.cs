@@ -124,6 +124,12 @@ namespace OhmGraphite.Test
             Assert.True(results.IsHidden("/amdcpu/0/load/1"));
             Assert.True(results.IsHidden("/amdcpu/0/load/2"));
             Assert.False(results.IsHidden("/amdcpu/0/load/3"));
+
+            Assert.True(results.IsHidden("/amdcpu/0/clock/1"));
+            Assert.True(results.IsHidden("/amdcpu/1/clock/100"));
+            Assert.True(results.IsHidden("/amdcpu/0/power/1"));
+            Assert.True(results.IsHidden("/nvidia-gpu/0/power/1"));
+            Assert.False(results.IsHidden("/nvme/0/factor/power_cycles"));
         }
 
         [Fact]

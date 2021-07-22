@@ -247,6 +247,13 @@ There may be a sensor that is faulty on a given machine. Maybe it reports negati
 <add key="/lpc/nct6792d/temperature/1/hidden" />
 ```
 
+One can use globs to ignore a group of sensors. For instance, to hide all power sensors and hide clock sensors from an AMD CPU:
+
+```xml
+<add key="/amdcpu/*/clock/*/hidden" />
+<add key="/*/power/*/hidden" />
+``` 
+
 ### Determine Sensor Id
 
 There are several ways to determine the sensor id of a metric:
