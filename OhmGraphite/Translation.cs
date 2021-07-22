@@ -9,6 +9,7 @@ namespace OhmGraphite
     public enum SensorType
     {
         Voltage, // V
+        Current, // A
         Clock, // MHz
         Temperature, // °C
         Load, // %
@@ -22,6 +23,7 @@ namespace OhmGraphite
         Data, // GB = 2^30 Bytes    
         SmallData, // MB = 2^20 Bytes
         Throughput, // B/s
+        TimeSpan, // Seconds
     }
 
     /// <summary>
@@ -38,7 +40,9 @@ namespace OhmGraphite
         GpuAti,
         Cooler,
         HDD,
-        NIC
+        NIC,
+        PSU,
+        EmbeddedController,
     }
 
     public static class TranslationExtension {
@@ -48,6 +52,8 @@ namespace OhmGraphite
             {
                 case LibreHardwareMonitor.Hardware.SensorType.Voltage:
                     return SensorType.Voltage;
+                case LibreHardwareMonitor.Hardware.SensorType.Current:
+                    return SensorType.Current;
                 case LibreHardwareMonitor.Hardware.SensorType.Clock:
                     return SensorType.Clock;
                 case LibreHardwareMonitor.Hardware.SensorType.Temperature:
@@ -74,6 +80,8 @@ namespace OhmGraphite
                     return SensorType.SmallData;
                 case LibreHardwareMonitor.Hardware.SensorType.Throughput:
                     return SensorType.Throughput;
+                case LibreHardwareMonitor.Hardware.SensorType.TimeSpan:
+                    return SensorType.TimeSpan;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s), s, "unexpected hardware monitor sensor translation");
             }
@@ -101,6 +109,10 @@ namespace OhmGraphite
                     return HardwareType.HDD;
                 case LibreHardwareMonitor.Hardware.HardwareType.Network:
                     return HardwareType.NIC;
+                case LibreHardwareMonitor.Hardware.HardwareType.Psu:
+                    return HardwareType.PSU;
+                case LibreHardwareMonitor.Hardware.HardwareType.EmbeddedController:
+                    return HardwareType.EmbeddedController;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s), s, "unexpected hardware monitor hardware translation");
             }
