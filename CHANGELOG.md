@@ -1,3 +1,17 @@
+## 0.21.0 - 2021-10-06
+
+Maintenance release that updates internal libraries including
+LibreHardwareMonitor from
+[07beb4f...d14f1aa84](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/07beb4f...ce882e3),
+which contains the following fixes:
+
+- Fix Nvidia memory report where free and used memory were mixed
+- Additional ASUS EC detection
+- Add Gigabyte X570 Gaming X motherboard
+- Add ASUS ROG Strix B550-I
+- Add ASUS Cross VIII Formula motherboard
+- Fix no video card temps detected for AMD 5700XT
+
 ## 0.20.0 - 2021-07-22
 
 Allow hiding of sensors by glob. One can use globs to ignore a group of
