@@ -2,68 +2,57 @@
 
 # OhmGraphite
 
-OhmGraphite takes the hard work of extracting hardware sensors from [Open Hardware Monitor](http://openhardwaremonitor.org/) (technically [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor) for most up to date hardware) and exports the data in a [graphite](https://graphiteapp.org/) (or [InfluxdDB](https://www.influxdata.com/) / [Prometheus](https://prometheus.io/) / [TimescaleDB](https://www.timescale.com/)) compatible format. OhmGraphite is for those missing any of the following in [Grafana](https://grafana.com/) or (other time series UI):
-
-- Breakdown of GPU utilization
-- Fan speed
-- Temperature for hard drives, CPU cores, GPU, Motherboard
-- Voltage readings
-
-## Who's this for?
-
-- People who are familiar with Graphite (or InfluxDB / Prometheus / TimescaleDB) / Grafana and may have an instance running on their home or cloud server. If you're not familiar with those applications, it may be overwhelming to setup and maintain them. If you're just looking for a UI for hardware sensors, I'd recommend [HWINFO](https://www.hwinfo.com/)
-- People who know how to execute commands on Windows Command Prompt or other terminal
-- People who like lightweight (8MB of RAM and neglible CPU usage), portable (can run off usb), and straightforward applications
-
-## System Recommendations
-
-- Windows
-- Administrator privileges
-
-## Introduction
-
-OhmGraphite functions as a console app or a Windows service that periodically polls the hardware. My recommendation is that even though OhmGraphite can be run via Mono / Docker, many hardware sensors aren't available in those modes.
-
-I use this every day to create beautiful dashboards. Keep in mind, Open Hardware Monitor supported components will determine what metrics are available. Below are graphs / stats made with OhmGraphite (couple of the panels are complemented with [telegraf](https://github.com/influxdata/telegraf) as demonstrated in [Monitoring Windows system metrics with grafana](https://nickb.dev/blog/monitoring-windows-system-metrics-with-grafana))
+OhmGraphite is a Windows service that exposes hardware sensor data to a metric store, allowing one to create informative and beautiful dashboards in [Grafana](https://grafana.com/) or another time series UI:
 
 [![dashboard](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/dashboard.png)](https://github.com/nickbabcock/OhmGraphite/raw/master/assets/dashboard.png)
 
-## Getting Started (Windows)
+The above dashboard captures:
 
-- Create a directory that will be the home base for OhmGraphite (I use C:\Apps\OhmGraphite).
+- Power consumption of the CPU and GPU
+- CPU voltages and frequencies
+- Load breakdown on individual GPU components
+- CPU, GPU, disk, and motherboard temperature readings
+- Disk activity, space remaining, and error monitoring
+- Fan speed
+- Network consumption
+
+Supported metric stores:
+
+- [Graphite](https://graphiteapp.org/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11591)
+- [InfluxdDB](https://www.influxdata.com/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11601)
+- [Prometheus](https://prometheus.io/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11587)
+- [Postgres](https://www.postgresql.org/) / [TimescaleDB](https://www.timescale.com/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11599)
+
+Hardware support is provided through [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor). Since detected sensors is hardware dependent, one can use the LibreHardwareMonitor GUI to preview a subset of metrics that will be exported by OhmGraphite. If a GUI of hardware sensors is all that is desired, and the thought of running and configuring Grafana and a metric store sounds overwhelming, I'd recommend [HWINFO](https://www.hwinfo.com/).
+
+## Installation
+
+- Create a directory that will be the home base for OhmGraphite (I use `C:\Apps\OhmGraphite`).
 - Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory.
 - Update app configuration (located at `OhmGraphite.exe.config`). See configs for [Graphite](#graphite-configuration), [InfluxDB](#influxdb-configuration), [Prometheus](#prometheus-configuration), [Timescale / Postgres](#timescaledb-configuration)
-- This config can be updated in the future, but will require a restart of the app for effect.
-- The app can be ran interactively by executing `.\OhmGraphite.exe run`. Executing as administrator will most likely increase the number of sensors found (OhmGraphite will log how many sensors are found).
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
 - To start the app after installation: `.\OhmGraphite.exe start` or your favorite Windows service management tool
+- If immediately installing the app is unnerving, the app can be ran interactively by executing `.\OhmGraphite.exe run`. Executing as administrator will most likely increase the number of sensors found (OhmGraphite will log how many sensors are found).
 
-### Hostname Resolution
+Congrats! Installation is done and you'll start seeing metrics flowing into your desired metric store.
 
-When OhmGraphite sends metrics to the desired sink, it includes the computers hostname for additional context to allow scenarios where one has a grafana template variable based on hostname. There are three possible ways for OhmGraphite to resolve the hostname: NetBIOS (the default), DNS, and a static user-configured name.
+## Upgrades
 
-> NOTE: It's hard to say exactly how a machine's NetBIOS name and internet host name will differ, but to give an example, a NetBIOS name of `TINI` can have a host name of `Tini`.
+- Stop OhmGraphite service `.\OhmGraphite.exe stop`
+- Unzip latest release and copy `OhmGraphite.exe` to your installation directory.
+- Start OhmGraphite service `.\OhmGraphite.exe start`
 
-To switch to DNS hostname resolution, update the configuration to include `name_lookup`, else any other value will be assumed to be a custom static name.
+## Uninstall
 
-```xml
-<?xml version="1.0" encoding="utf-8" ?>
-<configuration>
-  <appSettings>
-    <add key="name_lookup" value="dns" />
-  </appSettings>
-</configuration>
-```
+- Stop OhmGraphite service `.\OhmGraphite.exe stop`
+- Run uninstall command `.\OhmGraphite.exe uninstall`
+- Remove files
 
-### Grafana Configuration
+## Configuration
 
-While not necessary, there are dashboards tailored to OhmGraphite that one can use in Grafana to jump start their own dashboards:
+App configuration is located in the installation directory at `OhmGraphite.exe.config`.
 
-- [Prometheus](https://grafana.com/grafana/dashboards/11587)
-- [Graphite](https://grafana.com/grafana/dashboards/11591)
-- [Postgres / Timescale](https://grafana.com/grafana/dashboards/11599)
-- [Influxdb](https://grafana.com/grafana/dashboards/11601)
-- [Influxdb (User submitted)](https://github.com/nickbabcock/OhmGraphite/blob/master/assets/dashboards/ohm-influx-alt.json)
+Config updates require an app restart to take effect.
 
 ### Graphite Configuration
 
@@ -231,6 +220,23 @@ CREATE INDEX IF NOT EXISTS idx_ohm_identifier ON ohm_stats (identifier);
 
 Currently the schema and the columns are not configurable.
 
+### Hostname Resolution
+
+When OhmGraphite sends metrics to the desired sink, it includes the computers hostname for additional context to allow scenarios where one has a grafana template variable based on hostname. There are three possible ways for OhmGraphite to resolve the hostname: NetBIOS (the default), DNS, and a static user-configured name.
+
+> NOTE: It's hard to say exactly how a machine's NetBIOS name and internet host name will differ, but to give an example, a NetBIOS name of `TINI` can have a host name of `Tini`.
+
+To switch to DNS hostname resolution, update the configuration to include `name_lookup`, else any other value will be assumed to be a custom static name.
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="name_lookup" value="dns" />
+  </appSettings>
+</configuration>
+```
+
 ### Metric Name Aliasing
 
 It is possible that the sensor names exposed through OhmGraphite are not descriptive enough. For instance, "Fan #2" could have RPM exposed, but you know that a more descriptive name would be "CPU Fan". To have OhmGraphite export the sensor under the "CPU Fan" name, one will need to add the mapping from sensor id (+ `/name` suffix) to the desired name like so:
@@ -287,18 +293,6 @@ The possible values:
  - a file path of a certificate that the server is allowed to return and
  still be considered a valid request (useful for self signed
  certificates). Recommended to be an absolute file path.
-
-## Upgrades
-
-- Stop OhmGraphite service `.\OhmGraphite.exe stop`
-- Unzip latest release and copy `OhmGraphite.exe` to your installation directory.
-- Start OhmGraphite service `.\OhmGraphite.exe start`
-
-## Uninstall
-
-- Stop OhmGraphite service `.\OhmGraphite.exe stop`
-- Run uninstall command `.\OhmGraphite.exe uninstall`
-- Remove files
 
 ## Debugging Tips
 
