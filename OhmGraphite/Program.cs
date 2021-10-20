@@ -20,23 +20,22 @@ namespace OhmGraphite
             {
                 x.Service<IManage>(s =>
                 {
-                    // We'll want to capture all available hardware metrics
-                    // to send to graphite
-                    var computer = new Computer
-                    {
-                        IsGpuEnabled = true,
-                        IsMotherboardEnabled = true,
-                        IsCpuEnabled = true,
-                        IsMemoryEnabled = true,
-                        IsNetworkEnabled = true,
-                        IsStorageEnabled = true,
-                        IsControllerEnabled = true
-                    };
-
                     s.ConstructUsing(name =>
                     {
                         var configDisplay = string.IsNullOrEmpty(configPath) ? "default" : configPath;
                         var config = Logger.LogFunction($"parse config {configDisplay}", () => MetricConfig.ParseAppSettings(CreateConfiguration(configPath)));
+
+                        var computer = new Computer
+                        {
+                            IsGpuEnabled = config.EnabledHardware.Gpu,
+                            IsMotherboardEnabled = config.EnabledHardware.Motherboard,
+                            IsCpuEnabled = config.EnabledHardware.Cpu,
+                            IsMemoryEnabled = config.EnabledHardware.Ram,
+                            IsNetworkEnabled = config.EnabledHardware.Network,
+                            IsStorageEnabled = config.EnabledHardware.Storage,
+                            IsControllerEnabled = config.EnabledHardware.Controller
+                        };
+
                         var collector = new SensorCollector(computer, config);
                         return CreateManager(config, collector);
                     });

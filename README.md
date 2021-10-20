@@ -272,6 +272,26 @@ There are several ways to determine the sensor id of a metric:
 Sensor added: /lpc/nct6792d/fan/1 "Fan #2"
 ```
 
+### Disabling Hardware
+
+By default, all hardware sensor collection is enabled to allow for minimal configuration in common use cases. However, some hardware may be susceptible to instability when polled. Hiding all of the sensors from unstable hardware isn't sufficient as sensor name filtering occurs after querying hardware. Thus there is configuration to determine what hardware is enabled.
+
+The snippet below shows all the options that can be used to disable hardware.
+
+```xml
+<add key="/cpu/enabled" value="FaLsE" />
+<add key="/gpu/enabled" value="false" />
+<add key="/motherboard/enabled" value="false" />
+<add key="/ram/enabled" value="false" />
+<add key="/network/enabled" value="false" />
+<add key="/storage/enabled" value="false" />
+<add key="/controller/enabled" value="false" />
+```
+
+Since disabling sensors at the hardware level is more efficient than a glob to hide desired sensors, disabling hardware is desirable even if the underlying hardware is stable.
+
+When hardware is disabled, all instances of that hardware are disabled. For instance, if one has multiple storage devices and only one is unstable, disabling storage hardware will halt sensor collection from all of them.
+
 ### Certificates
 
 When connecting to a service that presents a self signed certificate, one can specify `certificate_verification`

@@ -37,6 +37,14 @@ namespace OhmGraphite.Test
             Assert.Equal(2003, results.Graphite.Port);
             Assert.Equal(TimeSpan.FromSeconds(5), results.Interval);
             Assert.False(results.Graphite.Tags);
+
+            Assert.True(results.EnabledHardware.Cpu);
+            Assert.True(results.EnabledHardware.Gpu);
+            Assert.True(results.EnabledHardware.Motherboard);
+            Assert.True(results.EnabledHardware.Controller);
+            Assert.True(results.EnabledHardware.Network);
+            Assert.True(results.EnabledHardware.Ram);
+            Assert.True(results.EnabledHardware.Storage);
         }
 
         [Fact]
@@ -130,6 +138,8 @@ namespace OhmGraphite.Test
             Assert.True(results.IsHidden("/amdcpu/0/power/1"));
             Assert.True(results.IsHidden("/nvidia-gpu/0/power/1"));
             Assert.False(results.IsHidden("/nvme/0/factor/power_cycles"));
+
+            Assert.False(results.EnabledHardware.Cpu);
         }
 
         [Fact]
