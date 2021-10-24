@@ -71,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1635027549465,
+  "iteration": 1635035755441,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -2871,7 +2871,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "ohm_hdd_celsius{instance=\"$instance\"}",
+          "expr": "max by (hardware,hw_instance) (ohm_hdd_celsius{instance=\"$instance\"})",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -4076,5 +4076,5 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 38
+  "version": 39
 }
