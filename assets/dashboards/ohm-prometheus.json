@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.2.1"
+      "version": "8.2.2"
     },
     {
       "type": "datasource",
@@ -71,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1634402682284,
+  "iteration": 1635027549465,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -156,7 +156,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -236,7 +236,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -316,7 +316,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -409,7 +409,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -479,7 +479,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -537,7 +537,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -595,7 +595,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -692,7 +692,7 @@
           }
         ]
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -773,7 +773,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -830,7 +830,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -887,7 +887,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -968,7 +968,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -1048,7 +1048,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -1128,7 +1128,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -1208,7 +1208,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -1265,7 +1265,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -1325,7 +1325,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -2867,7 +2867,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -3061,7 +3061,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "repeat": null,
       "targets": [
         {
@@ -3781,7 +3781,7 @@
           }
         ]
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.2.2",
       "targets": [
         {
           "exemplar": true,
@@ -3978,7 +3978,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "ohm_hdd_load_percent{instance=\"$instance\"}",
+        "definition": "{__name__=~\"ohm_hdd_.*\",instance=\"$instance\"}",
         "description": null,
         "error": null,
         "hide": 2,
@@ -3988,7 +3988,7 @@
         "name": "hdd",
         "options": [],
         "query": {
-          "query": "ohm_hdd_load_percent{instance=\"$instance\"}",
+          "query": "{__name__=~\"ohm_hdd_.*\",instance=\"$instance\"}",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -4001,7 +4001,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "ohm_nic_bytes_per_second{instance=\"$instance\"}",
+        "definition": "{__name__=~\"ohm_nic_.*\",instance=\"$instance\"}",
         "description": null,
         "error": null,
         "hide": 2,
@@ -4011,7 +4011,7 @@
         "name": "network",
         "options": [],
         "query": {
-          "query": "ohm_nic_bytes_per_second{instance=\"$instance\"}",
+          "query": "{__name__=~\"ohm_nic_.*\",instance=\"$instance\"}",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -4024,7 +4024,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "ohm_cpu_load_percent{instance=\"$instance\"}",
+        "definition": "{__name__=~\"ohm_cpu_.*\",instance=\"$instance\"}",
         "description": null,
         "error": null,
         "hide": 2,
@@ -4034,7 +4034,7 @@
         "name": "cpu",
         "options": [],
         "query": {
-          "query": "ohm_cpu_load_percent{instance=\"$instance\"}",
+          "query": "{__name__=~\"ohm_cpu_.*\",instance=\"$instance\"}",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -4047,7 +4047,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "ohm_gpunvidia_load_percent{instance=\"$instance\"}",
+        "definition": "{__name__=~\"ohm_gpu.*\",instance=\"$instance\"}",
         "description": null,
         "error": null,
         "hide": 2,
@@ -4057,7 +4057,7 @@
         "name": "gpu",
         "options": [],
         "query": {
-          "query": "ohm_gpunvidia_load_percent{instance=\"$instance\"}",
+          "query": "{__name__=~\"ohm_gpu.*\",instance=\"$instance\"}",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -4076,5 +4076,5 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 35
+  "version": 38
 }
