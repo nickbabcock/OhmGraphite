@@ -71,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1635542702180,
+  "iteration": 1635551124884,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1576,7 +1576,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "line"
+              "mode": "off"
             }
           },
           "links": [],
@@ -4079,5 +4079,5 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 41
+  "version": 43
 }
