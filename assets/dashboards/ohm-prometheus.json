@@ -71,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1635035755441,
+  "iteration": 1635542702180,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1553,6 +1553,7 @@
           "custom": {
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 100,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
@@ -2069,6 +2070,7 @@
           "custom": {
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 100,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
@@ -3087,6 +3089,7 @@
           "custom": {
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 100,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
@@ -3113,7 +3116,6 @@
             }
           },
           "mappings": [],
-          "max": 100,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -3371,6 +3373,7 @@
           "custom": {
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 100,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
