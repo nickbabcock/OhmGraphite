@@ -237,6 +237,8 @@ To switch to DNS hostname resolution, update the configuration to include `name_
 </configuration>
 ```
 
+Prometheus setups are unaffected by `name_lookup`, as Prometheus [automatically creates the instance label when scraping](https://prometheus.io/docs/concepts/jobs_instances/). If renaming is desired, you'll want to [change the instance label](https://www.robustperception.io/controlling-the-instance-label) by either hardcoding the alias in the Prometheus config or using DNS.
+
 ### Metric Name Aliasing
 
 It is possible that the sensor names exposed through OhmGraphite are not descriptive enough. For instance, "Fan #2" could have RPM exposed, but you know that a more descriptive name would be "CPU Fan". To have OhmGraphite export the sensor under the "CPU Fan" name, one will need to add the mapping from sensor id (+ `/name` suffix) to the desired name like so:
