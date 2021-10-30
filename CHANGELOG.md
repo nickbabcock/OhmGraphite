@@ -1,3 +1,16 @@
+## 0.22.0 - 2021-10-29
+
+Add configuration to disable polling of hardware:
+
+```xml
+<add key="/gpu/enabled" value="false" />
+```
+Update LibreHardwareMonitor from [ce882e...1701eb](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/ce882e...1701eb):
+
+- Add GPU hot spot temperature
+- Fixes incorrect GPU fan readings for certain NVIDIA models
+- Add support for the embedded Asus B550-I controller
+
 ## 0.21.0 - 2021-10-06
 
 Maintenance release that updates internal libraries including
