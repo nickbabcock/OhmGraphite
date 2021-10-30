@@ -8,12 +8,15 @@ using System.Text.RegularExpressions;
 
 namespace OhmGraphite
 {
+    public record EnabledHardware(bool Cpu, bool Gpu, bool Motherboard, bool Ram, bool Network, bool Storage,
+        bool Controller);
+
     public class MetricConfig
     {
         private readonly INameResolution _nameLookup;
 
         public MetricConfig(TimeSpan interval, INameResolution nameLookup, GraphiteConfig graphite, InfluxConfig influx,
-            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<string, string> aliases, List<Regex> hiddenSensors, Influx2Config influx2)
+            PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<string, string> aliases, List<Regex> hiddenSensors, Influx2Config influx2, EnabledHardware enabledHardware)
         {
             _nameLookup = nameLookup;
             Interval = interval;
@@ -24,6 +27,7 @@ namespace OhmGraphite
             Aliases = aliases;
             HiddenSensors = hiddenSensors;
             Influx2 = influx2;
+            EnabledHardware = enabledHardware;
         }
 
         public string LookupName() => _nameLookup.LookupName();
@@ -31,6 +35,7 @@ namespace OhmGraphite
         public GraphiteConfig Graphite { get; }
         public InfluxConfig Influx { get; }
         public Influx2Config Influx2 { get; }
+        public EnabledHardware EnabledHardware { get; }
         public PrometheusConfig Prometheus { get; }
         public TimescaleConfig Timescale { get; }
         public Dictionary<string, string> Aliases { get; }
@@ -47,6 +52,7 @@ namespace OhmGraphite
 
             INameResolution nameLookup = NameLookup(config["name_lookup"] ?? "netbios");
             InstallCertificateVerification(config["certificate_verification"] ?? "True");
+            var enabledHardware = ParseEnabledHardware(config);
 
             var type = config["type"] ?? "graphite";
             GraphiteConfig gconfig = null;
@@ -96,7 +102,20 @@ namespace OhmGraphite
                     RegexOptions.IgnoreCase | RegexOptions.Singleline
                 )).ToList();
 
-            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases, hiddenSensors, influx2);
+            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases, hiddenSensors, influx2, enabledHardware);
+        }
+
+        private static EnabledHardware ParseEnabledHardware(IAppConfig config)
+        {
+            return new (
+                config["/cpu/enabled"]?.ToLowerInvariant() != "false",
+                config["/gpu/enabled"]?.ToLowerInvariant() != "false",
+                config["/motherboard/enabled"]?.ToLowerInvariant() != "false",
+                config["/ram/enabled"]?.ToLowerInvariant() != "false",
+                config["/network/enabled"]?.ToLowerInvariant() != "false",
+                config["/storage/enabled"]?.ToLowerInvariant() != "false",
+                config["/controller/enabled"]?.ToLowerInvariant() != "false"
+            );
         }
 
         private static INameResolution NameLookup(string lookup)
