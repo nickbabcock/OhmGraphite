@@ -38,7 +38,7 @@
     <PackageReference Include="InfluxDB.Client" Version="3.2.0" />
     <PackageReference Include="Npgsql" Version="5.0.10" />
     <PackageReference Include="prometheus-net" Version="5.0.2" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="TopShelf" Version="4.3.0" />
     <PackageReference Include="Topshelf.NLog" Version="4.3.0" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
