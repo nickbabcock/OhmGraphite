@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.2.2"
+      "version": "8.2.5"
     },
     {
       "type": "datasource",
@@ -71,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1635551124884,
+  "iteration": 1638314157856,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -156,7 +156,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -236,7 +236,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -316,7 +316,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -409,7 +409,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -479,7 +479,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -537,7 +537,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -595,7 +595,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -692,7 +692,7 @@
           }
         ]
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -773,7 +773,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -830,7 +830,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -887,7 +887,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -968,7 +968,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -1048,7 +1048,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -1128,7 +1128,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -1208,7 +1208,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -1265,7 +1265,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -1325,7 +1325,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -2869,7 +2869,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -3063,7 +3063,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "repeat": null,
       "targets": [
         {
@@ -3356,7 +3356,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 98
+        "y": 112
       },
       "id": 130,
       "panels": [],
@@ -3419,7 +3419,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 99
+        "y": 113
       },
       "id": 136,
       "links": [],
@@ -3514,7 +3514,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 99
+        "y": 113
       },
       "id": 138,
       "links": [],
@@ -3638,7 +3638,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 108
+        "y": 122
       },
       "id": 140,
       "links": [],
@@ -3682,7 +3682,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 117
+        "y": 131
       },
       "id": 30,
       "panels": [],
@@ -3771,7 +3771,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 118
+        "y": 132
       },
       "id": 32,
       "options": {
@@ -3784,7 +3784,7 @@
           }
         ]
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "exemplar": true,
@@ -3903,7 +3903,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 126
+        "y": 140
       },
       "id": 34,
       "links": [],
@@ -3949,7 +3949,7 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 31,
+  "schemaVersion": 32,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -4079,5 +4079,5 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 45
+  "version": 46
 }
