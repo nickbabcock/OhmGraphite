@@ -4017,7 +4017,7 @@
           "query": "{__name__=~\"ohm_nic_.*\",instance=\"$instance\"}",
           "refId": "StandardVariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "/.*hardware=\"([^\"]*).*/",
         "skipUrlSync": false,
         "sort": 0,
@@ -4040,7 +4040,7 @@
           "query": "{__name__=~\"ohm_cpu_.*\",instance=\"$instance\"}",
           "refId": "StandardVariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "/.*hardware=\"([^\"]*).*/",
         "skipUrlSync": false,
         "sort": 0,
@@ -4063,7 +4063,7 @@
           "query": "{__name__=~\"ohm_gpu.*\",instance=\"$instance\"}",
           "refId": "StandardVariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "/.*hardware=\"([^\"]*).*/",
         "skipUrlSync": false,
         "sort": 0,
@@ -4079,5 +4079,5 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 43
+  "version": 45
 }
