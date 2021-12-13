@@ -25,7 +25,7 @@ namespace OhmGraphite.Test
             await container.StartAsync();
 
             string connStr = $"Host={container.Hostname};Username=postgres;Password=123456;Port={container.GetMappedPublicPort(5432)}";
-            var epoch = new DateTime(2001, 1, 13);
+            var epoch = new DateTime(2001, 1, 13, 0, 0, 0, DateTimeKind.Utc);
 
             using var writer = new TimescaleWriter(connStr, true, "my-pc");
             await using var conn = new NpgsqlConnection(connStr);
@@ -57,7 +57,7 @@ namespace OhmGraphite.Test
             await container.StartAsync();
 
             string selectStr =$"Host={container.Hostname};Username=postgres;Password=123456;Port={container.GetMappedPublicPort(5432)};Database=timescale_built";
-            var epoch = new DateTime(2001, 1, 13);
+            var epoch = new DateTime(2001, 1, 13, 0, 0, 0, DateTimeKind.Utc);
 
             string connStr = $"Host={container.Hostname};Username=ohm;Password=itsohm;Port={container.GetMappedPublicPort(5432)};Database=timescale_built";
             using var writer = new TimescaleWriter(connStr, false, "my-pc");
