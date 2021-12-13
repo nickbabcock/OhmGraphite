@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using NLog;
 using LibreHardwareMonitor.Hardware;
 using Prometheus;
@@ -16,12 +17,20 @@ namespace OhmGraphite
         private static void Main()
         {
             string configPath = string.Empty;
+            bool showVersion = false;
             HostFactory.Run(x =>
             {
                 x.Service<IManage>(s =>
                 {
                     s.ConstructUsing(name =>
                     {
+                        if (showVersion)
+                        {
+                            var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+                            Console.WriteLine(version ?? "no version detected");
+                            Environment.Exit(0);
+                        }
+
                         var configDisplay = string.IsNullOrEmpty(configPath) ? "default" : configPath;
                         var config = Logger.LogFunction($"parse config {configDisplay}", () => MetricConfig.ParseAppSettings(CreateConfiguration(configPath)));
 
@@ -45,6 +54,7 @@ namespace OhmGraphite
 
                 // Allow one to specify a command line argument when running interactively
                 x.AddCommandLineDefinition("config", v => configPath = v);
+                x.AddCommandLineSwitch("version", v => showVersion = v);
                 x.UseNLog();
                 x.RunAsLocalSystem();
                 x.SetDescription(
