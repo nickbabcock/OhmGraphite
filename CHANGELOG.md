@@ -1,3 +1,23 @@
+## 0.23.0 - 2021-12-15
+
+The OhmGraphite download size is double the previous version but the disk size
+after extraction is approximately the same. OhmGraphite has been upgraded to
+NET 6.0, which shouldn't be user visible; however, changes in executable
+trimming forced a migration to a new way to bundle OhmGraphite in order to keep
+a reasonable executable size. This should all be transparent to the user, but
+this was brought up in case issues are seen with this new version (ie: startup
+performance may have worsened so I appreciate any reports about this).
+
+For LibreHardwareMonitor, the headlining change is that Alder Lake and Jasper
+Lake are better supported. The other changes are [mostly
+minor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/1701eb9...d3a38bf)
+
+Addtionally, a CLI flag was added for OhmGraphite to return its version:
+
+```ps
+.\OhmGraphite.exe run --version
+```
+
 ## 0.22.0 - 2021-10-29
 
 Add configuration to disable polling of hardware:
