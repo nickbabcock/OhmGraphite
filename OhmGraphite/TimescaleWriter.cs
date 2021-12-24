@@ -30,6 +30,10 @@ namespace OhmGraphite
         {
             try
             {
+                // "timestamp with time zone" postgres type is a UTC timestamp so
+                // we explicitly convert the reported time to UTC to avoid a cast
+                // exception by npgsql
+                reportTime = reportTime.ToUniversalTime();
                 if (_failure)
                 {
                     Logger.Debug("Clearing connection pool");
