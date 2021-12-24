@@ -1,3 +1,9 @@
+## 0.23.1 - 2021-12-23
+
+Bugfix for postgres / timescale users where insertions would fail due to the
+server expecting a datetime in UTC but OhmGraphite was sending a datetime in
+the local timezone.
+
 ## 0.23.0 - 2021-12-15
 
 The OhmGraphite download size is double the previous version but the disk size

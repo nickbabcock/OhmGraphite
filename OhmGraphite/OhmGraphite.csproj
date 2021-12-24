@@ -16,7 +16,7 @@
     <Copyright>Nick Babcock</Copyright>
     <Major>0</Major>
     <Minor>23</Minor>
-    <Revision>0</Revision>
+    <Revision>1</Revision>
     <AssemblyVersion>$(Major).$(Minor).$(Revision)</AssemblyVersion>
     <AssemblyFileVersion>$(Major).$(Minor).$(Revision)</AssemblyFileVersion>
     <InformationalVersion>$(Major).$(Minor).$(Revision)</InformationalVersion>
