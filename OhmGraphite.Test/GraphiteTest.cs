@@ -15,7 +15,7 @@ namespace OhmGraphite.Test
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("graphiteapp/graphite-statsd")
+                .WithImage("graphiteapp/graphite-statsd:1.1.8-2")
                 .WithEnvironment("REDIS_TAGDB", "y")
                 .WithPortBinding(2003, assignRandomHostPort: true)
                 .WithPortBinding(80, assignRandomHostPort: true)
@@ -56,7 +56,7 @@ namespace OhmGraphite.Test
         {
             var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("graphiteapp/graphite-statsd")
+                .WithImage("graphiteapp/graphite-statsd:1.1.8-2")
                 .WithEnvironment("REDIS_TAGDB", "y")
                 .WithPortBinding(2003, assignRandomHostPort: true)
                 .WithPortBinding(80, assignRandomHostPort: true)
