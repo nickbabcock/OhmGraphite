@@ -20,7 +20,7 @@ Supported metric stores:
 
 - [Graphite](https://graphiteapp.org/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11591)
 - [InfluxdDB](https://www.influxdata.com/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11601)
-- [Prometheus](https://prometheus.io/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11587) for Grafana v8.1+
+- [Prometheus](https://prometheus.io/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11587) for Grafana v8.3+
 - [Postgres](https://www.postgresql.org/) / [TimescaleDB](https://www.timescale.com/) - [(starter dashboard)](https://grafana.com/grafana/dashboards/11599)
 
 Hardware support is provided through [LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor). Since detected sensors is hardware dependent, one can use the LibreHardwareMonitor GUI to preview a subset of metrics that will be exported by OhmGraphite. If a GUI of hardware sensors is all that is desired, and the thought of running and configuring Grafana and a metric store sounds overwhelming, I'd recommend [HWINFO](https://www.hwinfo.com/).
