@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 namespace OhmGraphite
 {
     public record EnabledHardware(bool Cpu, bool Gpu, bool Motherboard, bool Ram, bool Network, bool Storage,
-        bool Controller);
+        bool Controller, bool Psu);
 
     public class MetricConfig
     {
@@ -114,7 +114,8 @@ namespace OhmGraphite
                 config["/ram/enabled"]?.ToLowerInvariant() != "false",
                 config["/network/enabled"]?.ToLowerInvariant() != "false",
                 config["/storage/enabled"]?.ToLowerInvariant() != "false",
-                config["/controller/enabled"]?.ToLowerInvariant() != "false"
+                config["/controller/enabled"]?.ToLowerInvariant() != "false",
+                config["/psu/enabled"]?.ToLowerInvariant() != "false"
             );
         }
 
