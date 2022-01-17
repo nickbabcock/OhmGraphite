@@ -56,11 +56,11 @@ namespace OhmGraphite
 
         public void Update()
         {
-            var health = _nvme.Smart.GetHealthInfo();
-            ErrorInfoLogEntryCount.Value = health.ErrorInfoLogEntryCount;
-            MediaErrors.Value = health.MediaErrors;
-            PowerCycles.Value = health.PowerCycle;
-            UnsafeShutdowns.Value = health.UnsafeShutdowns;
+            var health = _nvme?.Smart?.GetHealthInfo();
+            ErrorInfoLogEntryCount.Value = health?.ErrorInfoLogEntryCount;
+            MediaErrors.Value = health?.MediaErrors;
+            PowerCycles.Value = health?.PowerCycle;
+            UnsafeShutdowns.Value = health?.UnsafeShutdowns;
         }
     }
 }
