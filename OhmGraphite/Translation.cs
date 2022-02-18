@@ -24,6 +24,7 @@ namespace OhmGraphite
         SmallData, // MB = 2^20 Bytes
         Throughput, // B/s
         TimeSpan, // Seconds
+        Energy // milliwatt-hour (mWh)
     }
 
     /// <summary>
@@ -43,6 +44,7 @@ namespace OhmGraphite
         NIC,
         PSU,
         EmbeddedController,
+        Battery,
     }
 
     public static class TranslationExtension {
@@ -82,6 +84,8 @@ namespace OhmGraphite
                     return SensorType.Throughput;
                 case LibreHardwareMonitor.Hardware.SensorType.TimeSpan:
                     return SensorType.TimeSpan;
+                case LibreHardwareMonitor.Hardware.SensorType.Energy:
+                    return SensorType.Energy;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s), s, "unexpected hardware monitor sensor translation");
             }
@@ -113,6 +117,8 @@ namespace OhmGraphite
                     return HardwareType.PSU;
                 case LibreHardwareMonitor.Hardware.HardwareType.EmbeddedController:
                     return HardwareType.EmbeddedController;
+                case LibreHardwareMonitor.Hardware.HardwareType.Battery:
+                    return HardwareType.Battery;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s), s, "unexpected hardware monitor hardware translation");
             }
