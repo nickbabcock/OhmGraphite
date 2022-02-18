@@ -44,6 +44,7 @@ namespace OhmGraphite
                             IsStorageEnabled = config.EnabledHardware.Storage,
                             IsControllerEnabled = config.EnabledHardware.Controller,
                             IsPsuEnabled = config.EnabledHardware.Psu,
+                            IsBatteryEnabled = config.EnabledHardware.Battery,
                         };
 
                         var collector = new SensorCollector(computer, config);

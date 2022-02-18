@@ -50,6 +50,8 @@ namespace OhmGraphite
                         return value * (1L << 20);
                     case SensorType.Clock: // MHz
                         return value * 1000000;
+                    case SensorType.Energy: // Wh
+                        return value / 1000.0;
                     default:
                         return value;
                 }
@@ -87,6 +89,8 @@ namespace OhmGraphite
                         return "amps";
                     case SensorType.TimeSpan:
                         return "seconds";
+                    case SensorType.Energy:
+                        return "watt_hours";
                     case SensorType.Factor: // 1
                     default:
                         return report.SensorType.ToString().ToLowerInvariant();

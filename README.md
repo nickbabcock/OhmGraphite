@@ -289,6 +289,7 @@ The snippet below shows all the options that can be used to disable hardware.
 <add key="/storage/enabled" value="false" />
 <add key="/controller/enabled" value="false" />
 <add key="/psu/enabled" value="false" />
+<add key="/battery/enabled" value="false" />
 ```
 
 Since disabling sensors at the hardware level is more efficient than a glob to hide desired sensors, disabling hardware is desirable even if the underlying hardware is stable.
