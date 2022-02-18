@@ -1,3 +1,17 @@
+## 0.24.0 - 2022-02-18
+
+- Add support for PSU metrics (enabled by default)
+- Add support for battery metrics (enabled by default)
+- Fix rare null reference exception on OhmNvme updates
+- Update minor dependencies to latest
+
+Update LibrehardwareMonitor from [d3a38bf...f0dd72a](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/d3a38bfa9aed1e23b1ce6b43acbe4156f4d6f481...f0dd72a).
+
+- Add support for reporting battery metrics
+- Add support for Zen 3 SMU (System Management Unit) reporting
+- Add support for ASUS ROG CROSSHAIR VIII HERO (WIFI)
+- Add support for the Gigabyte B360 AORUS GAMING 3 WIFI-CF mainboard
+
 ## 0.23.1 - 2021-12-23
 
 Bugfix for postgres / timescale users where insertions would fail due to the
