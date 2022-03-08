@@ -40,7 +40,7 @@
     <PackageReference Include="prometheus-net" Version="6.0.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="TopShelf" Version="4.3.0" />
-    <PackageReference Include="Topshelf.NLog" Version="4.3.0" />
+    <PackageReference Include="Topshelf.NLog" Version="4.3.0+build.251.sha.509556a" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
   </ItemGroup>
 
