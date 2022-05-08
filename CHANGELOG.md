@@ -1,3 +1,17 @@
+## 0.25.0 - 2022-05-08
+
+[Updates LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/f0dd72add999ac1e92f178a10e326be2de607c00...v0.9.0)
+
+- Add Intel integrated GPU sensors
+- Add support for B560M AORUS PRO and B560M AORUS PRO AX
+- Better detection of Samsung NVMe drives
+- Support Z690 Aorus Pro
+- Add EC T_Sensor for ROG Strix Z690-A
+- "CPU Core" voltage sensor for intel CPU's
+- IT8613E and Biostar B660GTN support
+- Add X570 Aorus Ultra
+- Add Gigabyte Z690 Gaming X
+
 ## 0.24.0 - 2022-02-18
 
 - Add support for PSU metrics (enabled by default)
