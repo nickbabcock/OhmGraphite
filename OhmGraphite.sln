@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OhmGraphite", "OhmGraphite\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OhmGraphite.Test", "OhmGraphite.Test\OhmGraphite.Test.csproj", "{E6C3F138-BED7-4350-B1F0-95AE87640CFB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibreHardwareMonitorLib", "LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj", "{EBF013C2-0600-4439-8D16-1925A015D15B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
