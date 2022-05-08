@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.0" />
     <PackageReference Include="InfluxDB.Client" Version="3.3.0" />
     <PackageReference Include="Npgsql" Version="6.0.4" />
     <PackageReference Include="prometheus-net" Version="6.0.0" />
@@ -42,10 +43,6 @@
     <PackageReference Include="TopShelf" Version="4.3.0" />
     <PackageReference Include="Topshelf.NLog" Version="4.3.0" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\LibreHardwareMonitor\LibreHardwareMonitorLib\LibreHardwareMonitorLib.csproj" />
   </ItemGroup>
 
   <Target Name="ZipOutputPath" AfterTargets="Publish">

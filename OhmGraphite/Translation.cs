@@ -39,6 +39,7 @@ namespace OhmGraphite
         RAM,
         GpuNvidia,
         GpuAti,
+        GpuIntel,
         Cooler,
         HDD,
         NIC,
@@ -107,6 +108,8 @@ namespace OhmGraphite
                     return HardwareType.GpuNvidia;
                 case LibreHardwareMonitor.Hardware.HardwareType.GpuAmd:
                     return HardwareType.GpuAti;
+                case LibreHardwareMonitor.Hardware.HardwareType.GpuIntel:
+                    return HardwareType.GpuIntel;
                 case LibreHardwareMonitor.Hardware.HardwareType.Cooler:
                     return HardwareType.Cooler;
                 case LibreHardwareMonitor.Hardware.HardwareType.Storage:
