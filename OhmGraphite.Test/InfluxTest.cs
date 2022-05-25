@@ -238,13 +238,12 @@ namespace OhmGraphite.Test
             await tlsContainer.StartAsync();
 
             var baseUrl = $"https://{tlsContainer.Hostname}:{tlsContainer.GetMappedPublicPort(8087)}";
-            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/influx2.config" };
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/influx2-ssl.config" };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
             config.AppSettings.Settings["influx2_address"].Value = baseUrl;
             var customConfig = new CustomConfig(config);
             var results = MetricConfig.ParseAppSettings(customConfig);
 
-            MetricConfig.InstallCertificateVerification("false");
             try
             {
                 using var writer = new Influx2Writer(results.Influx2, "my-pc");

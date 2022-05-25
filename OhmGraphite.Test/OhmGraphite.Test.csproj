@@ -22,6 +22,7 @@
     <None Include="..\assets\prometheus.config" Link="assets/prometheus.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\influx.config" Link="assets/influx.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\influx2.config" Link="assets/influx2.config" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\assets\influx2-ssl.config" Link="assets/influx2-ssl.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\default.config" Link="assets/default.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\graphite.config" Link="assets/graphite.config" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\assets\static-name.config" Link="assets/static-name.config" CopyToOutputDirectory="PreserveNewest" />
