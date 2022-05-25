@@ -133,29 +133,31 @@ namespace OhmGraphite
             }
         }
 
-        public static void InstallCertificateVerification(string type)
+        public static RemoteCertificateValidationCallback CertificateValidationCallback(string type)
         {
             switch (type.ToLowerInvariant())
             {
                 // Do not change default .net behavior when given True
                 case "true":
-                    break;
+                    return null;
 
                 // Do not verify certificate
                 case "false":
-                    ServicePointManager.ServerCertificateValidationCallback =
-                        (sender, certificate, chain, errors) => true;
-                    break;
+                    return (sender, certificate, chain, errors) => true;
 
                 // Else assume that it points to a file path of a self signed
                 // certificate that we will check against
                 default:
                     var cert = new X509Certificate2(type);
-                    ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) =>
+                    return (sender, certificate, chain, errors) =>
                         errors == SslPolicyErrors.None ||
                         string.Equals(cert.Thumbprint, certificate.GetCertHashString(), StringComparison.InvariantCultureIgnoreCase);
-                    break;
             }
+        }
+
+        public static void InstallCertificateVerification(string type)
+        {
+            ServicePointManager.ServerCertificateValidationCallback = CertificateValidationCallback(type);
         }
 
         public bool TryGetAlias(string v, out string alias) => Aliases.TryGetValue(v, out alias);

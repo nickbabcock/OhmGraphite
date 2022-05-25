@@ -51,6 +51,9 @@ namespace OhmGraphite
             }
             builder.Org(org);
 
+            var validation = MetricConfig.CertificateValidationCallback(config["certificate_verification"] ?? "True");
+            builder.RemoteCertificateValidationCallback(validation);
+
             return new Influx2Config(builder.Build());
         }
     }
