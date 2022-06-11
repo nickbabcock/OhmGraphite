@@ -1,9 +1,8 @@
 using System;
 using System.Net.Http;
 using System.Threading;
-using DotNet.Testcontainers.Containers.Builders;
-using DotNet.Testcontainers.Containers.Modules;
-using DotNet.Testcontainers.Containers.WaitStrategies;
+using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Containers;
 using Xunit;
 
 namespace OhmGraphite.Test
