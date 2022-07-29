@@ -1,3 +1,16 @@
+## 0.26.0 - 2022-07-29
+
+[Updates LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/a51f5dbb7f994922109b4dc0d4b3f120c5e7ab6e...ae3bc2771978f458ac97efe8fc16ecab11f14fbb)
+
+- [Fix for missing Samsung NVMe sensors](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/7ab8fbb1c1bd4d418ff4c23960da8cdd14aefacf)
+- [Add Aqua Computer Octo support](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/b0de6e3ad762c18083b9198bd1982537e7c0f16c)
+- [Add support for VID sensors per core on Intel CPUs](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/eed7742e7eff26d343ada300c5d83eef7ac7d352)
+- [ROG Zenith II Extreme support](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/67d82e0784c8f0963202b4936322738f3914c207)
+- [Add support for ROG MAXIMUS Z690 EXTREME GLACIAL](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/42182d72f748329db8d8e70e0b094b9afca7baea)
+- [RyzenSMU: add some more metrics for Zen3](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/commit/4b0bf583e1b0a840b39afecdf230eea50bd9ed82)
+
+Updates to internal dependencies for influx2 and postgres
+
 ## 0.25.0 - 2022-05-08
 
 [Updates LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/f0dd72add999ac1e92f178a10e326be2de607c00...v0.9.0)
