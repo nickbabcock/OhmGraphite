@@ -36,10 +36,10 @@
 
   <ItemGroup>
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.1-pre140" />
-    <PackageReference Include="InfluxDB.Client" Version="4.3.0" />
-    <PackageReference Include="Npgsql" Version="6.0.5" />
+    <PackageReference Include="InfluxDB.Client" Version="4.6.0" />
+    <PackageReference Include="Npgsql" Version="6.0.7" />
     <PackageReference Include="prometheus-net" Version="6.0.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
     <PackageReference Include="TopShelf" Version="4.3.0" />
     <PackageReference Include="Topshelf.NLog" Version="4.3.0" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
