@@ -24,7 +24,8 @@ namespace OhmGraphite
         SmallData, // MB = 2^20 Bytes
         Throughput, // B/s
         TimeSpan, // Seconds
-        Energy // milliwatt-hour (mWh)
+        Energy, // milliwatt-hour (mWh)
+        Noise // dBA
     }
 
     /// <summary>
@@ -87,6 +88,8 @@ namespace OhmGraphite
                     return SensorType.TimeSpan;
                 case LibreHardwareMonitor.Hardware.SensorType.Energy:
                     return SensorType.Energy;
+                case LibreHardwareMonitor.Hardware.SensorType.Noise:
+                    return SensorType.Noise;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s), s, "unexpected hardware monitor sensor translation");
             }
