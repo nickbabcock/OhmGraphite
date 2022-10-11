@@ -1,3 +1,12 @@
+## 0.27.0 - 2022-10-11
+
+[Updates LibrehardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/ae3bc2771978f458ac97efe8fc16ecab11f14fbb...58cef111a12e541bb3d1c1723a05fc4c543fb045)
+
+- Add NZXT GRID+ V3 support
+- Fix Gigabyte Z690 AORUS PRO sensor names
+- Add RaptorLake
+- Add more Alder Lake
+
 ## 0.26.0 - 2022-07-29
 
 [Updates LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/a51f5dbb7f994922109b4dc0d4b3f120c5e7ab6e...ae3bc2771978f458ac97efe8fc16ecab11f14fbb)
