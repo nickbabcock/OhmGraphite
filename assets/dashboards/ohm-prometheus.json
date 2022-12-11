@@ -1520,7 +1520,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=\"CPU Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\", sensor=\"GPU Package\"}",
+          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=~\".*Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\", sensor=\"GPU Package\"}",
           "interval": "",
           "legendFormat": "{{sensor}}",
           "range": true,
@@ -1743,7 +1743,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=\"CPU Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\"}",
+          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=~\.*Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
