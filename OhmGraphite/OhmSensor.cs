@@ -35,5 +35,9 @@ namespace OhmGraphite
         public void ResetMax()
         {
         }
+
+        public void ClearValues()
+        {
+        }
     }
 }
