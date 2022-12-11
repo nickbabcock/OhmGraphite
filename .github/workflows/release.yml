@@ -25,7 +25,7 @@ jobs:
       working-directory: OhmGraphite\bin
       run: |
         echo "ARTIFACT_NAME=$(echo *.zip)" >> $GITHUB_ENV
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         path: OhmGraphite\bin\*.zip
         name: ${{ env.ARTIFACT_NAME }}
