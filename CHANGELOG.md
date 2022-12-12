@@ -1,3 +1,16 @@
+## 0.28.0 - 2022-12-11
+
+- [Updates LibrehardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/58cef11...1131b4)
+  - Fix incorrect readings of GPU power wattage
+  - Add support for Zen4 SMU
+  - Add support for HX1500i and HX1000i
+  - Add support for Nuvoton NCT6799D
+  - Add support for Asus Z790 Max Hero
+- Update client libraries:
+  - prometheus client from 6 to 7
+  - postgres client from 6.0.7 to 7
+  - influxdb client from 4.6 to 4.9
+
 ## 0.27.0 - 2022-10-11
 
 [Updates LibrehardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/ae3bc2771978f458ac97efe8fc16ecab11f14fbb...58cef111a12e541bb3d1c1723a05fc4c543fb045)
