@@ -24,7 +24,7 @@ namespace OhmGraphite
 
         public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
         {
-            var influxDbClient = InfluxDBClientFactory.Create(_config.Options);
+            var influxDbClient = new InfluxDBClient(_config.Options);
             var writeApi = influxDbClient.GetWriteApiAsync();
             var points = sensors.Select(x => NewPoint(reportTime, x)).ToList();
             await writeApi.WritePointsAsync(points);

@@ -131,7 +131,7 @@ namespace OhmGraphite.Test
                 try
                 {
                     await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
-                    var influxDBClient = InfluxDBClientFactory.Create(options);
+                    var influxDBClient = new InfluxDBClient(options);
                     var flux = "from(bucket:\"mydb\") |> range(start: -1h)";
                     var queryApi = influxDBClient.GetQueryApi();
                     var tables = await queryApi.QueryAsync(flux, "myorg");
@@ -182,7 +182,7 @@ namespace OhmGraphite.Test
                 try
                 {
                     await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
-                    var influxDBClient = InfluxDBClientFactory.Create(results.Influx2.Options);
+                    var influxDBClient = new InfluxDBClient(results.Influx2.Options);
                     var flux = "from(bucket:\"mydb\") |> range(start: -1h)";
                     var queryApi = influxDBClient.GetQueryApi();
                     var tables = await queryApi.QueryAsync(flux, "myorg");
@@ -251,7 +251,7 @@ namespace OhmGraphite.Test
                     try
                     {
                         await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
-                        var influxDbClient = InfluxDBClientFactory.Create(results.Influx2.Options);
+                        var influxDbClient = new InfluxDBClient(results.Influx2.Options);
                         var flux = "from(bucket:\"mydb\") |> range(start: -1h)";
                         var queryApi = influxDbClient.GetQueryApi();
                         var tables = await queryApi.QueryAsync(flux, "myorg");
