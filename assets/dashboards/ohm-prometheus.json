@@ -571,7 +571,7 @@
         "x": 11,
         "y": 1
       },
-      "id": 15,
+      "id": 90,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -595,13 +595,14 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "sum(increase(ohm_nic_bytes{instance=\"$instance\",sensor=\"Data Uploaded\"}[$__range]))",
+          "expr": "sum(increase(ohm_hdd_bytes{instance=\"$instance\", sensor=\"Data Written\"}[$__range]))",
+          "hide": false,
           "interval": "",
           "legendFormat": "{{sensor}}",
-          "refId": "A"
+          "refId": "B"
         }
       ],
-      "title": "Uploads",
+      "title": "Disk Writes",
       "type": "stat"
     },
     {
@@ -1017,7 +1018,7 @@
         "x": 11,
         "y": 5
       },
-      "id": 90,
+      "id": 15,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -1041,14 +1042,13 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "sum(increase(ohm_hdd_bytes{instance=\"$instance\", sensor=\"Data Written\"}[$__range]))",
-          "hide": false,
+          "expr": "sum(increase(ohm_nic_bytes{instance=\"$instance\",sensor=\"Data Uploaded\"}[$__range]))",
           "interval": "",
           "legendFormat": "{{sensor}}",
-          "refId": "B"
+          "refId": "A"
         }
       ],
-      "title": "Disk Writes",
+      "title": "Uploads",
       "type": "stat"
     },
     {
@@ -2151,8 +2151,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2219,7 +2218,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 65
       },
       "id": 109,
       "panels": [],
@@ -2283,8 +2282,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2300,7 +2298,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 42
+        "y": 66
       },
       "id": 18,
       "links": [],
@@ -2399,8 +2397,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2416,7 +2413,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 42
+        "y": 66
       },
       "id": 116,
       "links": [],
@@ -2519,8 +2516,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2536,7 +2532,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 50
+        "y": 74
       },
       "id": 118,
       "links": [],
@@ -2639,8 +2635,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2656,7 +2651,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 50
+        "y": 74
       },
       "id": 121,
       "links": [],
@@ -2743,8 +2738,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2760,7 +2754,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 59
+        "y": 83
       },
       "id": 122,
       "links": [],
@@ -2847,8 +2841,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2864,7 +2857,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 59
+        "y": 83
       },
       "id": 123,
       "links": [],
@@ -2984,8 +2977,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3001,7 +2993,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 92
       },
       "id": 120,
       "links": [],
@@ -3068,7 +3060,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 124
       },
       "id": 41,
       "panels": [],
@@ -3104,8 +3096,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "#EAB839",
@@ -3155,8 +3146,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -3259,8 +3249,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -3311,8 +3300,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -3345,7 +3333,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 77
+        "y": 125
       },
       "id": 43,
       "options": {
@@ -3542,7 +3530,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 132
       },
       "id": 52,
       "panels": [],
@@ -3571,8 +3559,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           }
@@ -3583,7 +3570,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 85
+        "y": 133
       },
       "id": 12,
       "options": {
@@ -3665,8 +3652,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3682,7 +3668,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 85
+        "y": 133
       },
       "id": 65,
       "options": {
@@ -3760,8 +3746,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3777,7 +3762,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 90
+        "y": 138
       },
       "id": 58,
       "options": {
@@ -3867,8 +3852,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3884,7 +3868,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 90
+        "y": 138
       },
       "id": 59,
       "options": {
@@ -3939,7 +3923,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 126
+        "y": 146
       },
       "id": 130,
       "panels": [],
@@ -4003,8 +3987,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -4016,7 +3999,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 127
+        "y": 147
       },
       "id": 136,
       "links": [],
@@ -4103,8 +4086,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4120,7 +4102,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 127
+        "y": 147
       },
       "id": 138,
       "links": [],
@@ -4240,8 +4222,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4257,7 +4238,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 136
+        "y": 156
       },
       "id": 140,
       "links": [],
@@ -4308,7 +4289,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 145
+        "y": 165
       },
       "id": 30,
       "panels": [],
@@ -4345,8 +4326,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4410,7 +4390,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 146
+        "y": 166
       },
       "id": 32,
       "options": {
@@ -4549,8 +4529,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4564,9 +4543,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 8,
+        "w": 24,
         "x": 0,
-        "y": 154
+        "y": 174
       },
       "id": 34,
       "links": [],
@@ -4619,7 +4598,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -4739,13 +4718,13 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
