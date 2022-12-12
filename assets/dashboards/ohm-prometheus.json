@@ -9,7 +9,7 @@
       "pluginName": "Prometheus"
     }
   ],
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "panel",
@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.4.0"
+      "version": "9.3.1"
     },
     {
       "type": "datasource",
@@ -71,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 11587,
   "graphTooltip": 1,
-  "id": 6,
+  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -787,7 +787,7 @@
         ]
       },
       "gridPos": {
-        "h": 22,
+        "h": 14,
         "w": 7,
         "x": 17,
         "y": 1
@@ -1470,12 +1470,51 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "purple",
+            "mode": "thresholds",
+            "seriesBy": "last"
           },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "series",
+            "axisLabel": "",
+            "axisPlacement": "right",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "linearThreshold": 1,
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "Wattage",
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1495,23 +1534,22 @@
         "x": 8,
         "y": 9
       },
-      "id": 81,
+      "id": 155,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
+        "legend": {
           "calcs": [
-            "lastNotNull"
+            "lastNotNull",
+            "max"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": false
         },
-        "text": {},
-        "textMode": "auto"
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
@@ -1519,16 +1557,14 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=~\".*Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\", sensor=\"GPU Package\"}",
-          "interval": "",
-          "legendFormat": "{{sensor}}",
+          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=~\".*Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\"}",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
       "title": "Component Power Draw",
-      "type": "stat"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1598,161 +1634,6 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "description": "Total wattage",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "purple",
-            "mode": "continuous-GrYlRd",
-            "seriesBy": "last"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "series",
-            "axisGridShow": true,
-            "axisLabel": "",
-            "axisPlacement": "right",
-            "axisSoftMax": 0,
-            "axisSoftMin": 0,
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 50,
-            "gradientMode": "scheme",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 2,
-            "pointSize": 1,
-            "scaleDistribution": {
-              "linearThreshold": 1,
-              "type": "linear"
-            },
-            "showPoints": "always",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "displayName": "Wattage",
-          "mappings": [],
-          "max": 500,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "super-light-green",
-                "value": null
-              },
-              {
-                "color": "light-green",
-                "value": 10
-              },
-              {
-                "color": "green",
-                "value": 20
-              },
-              {
-                "color": "semi-dark-green",
-                "value": 30
-              },
-              {
-                "color": "dark-green",
-                "value": 40
-              },
-              {
-                "color": "super-light-yellow",
-                "value": 50
-              },
-              {
-                "color": "light-yellow",
-                "value": 100
-              },
-              {
-                "color": "yellow",
-                "value": 100
-              },
-              {
-                "color": "semi-dark-yellow",
-                "value": 200
-              },
-              {
-                "color": "dark-yellow",
-                "value": 300
-              },
-              {
-                "color": "super-light-orange",
-                "value": 400
-              },
-              {
-                "color": "light-orange",
-                "value": 500
-              },
-              {
-                "color": "orange",
-                "value": 600
-              }
-            ]
-          },
-          "unit": "watt"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 17,
-        "x": 0,
-        "y": 15
-      },
-      "id": 155,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "mean",
-            "logmin",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=~\".*Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\"}",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Wattage overview",
-      "type": "timeseries"
-    },
-    {
       "collapsed": false,
       "datasource": {
         "type": "prometheus",
@@ -1762,7 +1643,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 15
       },
       "id": 96,
       "panels": [],
@@ -1843,7 +1724,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 24
+        "y": 16
       },
       "id": 17,
       "links": [],
@@ -1949,7 +1830,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 24
+        "y": 16
       },
       "id": 103,
       "links": [],
@@ -2073,7 +1954,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 32
+        "y": 24
       },
       "id": 107,
       "links": [],
@@ -2179,7 +2060,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 32
+        "y": 24
       },
       "id": 105,
       "links": [],
@@ -2270,7 +2151,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2286,7 +2168,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 33
       },
       "id": 26,
       "links": [],
@@ -2337,7 +2219,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 41
       },
       "id": 109,
       "panels": [],
@@ -2401,7 +2283,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2417,7 +2300,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 50
+        "y": 42
       },
       "id": 18,
       "links": [],
@@ -2516,7 +2399,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2532,7 +2416,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 50
+        "y": 42
       },
       "id": 116,
       "links": [],
@@ -2635,7 +2519,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2651,7 +2536,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 58
+        "y": 50
       },
       "id": 118,
       "links": [],
@@ -2754,7 +2639,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2770,7 +2656,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 58
+        "y": 50
       },
       "id": 121,
       "links": [],
@@ -2857,7 +2743,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2873,7 +2760,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 67
+        "y": 59
       },
       "id": 122,
       "links": [],
@@ -2960,7 +2847,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2976,7 +2864,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 67
+        "y": 59
       },
       "id": 123,
       "links": [],
@@ -3096,7 +2984,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3112,7 +3001,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 68
       },
       "id": 120,
       "links": [],
@@ -3179,7 +3068,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 76
       },
       "id": 41,
       "panels": [],
@@ -3215,7 +3104,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -3249,7 +3139,7 @@
             "properties": [
               {
                 "id": "custom.displayMode",
-                "value": "basic"
+                "value": "lcd-gauge"
               },
               {
                 "id": "unit",
@@ -3265,7 +3155,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "#EAB839",
@@ -3360,7 +3251,7 @@
               },
               {
                 "id": "custom.displayMode",
-                "value": "basic"
+                "value": "lcd-gauge"
               },
               {
                 "id": "thresholds",
@@ -3368,7 +3259,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "#EAB839",
@@ -3419,7 +3311,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "red",
@@ -3452,7 +3345,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 77
       },
       "id": 43,
       "options": {
@@ -3649,7 +3542,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 84
       },
       "id": 52,
       "panels": [],
@@ -3678,7 +3571,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -3689,7 +3583,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 93
+        "y": 85
       },
       "id": 12,
       "options": {
@@ -3771,7 +3665,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3787,7 +3682,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 93
+        "y": 85
       },
       "id": 65,
       "options": {
@@ -3865,7 +3760,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3881,7 +3777,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 98
+        "y": 90
       },
       "id": 58,
       "options": {
@@ -3971,7 +3867,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3987,7 +3884,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 98
+        "y": 90
       },
       "id": 59,
       "options": {
@@ -4042,7 +3939,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 106
+        "y": 126
       },
       "id": 130,
       "panels": [],
@@ -4106,7 +4003,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -4118,7 +4016,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 107
+        "y": 127
       },
       "id": 136,
       "links": [],
@@ -4205,7 +4103,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4221,7 +4120,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 107
+        "y": 127
       },
       "id": 138,
       "links": [],
@@ -4341,7 +4240,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4357,7 +4257,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 116
+        "y": 136
       },
       "id": 140,
       "links": [],
@@ -4408,7 +4308,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 125
+        "y": 145
       },
       "id": 30,
       "panels": [],
@@ -4445,7 +4345,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4509,7 +4410,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 126
+        "y": 146
       },
       "id": 32,
       "options": {
@@ -4648,7 +4549,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4662,9 +4564,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 8,
         "x": 0,
-        "y": 134
+        "y": 154
       },
       "id": 34,
       "links": [],
@@ -4724,11 +4626,7 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "localhost:4445",
-          "value": "localhost:4445"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -4750,11 +4648,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -4777,11 +4671,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -4803,11 +4693,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -4829,11 +4715,7 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -4853,28 +4735,17 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
-        },
-        "filters": [],
-        "hide": 0,
-        "name": "Filters",
-        "skipUrlSync": false,
-        "type": "adhoc"
       }
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 15,
+  "version": 7,
   "weekStart": ""
 }
