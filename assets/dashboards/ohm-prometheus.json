@@ -9,7 +9,7 @@
       "pluginName": "Prometheus"
     }
   ],
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "panel",
@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.4.0"
+      "version": "9.3.1"
     },
     {
       "type": "datasource",
@@ -69,14 +69,18 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
+  "gnetId": 11587,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1645148947364,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "collapsed": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -85,6 +89,15 @@
       },
       "id": 20,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Current Overview",
       "type": "row"
     },
@@ -145,6 +158,8 @@
       "maxDataPoints": 100,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -156,9 +171,13 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_cpu_load_percent{instance=\"$instance\",sensor=\"CPU Total\"}",
           "interval": "",
@@ -226,6 +245,8 @@
       "maxDataPoints": 100,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -237,9 +258,13 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_ram_load_percent{instance=\"$instance\",sensor=\"Memory\"}",
           "interval": "",
@@ -307,6 +332,8 @@
       "maxDataPoints": 100,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -318,9 +345,13 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "max(ohm_hdd_load_percent{instance=\"$instance\",sensor=\"Total Activity\"})",
           "instant": true,
@@ -401,6 +432,8 @@
       "maxDataPoints": 100,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -412,7 +445,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
@@ -489,9 +522,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum(increase(ohm_hdd_bytes{instance=\"$instance\", sensor=\"Data Read\"}[$__range]))",
           "hide": false,
@@ -550,9 +587,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum(increase(ohm_hdd_bytes{instance=\"$instance\", sensor=\"Data Written\"}[$__range]))",
           "hide": false,
@@ -595,7 +636,7 @@
         "x": 14,
         "y": 1
       },
-      "id": 91,
+      "id": 71,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -611,18 +652,22 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "sum(ohm_hdd_bytes_per_second{instance=\"$instance\"})",
+          "expr": "sum(ohm_nic_bytes_per_second{instance=\"$instance\"})",
           "instant": false,
           "interval": "",
           "legendFormat": "{{sensor}}",
           "refId": "A"
         }
       ],
-      "title": "Disk Rate",
+      "title": "Network Rate",
       "type": "stat"
     },
     {
@@ -632,10 +677,14 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -644,6 +693,10 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -652,20 +705,16 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Temperature"
+              "options": "Value"
             },
             "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "basic"
-              },
               {
                 "id": "unit",
                 "value": "celsius"
               },
               {
                 "id": "min",
-                "value": 50
+                "value": 0
               },
               {
                 "id": "thresholds",
@@ -678,7 +727,7 @@
                     },
                     {
                       "color": "#EAB839",
-                      "value": 80
+                      "value": 60
                     },
                     {
                       "color": "red",
@@ -690,6 +739,49 @@
               {
                 "id": "max",
                 "value": 100
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "__.*"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hardware"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "pattern": ".*TjMax",
+                      "result": {
+                        "color": "dark-red",
+                        "index": 0
+                      }
+                    },
+                    "type": "regex"
+                  }
+                ]
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
               }
             ]
           }
@@ -704,30 +796,29 @@
       "id": 77,
       "options": {
         "footer": {
+          "enablePagination": false,
           "fields": "",
           "reducer": [
             "sum"
           ],
           "show": false
         },
+        "frameIndex": 0,
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Temperature"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "{instance=\"$instance\",__name__=~\"ohm_.*_celsius\"}",
+          "expr": "label_replace(label_replace(label_join({instance=\"$instance\",__name__=~\"ohm_.*_celsius\"}, \"Hardware\", \" \", \"hardware\", \"sensor\"), \"__SensorGroup\", \"$1$2\", \"sensor\", \"(.*)#[0-9]*(.*)\"), \"__SensorID\", \"$2\", \"sensor\", \"(.*#)([0-9]*)(.*)\")",
           "format": "table",
+          "hide": false,
           "instant": true,
           "interval": "",
           "legendFormat": "",
@@ -737,25 +828,97 @@
       "title": "Temperature",
       "transformations": [
         {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "__SensorID"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
           "id": "organize",
           "options": {
             "excludeByName": {
+              "SensorGroup": false,
+              "SensorID": false,
+              "SensorTMP": false,
               "Time": true,
+              "Value": false,
               "__name__": true,
               "hardware": false,
               "hw_instance": true,
               "instance": true,
-              "job": true
+              "job": true,
+              "sensor": true
             },
             "indexByName": {
-              "Value #A": 7
+              "Hardware": 3,
+              "Time": 0,
+              "Value": 8,
+              "__SensorGroup": 9,
+              "__SensorID": 10,
+              "__name__": 1,
+              "hardware": 2,
+              "hw_instance": 4,
+              "instance": 5,
+              "job": 6,
+              "sensor": 7
             },
             "renameByName": {
               "Value": "Temperature",
               "Value #A": "Temperature",
-              "hardware": "Hardware",
+              "hardware": "__Hardware",
+              "hw_instance": "",
+              "job": "",
               "sensor": "Sensor"
             }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Hardware",
+              "SensorGroup"
+            ]
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "__SensorID"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "__SensorGroup"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "__Hardware"
+              }
+            ]
           }
         }
       ],
@@ -807,9 +970,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum(increase(ohm_nic_bytes{instance=\"$instance\",sensor=\"Data Downloaded\"}[$__range]))",
           "interval": "",
@@ -867,9 +1034,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum(increase(ohm_nic_bytes{instance=\"$instance\",sensor=\"Data Uploaded\"}[$__range]))",
           "interval": "",
@@ -911,7 +1082,7 @@
         "x": 14,
         "y": 5
       },
-      "id": 71,
+      "id": 91,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -927,18 +1098,22 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
-          "expr": "sum(ohm_nic_bytes_per_second{instance=\"$instance\"})",
+          "expr": "sum(ohm_hdd_bytes_per_second{instance=\"$instance\"})",
           "instant": false,
           "interval": "",
           "legendFormat": "{{sensor}}",
           "refId": "A"
         }
       ],
-      "title": "Network Rate",
+      "title": "Disk Rate",
       "type": "stat"
     },
     {
@@ -998,6 +1173,8 @@
       "maxDataPoints": 100,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -1009,9 +1186,13 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_load_percent{instance=\"$instance\",sensor=\"GPU Core\"}",
           "interval": "",
@@ -1079,6 +1260,8 @@
       "maxDataPoints": 100,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -1090,9 +1273,13 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_bytes{instance=\"$instance\",sensor=\"GPU Memory Used\"} * 100 / ignoring(sensor) ohm_gpunvidia_bytes{instance=\"$instance\",sensor=\"GPU Memory Total\"}",
           "interval": "",
@@ -1160,6 +1347,8 @@
       "maxDataPoints": 100,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -1171,9 +1360,13 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "max(ohm_nic_load_percent{instance=\"$instance\"})",
           "interval": "",
@@ -1241,6 +1434,8 @@
       "maxDataPoints": 100,
       "options": {
         "displayMode": "lcd",
+        "minVizHeight": 10,
+        "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
@@ -1252,7 +1447,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
           "datasource": {
@@ -1275,12 +1470,51 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "purple",
+            "mode": "thresholds",
+            "seriesBy": "last"
           },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "series",
+            "axisLabel": "",
+            "axisPlacement": "right",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "linearThreshold": 1,
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "displayName": "Wattage",
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1300,34 +1534,37 @@
         "x": 8,
         "y": 9
       },
-      "id": 81,
+      "id": 155,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
+        "legend": {
           "calcs": [
-            "lastNotNull"
+            "lastNotNull",
+            "max"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": false
         },
-        "text": {},
-        "textMode": "auto"
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "8.4.0",
       "targets": [
         {
-          "exemplar": true,
-          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=\"Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\", sensor=\"GPU Package\"}",
-          "interval": "",
-          "legendFormat": "{{sensor}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=~\".*Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\"}",
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "A"
         }
       ],
       "title": "Component Power Draw",
-      "type": "stat"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1379,9 +1616,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum(ohm_hdd_factor{instance=\"$instance\",sensor=\"Media Errors\"})",
           "interval": "",
@@ -1394,6 +1635,10 @@
     },
     {
       "collapsed": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1403,6 +1648,15 @@
       "id": 96,
       "panels": [],
       "repeat": "cpu",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "CPU: $cpu",
       "type": "row"
     },
@@ -1417,6 +1671,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1479,7 +1735,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1489,16 +1746,24 @@
       "pluginVersion": "8.2.0",
       "targets": [
         {
-          "exemplar": true,
-          "expr": "ohm_cpu_load_percent{instance=\"$instance\",sensor!=\"CPU Total\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "label_replace(label_replace(label_replace(ohm_cpu_load_percent{instance=\"$instance\", sensor!=\"CPU Total\"}, \"_sensor\", \"${1}0$2$3\", \"sensor\", \"(.*?)(\\\\d{1})([^\\\\d]+\\\\d|\\\\d{0}|[^\\\\d]+)\"), \"_sensor\", \"${1}$2$3\", \"sensor\", \"(.*?)(\\\\d{2})([^\\\\d]+\\\\d|\\\\d{0}|[^\\\\d]+)\"), \"_sensor\", \"${1}\", \"sensor\", \"([^\\\\d]*?)\")",
           "format": "time_series",
+          "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{sensor}}",
+          "legendFormat": "{{_sensor}}",
+          "range": true,
           "refId": "A"
         }
       ],
       "title": "Load",
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1512,6 +1777,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1575,7 +1842,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1587,6 +1855,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_cpu_watts{instance=\"$instance\"}",
           "format": "time_series",
@@ -1607,12 +1879,16 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "palette-classic",
+            "seriesBy": "max"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "axisSoftMax": 100,
+            "axisSoftMax": 0,
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
@@ -1640,7 +1916,6 @@
           },
           "links": [],
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1660,7 +1935,20 @@
           },
           "unit": "celsius"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*TjMax.*"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -1677,7 +1965,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1689,13 +1978,18 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_cpu_celsius{instance=\"$instance\"}",
+          "expr": "label_replace(label_replace(label_replace(ohm_cpu_celsius{instance=\"$instance\"}, \"_sensor\", \"$3 ${1}0$2\", \"sensor\", \"(.*?)(\\\\d{1})([^\\\\d]+\\\\d|\\\\d{0}|[^\\\\d]+)\"), \"_sensor\", \"$3 ${1}$2\", \"sensor\", \"(.*?)(\\\\d{2})([^\\\\d]+\\\\d|\\\\d{0}|[^\\\\d]+)\"), \"_sensor\", \"${1}\", \"sensor\", \"([^\\\\d]*?)\")",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{sensor}}",
+          "legendFormat": "{{_sensor}}",
           "refId": "A"
         }
       ],
@@ -1713,6 +2007,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1776,7 +2072,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1788,12 +2085,18 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_cpu_volts{instance=\"$instance\"}",
+          "expr": "label_replace(label_replace(label_replace(ohm_cpu_volts{instance=\"$instance\"}, \"_sensor\", \"$3 ${1}0$2\", \"sensor\", \"(.*?)(\\\\d{1})([^\\\\d]+\\\\d|\\\\d{0}|[^\\\\d]+)\"), \"_sensor\", \"$3 ${1}$2\", \"sensor\", \"(.*?)(\\\\d{2})([^\\\\d]+\\\\d|\\\\d{0}|[^\\\\d]+)\"), \"_sensor\", \"${1}\", \"sensor\", \"([^\\\\d]*?)\")",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{sensor}}",
+          "legendFormat": "{{_sensor}}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1811,6 +2114,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1826,6 +2131,7 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
+              "linearThreshold": 0,
               "type": "linear"
             },
             "showPoints": "never",
@@ -1845,8 +2151,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1874,7 +2179,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1886,11 +2192,16 @@
       "repeatDirection": "h",
       "targets": [
         {
-          "expr": "ohm_cpu_hertz{instance=\"$instance\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "label_replace(label_replace(label_replace(ohm_cpu_hertz{instance=\"$instance\"}, \"_sensor\", \"$3 ${1}0$2\", \"sensor\", \"(.*?)(\\\\d{1})([^\\\\d]+\\\\d|\\\\d{0}|[^\\\\d]+)\"), \"_sensor\", \"$3 ${1}$2\", \"sensor\", \"(.*?)(\\\\d{2})([^\\\\d]+\\\\d|\\\\d{0}|[^\\\\d]+)\"), \"_sensor\", \"${1}\", \"sensor\", \"([^\\\\d]*?)\")",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
-          "legendFormat": "{{sensor}}",
+          "legendFormat": "{{_sensor}}",
           "refId": "A"
         }
       ],
@@ -1899,15 +2210,28 @@
     },
     {
       "collapsed": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 65
       },
       "id": 109,
       "panels": [],
       "repeat": "gpu",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "GPU: $gpu",
       "type": "row"
     },
@@ -1922,6 +2246,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1956,8 +2282,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1973,7 +2298,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 42
+        "y": 66
       },
       "id": 18,
       "links": [],
@@ -1984,7 +2309,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -1994,6 +2320,10 @@
       "pluginVersion": "8.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_load_percent{instance=\"$instance\"}",
           "format": "time_series",
@@ -2003,6 +2333,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpuati_load_percent{instance=\"$instance\"}",
           "format": "time_series",
@@ -2027,6 +2361,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2061,8 +2397,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2078,7 +2413,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 42
+        "y": 66
       },
       "id": 116,
       "links": [],
@@ -2090,7 +2425,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2102,6 +2438,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_watts{instance=\"$instance\"}",
           "format": "time_series",
@@ -2111,6 +2451,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpuati_watts{instance=\"$instance\"}",
           "format": "time_series",
@@ -2135,6 +2479,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisSoftMax": 100,
@@ -2170,8 +2516,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2187,7 +2532,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 50
+        "y": 74
       },
       "id": 118,
       "links": [],
@@ -2198,7 +2543,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2210,6 +2556,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_celsius{instance=\"$instance\"}",
           "format": "time_series",
@@ -2220,6 +2570,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpuati_celsius{instance=\"$instance\"}",
           "format": "time_series",
@@ -2245,6 +2599,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2279,8 +2635,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2296,7 +2651,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 50
+        "y": 74
       },
       "id": 121,
       "links": [],
@@ -2307,7 +2662,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2318,6 +2674,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_bytes_per_second{instance=\"$instance\"}",
           "format": "time_series",
@@ -2342,6 +2702,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2376,8 +2738,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2393,7 +2754,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 59
+        "y": 83
       },
       "id": 122,
       "links": [],
@@ -2404,7 +2765,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2415,6 +2777,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_bytes{instance=\"$instance\"}",
           "format": "time_series",
@@ -2439,6 +2805,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2473,8 +2841,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2490,7 +2857,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 59
+        "y": 83
       },
       "id": 123,
       "links": [],
@@ -2501,7 +2868,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2512,6 +2880,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_revolutions_per_minute{instance=\"$instance\"}",
           "format": "time_series",
@@ -2522,6 +2894,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "(max(ohm_gpunvidia_revolutions_per_minute{instance=\"$instance\"}) / ignoring(sensor) (max(ohm_gpunvidia_control_percent{instance=\"$instance\"}) / 100)) * 0.9",
           "format": "time_series",
@@ -2565,6 +2941,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -2599,8 +2977,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2616,7 +2993,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 92
       },
       "id": 120,
       "links": [],
@@ -2628,7 +3005,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -2640,6 +3018,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpunvidia_hertz{instance=\"$instance\"}",
           "format": "time_series",
@@ -2650,6 +3032,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_gpuati_hertz{instance=\"$instance\"}",
           "format": "time_series",
@@ -2666,14 +3052,27 @@
     },
     {
       "collapsed": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 124
       },
       "id": 41,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Drives",
       "type": "row"
     },
@@ -2689,15 +3088,15 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto"
+            "displayMode": "auto",
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "#EAB839",
@@ -2731,7 +3130,7 @@
             "properties": [
               {
                 "id": "custom.displayMode",
-                "value": "basic"
+                "value": "lcd-gauge"
               },
               {
                 "id": "unit",
@@ -2747,8 +3146,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -2843,7 +3241,7 @@
               },
               {
                 "id": "custom.displayMode",
-                "value": "basic"
+                "value": "lcd-gauge"
               },
               {
                 "id": "thresholds",
@@ -2851,8 +3249,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -2903,8 +3300,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -2937,7 +3333,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 77
+        "y": 125
       },
       "id": 43,
       "options": {
@@ -2952,9 +3348,13 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "max by (hardware,hw_instance) (ohm_hdd_celsius{instance=\"$instance\"})",
           "format": "table",
@@ -2964,6 +3364,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_bytes{instance=\"$instance\",sensor=\"Data Read\"}",
           "format": "table",
@@ -2974,6 +3378,10 @@
           "refId": "B"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_bytes{instance=\"$instance\",sensor=\"Data Written\"}",
           "format": "table",
@@ -2984,6 +3392,10 @@
           "refId": "C"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum by (hardware,hw_instance) (increase(ohm_hdd_bytes{instance=\"$instance\",sensor=\"Data Read\"}[$__range]))",
           "format": "table",
@@ -2994,6 +3406,10 @@
           "refId": "D"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum by (hardware,hw_instance) (increase(ohm_hdd_bytes{instance=\"$instance\",sensor=\"Data Written\"}[$__range]))",
           "format": "table",
@@ -3004,6 +3420,10 @@
           "refId": "E"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_load_percent{instance=\"$instance\",sensor=\"Used Space\"}",
           "format": "table",
@@ -3014,6 +3434,10 @@
           "refId": "F"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_factor{instance=\"$instance\",sensor=\"Power Cycles\"}",
           "format": "table",
@@ -3024,6 +3448,10 @@
           "refId": "G"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_factor{instance=\"$instance\",sensor=\"Media Errors\"}",
           "format": "table",
@@ -3094,15 +3522,28 @@
     },
     {
       "collapsed": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 132
       },
       "id": 52,
       "panels": [],
       "repeat": "hdd",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Drive: $hdd",
       "type": "row"
     },
@@ -3118,8 +3559,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           }
@@ -3130,7 +3570,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 85
+        "y": 133
       },
       "id": 12,
       "options": {
@@ -3148,9 +3588,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_factor{instance=\"$instance\",hw_instance=\"$hdd\"}",
           "interval": "",
@@ -3172,6 +3616,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisSoftMax": 100,
@@ -3206,8 +3652,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3223,14 +3668,15 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 85
+        "y": 133
       },
       "id": 65,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
           "mode": "multi",
@@ -3240,6 +3686,10 @@
       "pluginVersion": "8.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_celsius{instance=\"$instance\",hw_instance=\"$hdd\"}",
           "hide": false,
@@ -3262,6 +3712,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -3294,8 +3746,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3311,14 +3762,15 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 90
+        "y": 138
       },
       "id": 58,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -3328,6 +3780,10 @@
       "pluginVersion": "8.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_load_percent{instance=\"$instance\",hw_instance=\"$hdd\",sensor=\"Total Activity\"}",
           "hide": false,
@@ -3336,6 +3792,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_load_percent{instance=\"$instance\",hw_instance=\"$hdd\",sensor=\"Write Activity\"}",
           "hide": false,
@@ -3358,6 +3818,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -3390,8 +3852,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3407,14 +3868,15 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 90
+        "y": 138
       },
       "id": 59,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -3424,6 +3886,10 @@
       "pluginVersion": "8.2.0",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_hdd_bytes_per_second{instance=\"$instance\",hw_instance=\"$hdd\",sensor=\"Read Rate\"}",
           "hide": false,
@@ -3432,6 +3898,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "-ohm_hdd_bytes_per_second{instance=\"$instance\",hw_instance=\"$hdd\",sensor=\"Write Rate\"}",
           "hide": false,
@@ -3445,14 +3915,27 @@
     },
     {
       "collapsed": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 112
+        "y": 146
       },
       "id": 130,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Motherboard",
       "type": "row"
     },
@@ -3467,6 +3950,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisSoftMax": 100,
@@ -3502,8 +3987,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -3515,7 +3999,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 113
+        "y": 147
       },
       "id": 136,
       "links": [],
@@ -3526,7 +4010,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -3537,6 +4022,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_superio_celsius{instance=\"$instance\"}",
           "format": "time_series",
@@ -3561,6 +4050,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -3595,8 +4086,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3612,7 +4102,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 113
+        "y": 147
       },
       "id": 138,
       "links": [],
@@ -3623,7 +4113,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -3634,6 +4125,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_superio_revolutions_per_minute{instance=\"$instance\"}",
           "format": "time_series",
@@ -3644,6 +4139,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "(max(ohm_superio_revolutions_per_minute{instance=\"$instance\"}) / ignoring(sensor) (max(ohm_superio_control_percent{instance=\"$instance\"}) / 100)) * 0.9",
           "format": "time_series",
@@ -3687,6 +4186,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -3721,8 +4222,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3738,7 +4238,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 122
+        "y": 156
       },
       "id": 140,
       "links": [],
@@ -3750,7 +4250,8 @@
             "min"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -3762,6 +4263,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_superio_volts{instance=\"$instance\"}",
           "format": "time_series",
@@ -3776,14 +4281,27 @@
     },
     {
       "collapsed": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 131
+        "y": 165
       },
       "id": 30,
       "panels": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "refId": "A"
+        }
+      ],
       "title": "Network",
       "type": "row"
     },
@@ -3800,15 +4318,15 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3872,7 +4390,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 132
+        "y": 166
       },
       "id": 32,
       "options": {
@@ -3892,9 +4410,13 @@
           }
         ]
       },
-      "pluginVersion": "8.4.0",
+      "pluginVersion": "9.3.1",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum by (hardware) (increase(ohm_nic_bytes{instance=\"$instance\",sensor=\"Data Downloaded\"}[$__range]))",
           "format": "table",
@@ -3904,6 +4426,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum by (hardware) (increase(ohm_nic_bytes{instance=\"$instance\",sensor=\"Data Uploaded\"}[$__range]))",
           "format": "table",
@@ -3914,6 +4440,10 @@
           "refId": "B"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "ohm_nic_load_percent{instance=\"$instance\"}",
           "format": "table",
@@ -3964,6 +4494,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -3997,8 +4529,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4012,9 +4543,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 8,
+        "w": 24,
         "x": 0,
-        "y": 140
+        "y": 174
       },
       "id": 34,
       "links": [],
@@ -4026,7 +4557,8 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "multi",
@@ -4038,6 +4570,10 @@
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "ohm_nic_bytes_per_second{instance=\"$instance\",hardware=~\"$network\",sensor=\"Download Speed\"}",
           "format": "time_series",
           "intervalFactor": 1,
@@ -4045,6 +4581,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "-ohm_nic_bytes_per_second{instance=\"$instance\",hardware=~\"$network\",sensor=\"Upload Speed\"}",
           "format": "time_series",
@@ -4059,7 +4599,7 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 35,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -4185,6 +4725,6 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 52,
+  "version": 8,
   "weekStart": ""
 }
