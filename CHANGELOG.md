@@ -1,3 +1,7 @@
+## 0.28.1 - 2022-12-11
+
+- Revert update of prometheus client that was causing high CPU load
+
 ## 0.28.0 - 2022-12-11
 
 - [Updates LibrehardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/58cef11...1131b4)
