@@ -1,3 +1,22 @@
+## 0.29.0 - 2023-03-16
+
+- [Updates LibrehardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/58cef11...1131b4)
+  - Fix for Windows 11 22H2 (22621) incorrect total CPU load issue
+  - Fix ASUS X470-I incontrollable fans
+  - Added ASUS ROG Maximus Z690 Hero - SuperIO sensors
+  - Add Support IT8625E and X670E Valkyrie
+  - Add support for ASRock Z790 Taichi/Z790 Taichi Carrara
+  - Fix sensor asrock sensor detection
+  - Added ROG Maximus X Hero (Wifi AC) - Super IO sensors
+  - Added support for KrakenZ Devices
+  - Cleanup thread affinity and support > 64 threads.
+  - Read storage performance sensors without WMI
+  - Fix battery underflow
+  - Fix incorrect GPU temperature calculation
+- Update client libraries:
+  - postgres client from 7.0.0 to 7.0.2
+  - influxdb client from 4.9.0 to 4.11.0
+
 ## 0.28.1 - 2022-12-11
 
 - Revert update of prometheus client that was causing high CPU load
