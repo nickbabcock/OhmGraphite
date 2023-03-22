@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.2-pre209" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.2" />
     <PackageReference Include="InfluxDB.Client" Version="4.11.0" />
     <PackageReference Include="Npgsql" Version="7.0.2" />
     <PackageReference Include="prometheus-net" Version="6.0.0" />
