@@ -135,9 +135,11 @@ Configuring the Prometheus exporter will create a server that listens on `promet
          `*` means that it will listen on all interfaces.
          Consider restricting to a given IP address -->
     <add key="prometheus_host" value="*" />
+	<add key="prometheus_https" value="false" />
   </appSettings>
 </configuration>
 ```
+(Note: If HTTPS is enabled you must also [configure a certificate in windows](https://docs.microsoft.com/en-us/dotnet/framework/wcf/feature-details/how-to-configure-a-port-with-an-ssl-certificate).)
 
 Then you'll need add the OhmGraphite instance to your [Prometheus config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/). This can be done with the method of your choosing but for the sake of example here is a possible `prometheus.yml`:
 
