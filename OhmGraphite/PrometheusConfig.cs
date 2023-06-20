@@ -1,5 +1,3 @@
-﻿using LibreHardwareMonitor.Hardware.Controller.AeroCool;
-
 namespace OhmGraphite
 {
     public class PrometheusConfig
