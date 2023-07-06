@@ -135,11 +135,9 @@ Configuring the Prometheus exporter will create a server that listens on `promet
          `*` means that it will listen on all interfaces.
          Consider restricting to a given IP address -->
     <add key="prometheus_host" value="*" />
-	<add key="prometheus_https" value="false" />
   </appSettings>
 </configuration>
 ```
-(Note: If HTTPS is enabled you must also [configure a certificate in windows](https://docs.microsoft.com/en-us/dotnet/framework/wcf/feature-details/how-to-configure-a-port-with-an-ssl-certificate).)
 
 Then you'll need add the OhmGraphite instance to your [Prometheus config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/). This can be done with the method of your choosing but for the sake of example here is a possible `prometheus.yml`:
 
@@ -160,6 +158,68 @@ Here's one example of enabling it in powershell. Note that there are further way
 
 ```powershell
 New-NetFirewallRule -DisplayName "Allow port 4445 for OhmGraphite" -Direction Inbound -LocalPort 4445 -Protocol TCP -Action Allow
+```
+
+#### Prometheus HTTPS Configuration
+
+This section will walkthrough setting up HTTPS communication with a self signed certificate between OhmGraphite and Prometheus:
+
+Execute the instructions below with an admin powershell terminal to generate the certificate, import it into the machine, and then bind the certificate to the configured port.
+
+```pwsh
+# Create a new self signed certificate with a subject equal to host used to
+# access OhmGraphite. If an IP address is used to access OhmGraphite,
+# you'll need the IPAddress field, otherwise the `TextExtension` param can be
+# replaced with the DnsName param.
+$params = @{
+  FriendlyName = 'OhmGraphite'
+  Subject = '10.0.0.200'
+  TextExtension = @('2.5.29.17={text}&IPAddress=10.0.0.200')
+}
+$cert = New-SelfSignedCertificate @params
+$thumb = $cert.Thumbprint
+
+# Export and then import our cert into Windows certificate store
+Export-Certificate -Cert $cert -FilePath ohmgraphite.cer
+Import-Certificate -FilePath .\ohmgraphite.cer -CertStoreLocation Cert:\LocalMachine\Root
+
+# Bind our cert to the port OhmGraphite is listening on
+netsh http add sslcert ipport=0.0.0.0:4445 certhash=$thumb
+```
+
+Enable HTTPS in `OhmGraphite.exe.config` with `prometheus_https`:
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="type" value="prometheus" />
+    <add key="prometheus_port" value="4445" />
+    <add key="prometheus_host" value="*" />
+    <add key="prometheus_https" value="true" />
+  </appSettings>
+</configuration>
+```
+
+With OhmGraphite configured, the prometheus server is next. In order to have prometheus verify against a self signed certificate, the certificate must be converted into a format prometheus understands:
+
+```bash
+# Linux:
+openssl x509 -inform der -in ohmgraphite.cer -out ohmgraphite.pem
+
+# Windows:
+# certutil -encode .\ohmgraphite.cer .\ohmgraphite.pem
+```
+
+Then update the prometheus config to expect our certificate without verification:
+
+```diff
+   - job_name: 'ohmgraphite'
++    scheme: https
++    tls_config:
++      ca_file: /etc/prometheus/ohmgraphite.pem
+     static_configs:
+     - targets: ['10.0.0.200:4445']
 ```
 
 ### TimescaleDB Configuration
@@ -299,6 +359,54 @@ Since disabling sensors at the hardware level is more efficient than a glob to h
 When hardware is disabled, all instances of that hardware are disabled. For instance, if one has multiple storage devices and only one is unstable, disabling storage hardware will halt sensor collection from all of them.
 
 ### Certificates
+
+By default, OhmGraphite will fail to communicate with servers that present certificates that can't be verified. To workaround this issue, the server's certificate should be imported on the OhmGraphite machine.
+
+Below shows an example setup where Influxdb v1 is running on a linux server with a domain name of `vm-ubuntu`:
+
+Generate certificate:
+
+```bash
+mkdir ssl
+openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+  -keyout ssl/ohm.key -out ssl/ohm.crt -subj "/CN=vm-ubuntu" \
+  -addext "subjectAltName=DNS:vm-ubuntu,IP:172.22.24.52"
+```
+
+Run influxdb (via docker-compose) with our certificate:
+
+```yaml
+version: "3"
+services:
+  influxdb:
+    image: influxdb:1.8
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb:/var/lib/influxdb
+      - ./ssl:/etc/ssl/
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=supersecretpassword
+      - INFLUXDB_HTTP_HTTPS_ENABLED=true
+      - INFLUXDB_HTTP_HTTPS_CERTIFICATE=/etc/ssl/ohm.crt
+      - INFLUXDB_HTTP_HTTPS_PRIVATE_KEY=/etc/ssl/ohm.key
+      - INFLUXDB_HTTP_AUTH_ENABLED=true
+
+volumes:
+  influxdb:
+```
+
+Then on the OhmGraphite machine, import the certificate with an admin powershell instance:
+
+```pwsh
+Import-Certificate -FilePath .\ohm.crt -CertStoreLocation 'Cert:\LocalMachine\Root'
+```
+
+#### `certificate_verification` (**deprecated**)
+
+**This config option has been deprecated due to not working as intended with later .NET versions**
 
 When connecting to a service that presents a self signed certificate, one can specify `certificate_verification`
 
