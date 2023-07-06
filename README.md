@@ -211,7 +211,7 @@ openssl x509 -inform der -in ohmgraphite.cer -out ohmgraphite.pem
 # certutil -encode .\ohmgraphite.cer .\ohmgraphite.pem
 ```
 
-Then update the prometheus config to expect our certificate without verification:
+Then update the prometheus config to expect our certificate:
 
 ```diff
    - job_name: 'ohmgraphite'
