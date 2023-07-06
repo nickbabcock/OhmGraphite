@@ -111,7 +111,7 @@ namespace OhmGraphite
             {
                 Logger.Info($"Prometheus port: {config.Prometheus.Port}");
                 var registry = PrometheusCollection.SetupDefault(collector);
-                var server = new MetricServer(config.Prometheus.Host, config.Prometheus.Port, registry: registry);
+                var server = new MetricServer(config.Prometheus.Host, config.Prometheus.Port, registry: registry, useHttps: config.Prometheus.UseHttps);
                 return new PrometheusServer(server, collector);
             }
             else if (config.Timescale != null)
