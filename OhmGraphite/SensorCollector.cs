@@ -152,7 +152,7 @@ namespace OhmGraphite
             {
                 Logger.Debug($"{id} had an infinite value");
             }
-            else if (!_config.IsHidden(sensor.Identifier.ToString()))
+            else if (!_config.IsHidden(sensor.Identifier.ToString()) && !_config.IsHidden(sensor.Name))
             {
                 var hwInstance = sensor.Hardware.Identifier.ToString();
                 var ind = hwInstance.LastIndexOf('/');
