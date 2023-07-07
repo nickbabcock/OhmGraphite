@@ -1,3 +1,29 @@
+## 0.30.0 - 2023-07-06
+
+- HTTPS support for Prometheus Exporter
+- Allow hiding sensors by sensor name
+- Update LibrehardwareMonitor to latest:
+    - Add support for Razer PWM PC Fan Controller
+    - Add support for IT87952E EC on Gigabyte boards
+    - Add partially support for MS-7751 boards (F71889AD)
+    - Add support for ASUS ROG CROSSHAIR X670E GENE
+    - Add support for Gigabyte B75M-D3H
+    - Add support for ASUS ROG Z390-E Gaming Motherboard
+    - Added fan control support for the EVGA X58 3X SLI motherboard
+    - Create virtual sensor for maximum CPU load across all cores
+    - Support asus rog strix z390-i gaming embedded controller
+    - Add support for Gigabyte B550 Aorus Pro sensors
+    - Support Asus ROG STRIX Z390-F GAMING
+    - Add support for IPMI sensors and Supermicro IPMI fan control
+
+### Migration Guide
+
+To hide the new CPU Core Max sensor, one can leverage the new ability to hide sensors by sensor name:
+
+```xml
+<add key="CPU Core Max/hidden" />
+```
+
 ## 0.29.0 - 2023-03-16
 
 - [Updates LibrehardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/compare/58cef11...1131b4)
