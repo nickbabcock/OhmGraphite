@@ -311,10 +311,11 @@ It is possible that the sensor names exposed through OhmGraphite are not descrip
 
 ### Hiding Sensors
 
-There may be a sensor that is faulty on a given machine. Maybe it reports negative temperatures. This can throw off monitoring software or make it harder to maintain with all the special cases. OhmGraphite allows one to exclude a sensor from being exported by modifying the OhmGraphite config and adding the `/hidden` suffix to the sensor id like so:
+There may be a sensor that should be hidden. Maybe it's a temperature sensor that reports negative values, or maybe a sensor reporting aggregated values that has no use. Whatever the case, OhmGraphite allows one to exclude a sensor from being exported by modifying the OhmGraphite config and adding the `/hidden` suffix to the sensor id or name like so:
 
 ```xml
 <add key="/lpc/nct6792d/temperature/1/hidden" />
+<add key="CPU Core Max/hidden" />
 ```
 
 One can use globs to ignore a group of sensors. For instance, to hide all power sensors and hide clock sensors from an AMD CPU:
