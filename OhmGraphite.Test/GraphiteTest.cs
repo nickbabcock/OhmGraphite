@@ -1,8 +1,7 @@
+using DotNet.Testcontainers.Builders;
 using System;
 using System.Net.Http;
 using System.Threading;
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
 using Xunit;
 
 namespace OhmGraphite.Test
@@ -12,7 +11,7 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async void InsertGraphiteTest()
         {
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("graphiteapp/graphite-statsd:1.1.8-2")
                 .WithEnvironment("REDIS_TAGDB", "y")
@@ -53,7 +52,7 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async void InsertTagGraphiteTest()
         {
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("graphiteapp/graphite-statsd:1.1.8-2")
                 .WithEnvironment("REDIS_TAGDB", "y")

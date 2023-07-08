@@ -1,6 +1,5 @@
 using System;
 using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
 using Npgsql;
 using Xunit;
 
@@ -11,7 +10,7 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async void CanSetupTimescale()
         {
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("timescale/timescaledb:latest-pg12")
                 .WithEnvironment("POSTGRES_PASSWORD", "123456")
@@ -37,14 +36,15 @@ namespace OhmGraphite.Test
         [IgnoreOnRemoteDockerFact, Trait("Category", "integration")]
         public async void InsertOnlyTimescale()
         {
-            var image = await new ImageFromDockerfileBuilder()
+            var image = new ImageFromDockerfileBuilder()
                 .WithDockerfile("timescale.dockerfile")
                 .WithDockerfileDirectory("docker")
                 .WithDeleteIfExists(true)
                 .WithName("ohm-graphite-insert-only-timescale")
                 .Build();
+            await image.CreateAsync();
 
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithImage(image)
                 .WithEnvironment("POSTGRES_PASSWORD", "123456")
                 .WithPortBinding(5432, assignRandomHostPort: true)
