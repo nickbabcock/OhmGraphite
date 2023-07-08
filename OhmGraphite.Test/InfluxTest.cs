@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
 using InfluxDB.Client;
 using Xunit;
 
@@ -16,7 +15,7 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async void CanInsertIntoInflux()
         {
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:1.8-alpine")
                 .WithEnvironment("INFLUXDB_DB", "mydb")
@@ -59,7 +58,7 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async void CanInsertIntoPasswordLessInfluxdb()
         {
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:1.8-alpine")
                 .WithEnvironment("INFLUXDB_DB", "mydb")
@@ -102,7 +101,7 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async void CanInsertIntoInflux2()
         {
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:2.0-alpine")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
@@ -154,7 +153,7 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async void CanInsertIntoInflux2Token()
         {
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:2.0-alpine")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
@@ -208,7 +207,7 @@ namespace OhmGraphite.Test
             // We do some fancy docker footwork where we informally connect
             // these two containers. In the future I believe test containers will
             // be able to natively handle adding these to a docker network
-            var testContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("influxdb:2.0-alpine")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
@@ -224,7 +223,7 @@ namespace OhmGraphite.Test
             await container.StartAsync();
 
             var cmd = $"apk add openssl && openssl req -x509 -nodes -newkey rsa:4096 -keyout /tmp/key.pem -out /tmp/cert.pem -days 365 -subj '/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=www.example.com' && /usr/bin/ghostunnel server --listen=0.0.0.0:8087 --target={container.IpAddress}:8086 --unsafe-target --disable-authentication --key /tmp/key.pem --cert=/tmp/cert.pem";
-            var tlsContainerBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+            var tlsContainerBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithImage("squareup/ghostunnel")
                 .WithExposedPort(8087)
