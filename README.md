@@ -135,6 +135,7 @@ Configuring the Prometheus exporter will create a server that listens on `promet
          `*` means that it will listen on all interfaces.
          Consider restricting to a given IP address -->
     <add key="prometheus_host" value="*" />
+    <add key="prometheus_path" value="metrics/" /> 
   </appSettings>
 </configuration>
 ```
