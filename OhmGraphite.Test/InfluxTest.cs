@@ -30,7 +30,7 @@ namespace OhmGraphite.Test
             var config = new InfluxConfig(new Uri(baseUrl), "mydb", "my_user", "my_pass");
             using var writer = new InfluxWriter(config, "my-pc");
             using var client = new HttpClient();
-            for (int attempts = 0;; attempts++)
+            for (int attempts = 0; ; attempts++)
             {
                 try
                 {
@@ -73,7 +73,7 @@ namespace OhmGraphite.Test
             var config = new InfluxConfig(new Uri(baseUrl), "mydb", "my_user", null);
             using var writer = new InfluxWriter(config, "my-pc");
             using var client = new HttpClient();
-            for (int attempts = 0;; attempts++)
+            for (int attempts = 0; ; attempts++)
             {
                 try
                 {
@@ -125,7 +125,7 @@ namespace OhmGraphite.Test
             var config = new Influx2Config(options);
 
             using var writer = new Influx2Writer(config, "my-pc");
-            for (int attempts = 0;; attempts++)
+            for (int attempts = 0; ; attempts++)
             {
                 try
                 {
@@ -169,14 +169,14 @@ namespace OhmGraphite.Test
             await container.StartAsync();
 
             var baseUrl = $"http://{container.Hostname}:{container.GetMappedPublicPort(8086)}";
-            var configMap = new ExeConfigurationFileMap {ExeConfigFilename = "assets/influx2.config"};
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/influx2.config" };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
             config.AppSettings.Settings["influx2_address"].Value = baseUrl;
             var customConfig = new CustomConfig(config);
             var results = MetricConfig.ParseAppSettings(customConfig);
 
             using var writer = new Influx2Writer(results.Influx2, "my-pc");
-            for (int attempts = 0;; attempts++)
+            for (int attempts = 0; ; attempts++)
             {
                 try
                 {
@@ -245,7 +245,7 @@ namespace OhmGraphite.Test
             try
             {
                 using var writer = new Influx2Writer(results.Influx2, "my-pc");
-                for (int attempts = 0;; attempts++)
+                for (int attempts = 0; ; attempts++)
                 {
                     try
                     {

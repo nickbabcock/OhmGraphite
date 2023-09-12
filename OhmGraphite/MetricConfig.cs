@@ -107,7 +107,7 @@ namespace OhmGraphite
 
         private static EnabledHardware ParseEnabledHardware(IAppConfig config)
         {
-            return new (
+            return new(
                 config["/cpu/enabled"]?.ToLowerInvariant() != "false",
                 config["/gpu/enabled"]?.ToLowerInvariant() != "false",
                 config["/motherboard/enabled"]?.ToLowerInvariant() != "false",

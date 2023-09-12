@@ -66,7 +66,7 @@ namespace OhmGraphite.Test
             var port = container.GetMappedPublicPort(2003);
             using var writer = new GraphiteWriter(container.Hostname, port, "my-pc", tags: true);
             using var client = new HttpClient();
-            for (int attempts = 0;; attempts++)
+            for (int attempts = 0; ; attempts++)
             {
                 try
                 {

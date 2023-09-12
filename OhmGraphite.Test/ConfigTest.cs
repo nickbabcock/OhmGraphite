@@ -10,7 +10,7 @@ namespace OhmGraphite.Test
         [Fact]
         public void CanParseGraphiteConfig()
         {
-            var configMap = new ExeConfigurationFileMap {ExeConfigFilename = "assets/graphite.config"};
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/graphite.config" };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
             var customConfig = new CustomConfig(config);
             var results = MetricConfig.ParseAppSettings(customConfig);

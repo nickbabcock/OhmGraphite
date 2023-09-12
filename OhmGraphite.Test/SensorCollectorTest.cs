@@ -17,7 +17,7 @@ namespace OhmGraphite.Test
 
             var computer = new Computer();
             using var collector = new SensorCollector(computer, MetricConfig.ParseAppSettings(new BlankConfig()));
-            
+
             collector.Open();
             var unused = collector.ReadAllSensors().Count();
 

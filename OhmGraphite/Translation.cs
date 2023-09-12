@@ -49,7 +49,8 @@ namespace OhmGraphite
         Battery,
     }
 
-    public static class TranslationExtension {
+    public static class TranslationExtension
+    {
         public static SensorType ToOwnSensor(this LibreHardwareMonitor.Hardware.SensorType s)
         {
             switch (s)
@@ -63,11 +64,11 @@ namespace OhmGraphite
                 case LibreHardwareMonitor.Hardware.SensorType.Temperature:
                     return SensorType.Temperature;
                 case LibreHardwareMonitor.Hardware.SensorType.Load:
-                    return SensorType.Load; 
+                    return SensorType.Load;
                 case LibreHardwareMonitor.Hardware.SensorType.Frequency:
                     return SensorType.Frequency;
                 case LibreHardwareMonitor.Hardware.SensorType.Fan:
-                    return SensorType.Fan;  
+                    return SensorType.Fan;
                 case LibreHardwareMonitor.Hardware.SensorType.Flow:
                     return SensorType.Flow;
                 case LibreHardwareMonitor.Hardware.SensorType.Control:

@@ -16,7 +16,7 @@ namespace OhmGraphite
 
         public MetricTimer(TimeSpan interval, IGiveSensors collector, IWriteMetrics writer)
         {
-            _timer = new Timer(interval.TotalMilliseconds) {AutoReset = true};
+            _timer = new Timer(interval.TotalMilliseconds) { AutoReset = true };
             _timer.Elapsed += ReportMetrics;
             _collector = collector;
             _writer = writer;

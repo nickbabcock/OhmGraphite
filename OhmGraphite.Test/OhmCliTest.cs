@@ -6,7 +6,8 @@ namespace OhmGraphite.Test
     public class OhmCliTest
     {
         [Fact]
-        public async Task CanExecuteCliVersion() {
+        public async Task CanExecuteCliVersion()
+        {
             await OhmCli.Execute(new[] { "--version" });
         }
 

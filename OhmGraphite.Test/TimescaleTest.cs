@@ -54,7 +54,7 @@ namespace OhmGraphite.Test
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
 
-            string selectStr =$"Host={container.Hostname};Username=postgres;Password=123456;Port={container.GetMappedPublicPort(5432)};Database=timescale_built";
+            string selectStr = $"Host={container.Hostname};Username=postgres;Password=123456;Port={container.GetMappedPublicPort(5432)};Database=timescale_built";
             var epoch = new DateTime(2001, 1, 13, 0, 0, 0, DateTimeKind.Utc);
 
             string connStr = $"Host={container.Hostname};Username=ohm;Password=itsohm;Port={container.GetMappedPublicPort(5432)};Database=timescale_built";
