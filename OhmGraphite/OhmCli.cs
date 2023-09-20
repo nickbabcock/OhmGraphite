@@ -192,16 +192,10 @@ namespace OhmGraphite
         {
             if (string.IsNullOrEmpty(configPath))
             {
-                // https://github.com/dotnet/runtime/issues/13051#issuecomment-510267727
-                var processModule = Process.GetCurrentProcess().MainModule;
-                if (processModule != null)
-                {
-                    var pt = processModule.FileName;
-                    var fn = Path.Join(Path.GetDirectoryName(pt), "OhmGraphite.exe.config");
-                    var configMap1 = new ExeConfigurationFileMap { ExeConfigFilename = fn };
-                    var config1 = ConfigurationManager.OpenMappedExeConfiguration(configMap1, ConfigurationUserLevel.None);
-                    return new CustomConfig(config1);
-                }
+                var fn = Path.Join(Path.GetDirectoryName(Environment.ProcessPath), "OhmGraphite.exe.config");
+                var configMap1 = new ExeConfigurationFileMap { ExeConfigFilename = fn };
+                var config1 = ConfigurationManager.OpenMappedExeConfiguration(configMap1, ConfigurationUserLevel.None);
+                return new CustomConfig(config1);
             }
 
             if (!File.Exists(configPath))
