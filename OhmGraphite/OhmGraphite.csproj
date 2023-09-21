@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.3-pre243" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.3-pre256" />
     <PackageReference Include="InfluxDB.Client" Version="4.13.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
