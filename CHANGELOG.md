@@ -1,3 +1,20 @@
+## 0.31.0 - 2023-09-21
+
+- Add prometheus metrics path customization
+- Replace unmaintained windows service management library 
+    - Should be a drop in replacement, no migration required
+    - The basic `start`, `stop`, `install`, `uninstall` functions the same
+    - Users who desire custom installs may need to directly use `sc.exe` now.
+- Update LibreHardwareMonitor to latest:
+    - Add Total Board Power for RX 7000 Cards
+    - Add support for ASUS Z790-I GAMING WIFI with EC
+    - Add support for Gigabyte Z690 Aorus Ultra
+    - Add support for Asus ROG Crosshair X670E Hero
+    - Add support for MS-7672 and MS-7757 boards
+    - Fix it8665e control fans
+    - Add CPU fan control for P55A-UD3
+    - Add IT8686E Controls
+
 ## 0.30.0 - 2023-07-06
 
 - HTTPS support for Prometheus Exporter
