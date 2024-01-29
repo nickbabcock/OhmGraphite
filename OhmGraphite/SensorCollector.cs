@@ -113,7 +113,7 @@ namespace OhmGraphite
         {
             var added = _ids.TryAdd(sensor.Identifier, sensor);
             var msg = added ? "Sensor added: {0} \"{1}\"" : "Sensor previously added: {0} \"{1}\"";
-            Logger.Info(msg, sensor.Identifier, sensor.Name);
+            Logger.Info(msg, sensor.Identifier, SensorName(sensor));
         }
 
         private void SensorRemoved(ISensor sensor)
@@ -133,8 +133,19 @@ namespace OhmGraphite
             return _ids.Values.OfType<ISensor>().SelectMany(ReportedValues);
         }
 
+        private string SensorName(ISensor sensor)
+        {
+            // Remove hardware index indentifier for motherboards to preserve
+            // librehardwaremonitor pre-0.9.3 behavior
+            // https://github.com/nickbabcock/OhmGraphite/pull/433
+            return sensor.Hardware.HardwareType == LibreHardwareMonitor.Hardware.HardwareType.Motherboard
+                ? string.Join("/", sensor.Name.Split('/').Where((x, i) => i != 2))
+                : sensor.Name;
+        }
+
         private IEnumerable<ReportedValue> ReportedValues(ISensor sensor)
         {
+            string sensorName = SensorName(sensor);
             string id = sensor.Identifier.ToString();
 
             // Only report a value if the sensor was able to get a value
@@ -152,13 +163,13 @@ namespace OhmGraphite
             {
                 Logger.Debug($"{id} had an infinite value");
             }
-            else if (!_config.IsHidden(sensor.Identifier.ToString()) && !_config.IsHidden(sensor.Name))
+            else if (!_config.IsHidden(sensor.Identifier.ToString()) && !_config.IsHidden(sensorName))
             {
                 var hwInstance = sensor.Hardware.Identifier.ToString();
                 var ind = hwInstance.LastIndexOf('/');
                 hwInstance = hwInstance.Substring(ind + 1);
 
-                var name = _config.TryGetAlias(sensor.Identifier.ToString(), out string alias) ? alias : sensor.Name;
+                var name = _config.TryGetAlias(sensor.Identifier.ToString(), out string alias) ? alias : sensorName;
 
                 yield return new ReportedValue(id,
                     name,
