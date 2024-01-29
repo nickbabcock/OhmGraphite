@@ -1,3 +1,12 @@
+## 0.32.0 - 2024-01-29
+
+- Update LibreHarewareMonitor to 0.9.3
+    - Add read activity to storage
+    - Add support for MSI MPG X570 GAMING PLUS (MS-7C37)
+    - Add support for ASUS ROG STRIX X670E-F GAMING WIFI
+    - Add support for Asus ROG MAXIMUS XI FORMULA
+- Update prometheus internal library to latest
+
 ## 0.31.0 - 2023-09-21
 
 - Add prometheus metrics path customization
