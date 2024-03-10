@@ -4,6 +4,7 @@ using System.Linq;
 using NLog;
 using LibreHardwareMonitor.Hardware;
 using LibreHardwareMonitor.Hardware.Storage;
+using System;
 
 namespace OhmGraphite
 {
@@ -111,6 +112,7 @@ namespace OhmGraphite
 
         private void SensorAdded(ISensor sensor)
         {
+            sensor.ValuesTimeWindow = TimeSpan.Zero;
             var added = _ids.TryAdd(sensor.Identifier, sensor);
             var msg = added ? "Sensor added: {0} \"{1}\"" : "Sensor previously added: {0} \"{1}\"";
             Logger.Info(msg, sensor.Identifier, SensorName(sensor));
