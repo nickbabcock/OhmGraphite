@@ -172,8 +172,7 @@ namespace OhmGraphite
                 hwInstance = hwInstance.Substring(ind + 1);
 
                 var name = _config.TryGetAlias(sensor.Identifier.ToString(), out string alias) ? alias : sensorName;
-
-                yield return new ReportedValue(id,
+                var result = new ReportedValue(id,
                     name,
                     sensor.Value.Value,
                     sensor.SensorType.ToOwnSensor(),
@@ -181,6 +180,20 @@ namespace OhmGraphite
                     sensor.Hardware.HardwareType.ToOwnHardware(),
                     hwInstance,
                     sensor.Index);
+
+                Logger.Trace(
+                    "Value: ID {id}, sensor: {sensor}, value: {value}, sensor type: {sensorType}, hardware: {hardware}, hardware type: {hardwareType}, sensor index: {sensorIndex}, hardware instance: {hardwareInstance}",
+                    result.Identifier,
+                    result.Sensor,
+                    result.Value,
+                    result.SensorType,
+                    result.Hardware,
+                    result.HardwareType,
+                    result.SensorIndex,
+                    result.HardwareInstance
+                );
+
+                yield return result;
             }
         }
     }
