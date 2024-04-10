@@ -1,3 +1,19 @@
+## 0.33.0 - 2024-04-10
+
+- Improve CPU/mem efficiency by avoiding tracking multiple values
+- Add trace logging to reported sensor values
+- Update LibreHardwareMonitor to latest
+  - Add support for Intel Gen 14 Meteor Lake
+  - Add Humidity sensor support
+  - Add support for ASUS Proart X670E Creator WiFi
+  - Add support for Gigabyte Z690 AORUS MASTER
+  - Add support for GIGABYTE B560I AORUS PRO AX
+  - Add support for B650M AORUS PRO AX
+  - Add support for ADL pmlog
+  - Fix crash when access to nvml api is unavailable
+  - Fix heap corruption caused by incorrect pointer size in calls to Ftd2xx.dll
+  - Fix metrics on newer gpus
+
 ## 0.32.0 - 2024-01-29
 
 - Update LibreHarewareMonitor to 0.9.3
