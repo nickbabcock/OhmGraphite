@@ -436,18 +436,20 @@ Something wrong? Try these steps
 
 - Enter the directory where OhmGraphite is installed
 - Examine `OhmGraphite.log`, do you see any lines with an "ERROR"? Fix the error.
-- If not, enable more verbose logging in `NLog.config`. Change the following line
-
-```xml
+- To see what hardward and sensors have been detected, and when metrics are
+  pushed to the destination, enable more logging in `NLog.config`. Change the
+  following line
+  ```xml
     <logger name="*" minlevel="Info" writeTo="file" />
-```
-
-to
-
-```xml
+  ```
+  to
+  ```xml
     <logger name="*" minlevel="Debug" writeTo="file" />
-```
-
+  ```
 - Restart OhmGraphite for the logging changes to take effect
-- At the bottom of `OhmGraphite.log` `DEBUG` statements should be present informing one of all the hardware sensors detected and whenever metrics are pushed somewhere.
+- To see every sensor update logged (WARNING: your log file will grow large),
+  enable trace logging
+  ```xml
+    <logger name="*" minlevel="Trace" writeTo="file" />
+  ```
 - Stumped? Open an issue with relevant parts of the log included.
