@@ -81,6 +81,8 @@ namespace OhmGraphite
                         return "control_percent";
                     case SensorType.Level: // %
                         return "level_percent";
+                    case SensorType.Humidity: // %
+                        return "humidity_percent";
                     case SensorType.Fan: // RPM
                         return "revolutions_per_minute";
                     case SensorType.Flow: // L/h
