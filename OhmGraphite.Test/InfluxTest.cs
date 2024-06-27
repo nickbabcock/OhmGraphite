@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using DotNet.Testcontainers.Builders;
 using InfluxDB.Client;
 using Xunit;
@@ -13,7 +14,7 @@ namespace OhmGraphite.Test
     public class InfluxTest
     {
         [Fact, Trait("Category", "integration")]
-        public async void CanInsertIntoInflux()
+        public async Task CanInsertIntoInflux()
         {
             var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
@@ -56,7 +57,7 @@ namespace OhmGraphite.Test
         }
 
         [Fact, Trait("Category", "integration")]
-        public async void CanInsertIntoPasswordLessInfluxdb()
+        public async Task CanInsertIntoPasswordLessInfluxdb()
         {
             var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
@@ -99,7 +100,7 @@ namespace OhmGraphite.Test
         }
 
         [Fact, Trait("Category", "integration")]
-        public async void CanInsertIntoInflux2()
+        public async Task CanInsertIntoInflux2()
         {
             var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
@@ -151,7 +152,7 @@ namespace OhmGraphite.Test
         }
 
         [Fact, Trait("Category", "integration")]
-        public async void CanInsertIntoInflux2Token()
+        public async Task CanInsertIntoInflux2Token()
         {
             var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
@@ -202,7 +203,7 @@ namespace OhmGraphite.Test
         }
 
         [Fact, Trait("Category", "integration")]
-        public async void CanInsertIntoInflux2TokenTls()
+        public async Task CanInsertIntoInflux2TokenTls()
         {
             // We do some fancy docker footwork where we informally connect
             // these two containers. In the future I believe test containers will
