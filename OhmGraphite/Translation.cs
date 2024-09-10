@@ -27,6 +27,7 @@ namespace OhmGraphite
         Energy, // milliwatt-hour (mWh)
         Noise, // dBA
         Humidity, // %
+        Conductivity, // µS/cm
     }
 
     /// <summary>
@@ -94,6 +95,8 @@ namespace OhmGraphite
                     return SensorType.Noise;
                 case LibreHardwareMonitor.Hardware.SensorType.Humidity:
                     return SensorType.Humidity;
+                case LibreHardwareMonitor.Hardware.SensorType.Conductivity:
+                    return SensorType.Conductivity;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s), s, "unexpected hardware monitor sensor translation");
             }

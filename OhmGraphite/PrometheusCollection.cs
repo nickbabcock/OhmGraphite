@@ -95,6 +95,8 @@ namespace OhmGraphite
                         return "watt_hours";
                     case SensorType.Noise:
                         return "dba";
+                    case SensorType.Conductivity:
+                        return "microsiemens_per_centimeter";
                     case SensorType.Factor: // 1
                     default:
                         return report.SensorType.ToString().ToLowerInvariant();
