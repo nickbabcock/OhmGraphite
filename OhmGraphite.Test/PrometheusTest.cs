@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Prometheus;
 using Xunit;
 
@@ -8,7 +9,7 @@ namespace OhmGraphite.Test
     public class PrometheusTest
     {
         [Fact]
-        public async void PrometheusTestServer()
+        public async Task PrometheusTestServer()
         {
             var collector = new TestSensorCreator();
             var registry = PrometheusCollection.SetupDefault(collector);
@@ -23,7 +24,7 @@ namespace OhmGraphite.Test
         }
 
         [Fact]
-        public async void PrometheusNicGuid()
+        public async Task PrometheusNicGuid()
         {
             var collector = new NicGuidSensor();
             var registry = PrometheusCollection.SetupDefault(collector);
