@@ -1,3 +1,31 @@
+## 0.34.0 - 2024-09-14
+
+*Breaking*: Some sensor names have been update:
+
+- VBat -> CMOS Battery
+- CPU SA -> CPU System Agent
+- VTT -> CPU Voltage Termination
+- 3VSB -> +3V Standby
+
+Changes:
+
+- Update LibreHardwareMonitor to latest
+  - Improved support for AMD GPUs
+  - Add shared memory free/total for Intel iGPU
+  - Add support for platform energy counter for Intel CPUs
+  - Support for ASUS Z790-E GAMING WIFI
+  - Support for ROG MAXIMUS Z690 HERO
+  - Support for Asrock H61M-DGS
+  - Fix memory size calculation with extended size
+  - Fix signedness of LPC/EC sensor readings
+  - Add Aquastream Ultimate support
+  - Add NZXT kraken X
+  - Add 16th voltage input for NCT67xxD chips
+  - Fix incorrect fan and temp readings on IT8655E
+  - Fix AccessViolationException crash for AMD Radeon RAMDisk
+  - Add Aqua Computer high flow NEXT support
+- Updated prometheus dashboard template to better support multi-gpu and AMD setups
+
 ## 0.33.0 - 2024-04-10
 
 - Improve CPU/mem efficiency by avoiding tracking multiple values
