@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "9.3.1"
+      "version": "10.0.3"
     },
     {
       "type": "datasource",
@@ -169,9 +169,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -256,9 +257,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -343,9 +345,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -443,9 +446,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -522,7 +526,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -587,7 +591,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -652,7 +656,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -682,7 +686,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -741,8 +747,11 @@
                 "value": 100
               },
               {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
               }
             ]
           },
@@ -780,8 +789,10 @@
                 ]
               },
               {
-                "id": "custom.displayMode",
-                "value": "color-text"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
               }
             ]
           }
@@ -795,7 +806,9 @@
       },
       "id": 77,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "enablePagination": false,
           "fields": "",
           "reducer": [
@@ -807,7 +820,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -970,7 +983,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -1034,7 +1047,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -1098,7 +1111,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -1184,9 +1197,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -1271,9 +1285,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -1358,9 +1373,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -1445,9 +1461,10 @@
           "values": false
         },
         "showUnfilled": true,
-        "text": {}
+        "text": {},
+        "valueMode": "color"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -1616,7 +1633,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -2151,7 +2168,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2218,7 +2236,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 41
       },
       "id": 109,
       "panels": [],
@@ -2282,7 +2300,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2298,7 +2317,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 66
+        "y": 42
       },
       "id": 18,
       "links": [],
@@ -2324,12 +2343,14 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_load_percent{instance=\"$instance\"}",
+          "expr": "ohm_gpunvidia_load_percent{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{sensor}}",
+          "range": true,
           "refId": "A"
         },
         {
@@ -2337,13 +2358,15 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpuati_load_percent{instance=\"$instance\"}",
+          "expr": "ohm_gpuati_load_percent{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{sensor}}",
+          "range": true,
           "refId": "B"
         }
       ],
@@ -2397,7 +2420,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2413,7 +2437,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 66
+        "y": 42
       },
       "id": 116,
       "links": [],
@@ -2442,12 +2466,14 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_watts{instance=\"$instance\"}",
+          "expr": "ohm_gpunvidia_watts{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{sensor}}",
+          "range": true,
           "refId": "A"
         },
         {
@@ -2455,13 +2481,15 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpuati_watts{instance=\"$instance\"}",
+          "expr": "ohm_gpuati_watts{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{sensor}}",
+          "range": true,
           "refId": "B"
         }
       ],
@@ -2516,7 +2544,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2532,7 +2561,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 74
+        "y": 50
       },
       "id": 118,
       "links": [],
@@ -2560,8 +2589,9 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_celsius{instance=\"$instance\"}",
+          "expr": "ohm_gpunvidia_celsius{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -2574,8 +2604,9 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpuati_celsius{instance=\"$instance\"}",
+          "expr": "ohm_gpuati_celsius{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -2635,7 +2666,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2651,7 +2683,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 74
+        "y": 50
       },
       "id": 121,
       "links": [],
@@ -2678,14 +2710,31 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_bytes_per_second{instance=\"$instance\"}",
+          "expr": "ohm_gpunvidia_bytes_per_second{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{sensor}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "ohm_gpuati_bytes_per_second{instance=\"$instance\",hw_instance=\"$gpu\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{sensor}}",
+          "refId": "B"
         }
       ],
       "title": "Data Rate",
@@ -2738,7 +2787,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2754,7 +2804,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 83
+        "y": 59
       },
       "id": 122,
       "links": [],
@@ -2789,6 +2839,22 @@
           "intervalFactor": 1,
           "legendFormat": "{{sensor}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "ohm_gpuati_bytes{instance=\"$instance\",hw_instance=\"$gpu\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{sensor}}",
+          "refId": "B"
         }
       ],
       "title": "Memory",
@@ -2841,7 +2907,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2851,13 +2918,41 @@
           },
           "unit": "rotrpm"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "High RPM"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": false
+                }
+              },
+              {
+                "id": "custom.spanNulls",
+                "value": true
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 83
+        "y": 59
       },
       "id": 123,
       "links": [],
@@ -2884,9 +2979,11 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_revolutions_per_minute{instance=\"$instance\"}",
+          "expr": "ohm_gpunvidia_revolutions_per_minute{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
+          "hide": false,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -2898,15 +2995,50 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "exemplar": true,
-          "expr": "(max(ohm_gpunvidia_revolutions_per_minute{instance=\"$instance\"}) / ignoring(sensor) (max(ohm_gpunvidia_control_percent{instance=\"$instance\"}) / 100)) * 0.9",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "(max_over_time(ohm_gpunvidia_revolutions_per_minute{instance=\"$instance\"}[$__range]) / (max_over_time(ohm_gpunvidia_control_percent{instance=\"$instance\"}[$__range]) / 100)) * 0.9",
           "format": "time_series",
           "hide": false,
           "instant": true,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "High RPM",
+          "range": false,
           "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "ohm_gpuati_revolutions_per_minute{instance=\"$instance\",hw_instance=\"$gpu\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Fan",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "(max_over_time(ohm_gpuati_revolutions_per_minute{instance=\"$instance\"}[$__range]) / (max_over_time(ohm_gpuati_control_percent{instance=\"$instance\"}[$__range]) / 100)) * 0.9",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "High RPM",
+          "range": false,
+          "refId": "D"
         }
       ],
       "title": "Fan",
@@ -2977,7 +3109,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2993,7 +3126,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 68
       },
       "id": 120,
       "links": [],
@@ -3022,8 +3155,9 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_hertz{instance=\"$instance\"}",
+          "expr": "ohm_gpunvidia_hertz{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -3036,8 +3170,9 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpuati_hertz{instance=\"$instance\"}",
+          "expr": "ohm_gpuati_hertz{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -3060,7 +3195,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 124
+        "y": 76
       },
       "id": 41,
       "panels": [],
@@ -3088,7 +3223,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           },
           "mappings": [],
@@ -3096,7 +3233,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -3129,8 +3267,11 @@
             },
             "properties": [
               {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
               },
               {
                 "id": "unit",
@@ -3146,7 +3287,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "#EAB839",
@@ -3240,8 +3382,11 @@
                 "value": "percent"
               },
               {
-                "id": "custom.displayMode",
-                "value": "lcd-gauge"
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
               },
               {
                 "id": "thresholds",
@@ -3249,7 +3394,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "#EAB839",
@@ -3291,8 +3437,10 @@
             },
             "properties": [
               {
-                "id": "custom.displayMode",
-                "value": "color-text"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
               },
               {
                 "id": "thresholds",
@@ -3300,7 +3448,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "red",
@@ -3333,11 +3482,13 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 125
+        "y": 77
       },
       "id": 43,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -3348,7 +3499,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -3530,7 +3681,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 132
+        "y": 84
       },
       "id": 52,
       "panels": [],
@@ -3559,7 +3710,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -3570,7 +3722,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 133
+        "y": 85
       },
       "id": 12,
       "options": {
@@ -3588,7 +3740,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -3652,7 +3804,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3668,7 +3821,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 133
+        "y": 85
       },
       "id": 65,
       "options": {
@@ -3746,7 +3899,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3762,7 +3916,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 138
+        "y": 90
       },
       "id": 58,
       "options": {
@@ -3852,7 +4006,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3868,7 +4023,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 138
+        "y": 90
       },
       "id": 59,
       "options": {
@@ -3923,7 +4078,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 146
+        "y": 112
       },
       "id": 130,
       "panels": [],
@@ -3987,7 +4142,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -3999,7 +4155,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 147
+        "y": 113
       },
       "id": 136,
       "links": [],
@@ -4086,7 +4242,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4102,7 +4259,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 147
+        "y": 113
       },
       "id": 138,
       "links": [],
@@ -4222,7 +4379,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4238,7 +4396,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 156
+        "y": 122
       },
       "id": 140,
       "links": [],
@@ -4289,7 +4447,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 165
+        "y": 131
       },
       "id": 30,
       "panels": [],
@@ -4317,7 +4475,9 @@
           },
           "custom": {
             "align": "auto",
-            "displayMode": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": false,
             "inspect": false
           },
@@ -4326,7 +4486,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4390,11 +4551,13 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 166
+        "y": 132
       },
       "id": 32,
       "options": {
+        "cellHeight": "sm",
         "footer": {
+          "countRows": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -4410,7 +4573,7 @@
           }
         ]
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -4529,7 +4692,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4543,9 +4707,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 8,
         "x": 0,
-        "y": 174
+        "y": 140
       },
       "id": 34,
       "links": [],
@@ -4599,7 +4763,7 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -4710,7 +4874,7 @@
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
-        "regex": "/.*hardware=\"([^\"]*).*/",
+        "regex": "/.*hardware=\"(?<text>[^\"]*)\",hw_instance=\"(?<value>[^\"]*)\".*/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -4725,6 +4889,6 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 8,
+  "version": 3,
   "weekStart": ""
 }
