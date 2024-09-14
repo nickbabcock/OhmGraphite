@@ -2,6 +2,7 @@ using DotNet.Testcontainers.Builders;
 using System;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace OhmGraphite.Test
@@ -9,7 +10,7 @@ namespace OhmGraphite.Test
     public class GraphiteTest
     {
         [Fact, Trait("Category", "integration")]
-        public async void InsertGraphiteTest()
+        public async Task InsertGraphiteTest()
         {
             var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
@@ -50,7 +51,7 @@ namespace OhmGraphite.Test
         }
 
         [Fact, Trait("Category", "integration")]
-        public async void InsertTagGraphiteTest()
+        public async Task InsertTagGraphiteTest()
         {
             var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())

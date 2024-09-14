@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using DotNet.Testcontainers.Builders;
 using Npgsql;
 using Xunit;
@@ -8,7 +9,7 @@ namespace OhmGraphite.Test
     public class TimescaleTest
     {
         [Fact, Trait("Category", "integration")]
-        public async void CanSetupTimescale()
+        public async Task CanSetupTimescale()
         {
             var testContainersBuilder = new ContainerBuilder()
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
