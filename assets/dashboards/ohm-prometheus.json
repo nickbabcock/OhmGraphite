@@ -959,6 +959,24 @@
               }
             ]
           }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "substring",
+                  "options": {
+                    "value": "Distance"
+                  }
+                },
+                "fieldName": "Hardware"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
         }
       ],
       "type": "table"
@@ -1250,10 +1268,12 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_load_percent{instance=\"$instance\",sensor=\"GPU Core\"}",
+          "expr": "ohm_gpunvidia_load_percent{instance=\"$instance\",sensor=\"GPU Core\"} or ohm_gpuati_load_percent{instance=\"$instance\",sensor=\"GPU Core\"}",
           "interval": "",
           "legendFormat": "",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1346,10 +1366,12 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_bytes{instance=\"$instance\",sensor=\"GPU Memory Used\"} * 100 / ignoring(sensor) ohm_gpunvidia_bytes{instance=\"$instance\",sensor=\"GPU Memory Total\"}",
+          "expr": "ohm_gpunvidia_bytes{instance=\"$instance\",sensor=\"GPU Memory Used\"} * 100 / ignoring(sensor) ohm_gpunvidia_bytes{instance=\"$instance\",sensor=\"GPU Memory Total\"} or ohm_gpuati_bytes{instance=\"$instance\",sensor=\"GPU Memory Used\"} * 100 / ignoring(sensor) ohm_gpuati_bytes{instance=\"$instance\",sensor=\"GPU Memory Total\"}",
           "interval": "",
           "legendFormat": "",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -2073,6 +2095,16 @@
         }
       ],
       "title": "Temperatures",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "/^(?!.Distance.)/"
+            }
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -2125,7 +2157,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2232,7 +2265,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2350,7 +2384,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2471,7 +2506,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2593,7 +2629,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2716,7 +2753,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2837,7 +2875,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3039,7 +3078,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3159,7 +3199,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3265,7 +3306,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -3318,7 +3360,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "#EAB839",
@@ -3424,7 +3467,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "#EAB839",
@@ -3477,7 +3521,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "red",
@@ -4863,6 +4908,6 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 4,
+  "version": 6,
   "weekStart": ""
 }
