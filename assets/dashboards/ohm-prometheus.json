@@ -800,21 +800,6 @@
             },
             "properties": [
               {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "pattern": ".*TjMax",
-                      "result": {
-                        "color": "dark-red",
-                        "index": 0
-                      }
-                    },
-                    "type": "regex"
-                  }
-                ]
-              },
-              {
                 "id": "custom.cellOptions",
                 "value": {
                   "type": "color-text"
@@ -4908,6 +4893,6 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 6,
+  "version": 7,
   "weekStart": ""
 }
