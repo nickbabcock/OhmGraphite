@@ -1574,8 +1574,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=~\".*Package\"} + ignoring(hardware,hw_instance,sensor) ohm_gpunvidia_watts{instance=\"$instance\"}",
-          "legendFormat": "__auto",
+          "expr": "ohm_cpu_watts{instance=\"$instance\", sensor=~\".*Package\"} + ignoring(sensor, hw_instance, hardware) (ohm_gpunvidia_watts{instance=\"$instance\"} or ohm_gpuati_watts{instance=\"$instance\"})",          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
