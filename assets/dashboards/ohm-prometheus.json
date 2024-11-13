@@ -1809,8 +1809,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 24,
+        "h": 8,
+        "w": 12,
         "x": 0,
         "y": 16
       },
@@ -1916,10 +1916,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 25
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
       },
       "id": 103,
       "options": {
@@ -2041,9 +2041,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 24,
+        "w": 12,
         "x": 0,
-        "y": 34
+        "y": 24
       },
       "id": 107,
       "options": {
@@ -2157,9 +2157,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 43
+        "w": 12,
+        "x": 12,
+        "y": 24
       },
       "id": 105,
       "options": {
@@ -2250,8 +2250,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2267,7 +2266,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 33
       },
       "id": 26,
       "options": {
@@ -2311,7 +2310,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 42
       },
       "id": 109,
       "panels": [],
@@ -2369,8 +2368,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2384,9 +2382,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 12,
         "x": 0,
-        "y": 62
+        "y": 43
       },
       "id": 18,
       "options": {
@@ -2491,8 +2489,129 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "hertz"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 43
+      },
+      "id": 120,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "ohm_gpunvidia_hertz{instance=\"$instance\",hw_instance=\"$gpu\"}",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{sensor}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "ohm_gpuati_hertz{instance=\"$instance\",hw_instance=\"$gpu\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{sensor}}",
+          "refId": "B"
+        }
+      ],
+      "title": "Frequencies",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2508,7 +2627,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 70
+        "y": 51
       },
       "id": 116,
       "options": {
@@ -2604,252 +2723,6 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "hertz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 70
-      },
-      "id": 120,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.3.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "ohm_gpunvidia_hertz{instance=\"$instance\",hw_instance=\"$gpu\"}",
-          "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{sensor}}",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "ohm_gpuati_hertz{instance=\"$instance\",hw_instance=\"$gpu\"}",
-          "format": "time_series",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{sensor}}",
-          "refId": "B"
-        }
-      ],
-      "title": "Frequencies",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMax": 100,
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "celsius"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 0,
-        "y": 78
-      },
-      "id": 118,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.3.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "ohm_gpunvidia_celsius{instance=\"$instance\",hw_instance=\"$gpu\"}",
-          "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{sensor}}",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "ohm_gpuati_celsius{instance=\"$instance\",hw_instance=\"$gpu\"}",
-          "format": "time_series",
-          "hide": false,
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{sensor}}",
-          "refId": "B"
-        }
-      ],
-      "title": "Temperatures",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
               "mode": "line"
             }
           },
@@ -2860,8 +2733,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2902,10 +2774,10 @@
         ]
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 12,
         "x": 12,
-        "y": 78
+        "y": 51
       },
       "id": 123,
       "options": {
@@ -3029,6 +2901,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 100,
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
@@ -3063,8 +2936,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3072,7 +2944,7 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "celsius"
         },
         "overrides": []
       },
@@ -3080,9 +2952,9 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 87
+        "y": 59
       },
-      "id": 122,
+      "id": 118,
       "options": {
         "legend": {
           "calcs": [
@@ -3105,8 +2977,9 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpunvidia_bytes{instance=\"$instance\"}",
+          "expr": "ohm_gpunvidia_celsius{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -3121,7 +2994,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "ohm_gpuati_bytes{instance=\"$instance\",hw_instance=\"$gpu\"}",
+          "expr": "ohm_gpuati_celsius{instance=\"$instance\",hw_instance=\"$gpu\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -3131,7 +3004,7 @@
           "refId": "B"
         }
       ],
-      "title": "Memory",
+      "title": "Temperatures",
       "type": "timeseries"
     },
     {
@@ -3184,8 +3057,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3201,7 +3073,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 87
+        "y": 59
       },
       "id": 121,
       "options": {
@@ -3257,12 +3129,132 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 68
+      },
+      "id": 122,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "ohm_gpunvidia_bytes{instance=\"$instance\"}",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{sensor}}",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "ohm_gpuati_bytes{instance=\"$instance\",hw_instance=\"$gpu\"}",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{sensor}}",
+          "refId": "B"
+        }
+      ],
+      "title": "Memory",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 96
+        "y": 77
       },
       "id": 41,
       "panels": [],
@@ -3291,8 +3283,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "#EAB839",
@@ -3345,8 +3336,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -3452,8 +3442,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "#EAB839",
@@ -3506,8 +3495,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "red",
@@ -3540,7 +3528,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 97
+        "y": 78
       },
       "id": 43,
       "options": {
@@ -3735,7 +3723,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 104
+        "y": 85
       },
       "id": 52,
       "panels": [],
@@ -3766,7 +3754,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 105
+        "y": 86
       },
       "id": 12,
       "options": {
@@ -3870,7 +3858,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 105
+        "y": 86
       },
       "id": 65,
       "options": {
@@ -3967,7 +3955,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 110
+        "y": 91
       },
       "id": 58,
       "options": {
@@ -4076,7 +4064,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 110
+        "y": 91
       },
       "id": 59,
       "options": {
@@ -4127,7 +4115,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 132
+        "y": 113
       },
       "id": 130,
       "panels": [],
@@ -4197,7 +4185,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 133
+        "y": 114
       },
       "id": 136,
       "options": {
@@ -4301,7 +4289,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 133
+        "y": 114
       },
       "id": 138,
       "options": {
@@ -4435,7 +4423,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 142
+        "y": 123
       },
       "id": 140,
       "options": {
@@ -4481,7 +4469,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 151
+        "y": 132
       },
       "id": 30,
       "panels": [],
@@ -4573,9 +4561,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 8,
         "x": 0,
-        "y": 152
+        "y": 133
       },
       "id": 32,
       "options": {
@@ -4732,7 +4720,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 160
+        "y": 141
       },
       "id": 34,
       "maxPerRow": 3,
@@ -4893,6 +4881,6 @@
   "timezone": "",
   "title": "Ohm Windows Desktop",
   "uid": "EEQD4wv7z",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
