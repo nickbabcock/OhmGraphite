@@ -37,13 +37,13 @@
   <ItemGroup>
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.4-pre339" />
     <PackageReference Include="InfluxDB.Client" Version="4.18.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.0" />
-    <PackageReference Include="NLog" Version="5.3.4" />
-    <PackageReference Include="Npgsql" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.2" />
+    <PackageReference Include="NLog" Version="5.4.0" />
+    <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="prometheus-net" Version="8.2.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
   </ItemGroup>
 
