@@ -167,10 +167,7 @@ namespace OhmGraphite
             }
             else if (!_config.IsHidden(sensor.Identifier.ToString()) && !_config.IsHidden(sensorName))
             {
-                var hwInstance = sensor.Hardware.Identifier.ToString();
-                var ind = hwInstance.LastIndexOf('/');
-                hwInstance = hwInstance.Substring(ind + 1);
-
+                var hwInstance = ExtractHardwareInstance(sensor.Hardware.Identifier.ToString());
                 var name = _config.TryGetAlias(sensor.Identifier.ToString(), out string alias) ? alias : sensorName;
                 var result = new ReportedValue(id,
                     name,
@@ -195,6 +192,14 @@ namespace OhmGraphite
 
                 yield return result;
             }
+        }
+
+        public static string ExtractHardwareInstance(string hwInstance)
+        {
+            var ind = hwInstance.LastIndexOf('/');
+            hwInstance = hwInstance.Substring(ind + 1);
+            hwInstance = hwInstance.Replace("%7B", "").Replace("%7D", "");
+            return hwInstance;
         }
     }
 }
