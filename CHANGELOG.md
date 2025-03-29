@@ -1,3 +1,24 @@
+## 0.35.0 - 2025-03-29
+
+*Breaking*: hardware instance names have braces trimmed.
+
+`{DBC40827-A257-41FA-84F5-ACBB6A148017}` -> `DBC40827-A257-41FA-84F5-ACBB6A148017`
+
+Changes:
+
+- Update LibreHardwareMonitor to latest:
+  - Ryzen 9000 support
+  - Arrow lake support
+  - Elkhart lake support
+  - Sapphire rapids support
+  - Lunar lake support
+  - Ryzen 9000 Core Frequency Bugfix
+  - More precise system utilization
+  - Add support for kraken elite 2024
+  - Bunch of motherboard improvements
+- Update to .net 8 (should not be observable as OhmGraphite is distributed as a single file exe)
+- Minor dependency updates
+
 ## 0.34.0 - 2024-09-14
 
 *Breaking*: Some sensor names have been update:
