@@ -37,15 +37,12 @@ jobs:
     # Build the unbundled version
     - name: Build unbundled version
       run: dotnet publish -c Release .\OhmGraphite\ --no-self-contained -p:EnableCompressionInSingleFile=false
-    - name: Create unbundled zip
-      shell: powershell
-      run: |
-        $version = (Get-Item .\OhmGraphite\bin\Release\net8.0\win-x64\publish\OhmGraphite.exe).VersionInfo.FileVersion
-        Compress-Archive -Path .\OhmGraphite\bin\Release\net8.0\win-x64\publish\* -DestinationPath ".\OhmGraphite\bin\OhmGraphite-unbundled-$version.zip"
     - name: Upload unbundled artifact
       uses: actions/upload-artifact@v4
       with:
-        path: OhmGraphite\bin\OhmGraphite-unbundled-*.zip
+        name: OhmGraphite-unbundled
+        path: |
+          ./OhmGraphite/bin/Release/net8.0/win-x64/publish/
         if-no-files-found: error
 
     # Release both artifacts when tagged
