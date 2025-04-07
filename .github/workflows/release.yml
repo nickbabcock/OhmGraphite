@@ -36,7 +36,7 @@ jobs:
 
     # Build the unbundled version
     - name: Build unbundled version
-      run: dotnet publish -c Release .\OhmGraphite\ --no-self-contained -p:EnableCompressionInSingleFile=false
+      run: dotnet publish -c Release .\OhmGraphite\ -p:PublishSingleFile=false
     - name: Upload unbundled artifact
       uses: actions/upload-artifact@v4
       with:
