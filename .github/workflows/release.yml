@@ -36,7 +36,7 @@ jobs:
 
     # Build the unbundled version
     - name: Build unbundled version
-      run: dotnet publish -c Release .\OhmGraphite\ --no-self-contained
+      run: dotnet publish -c Release .\OhmGraphite\ --no-self-contained -p:EnableCompressionInSingleFile=false
     - name: Create unbundled zip
       shell: powershell
       run: |
