@@ -47,7 +47,7 @@
     <PackageReference Include="InfluxDB.LineProtocol" Version="1.1.1" />
   </ItemGroup>
 
-  <Target Name="ZipOutputPath" AfterTargets="Publish">
+  <Target Name="ZipOutputPath" AfterTargets="Publish" Condition="'$(SelfContained)' == 'true'">
     <RemoveDir Directories="$(BaseOutputPath)tmp\" ContinueOnError="true" />
     <MakeDir Directories="$(BaseOutputPath)tmp\" />
     <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.exe" DestinationFolder="$(BaseOutputPath)tmp\" />
