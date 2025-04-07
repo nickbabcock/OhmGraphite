@@ -19,22 +19,42 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.*'
-    - run: dotnet publish -c Release .\OhmGraphite\
-    - name: Set artifact name
+    
+    # Build the bundled version (self-contained, single file)
+    - name: Build bundled version
+      run: dotnet publish -c Release .\OhmGraphite\
+    - name: Set bundled artifact name
       shell: bash
       working-directory: OhmGraphite\bin
       run: |
-        echo "ARTIFACT_NAME=$(echo *.zip)" >> $GITHUB_ENV
+        echo "BUNDLED_ARTIFACT_NAME=$(echo *.zip)" >> $GITHUB_ENV
     - uses: actions/upload-artifact@v4
       with:
         path: OhmGraphite\bin\*.zip
-        name: ${{ env.ARTIFACT_NAME }}
+        name: ${{ env.BUNDLED_ARTIFACT_NAME }}
         if-no-files-found: error
+
+    # Build the unbundled version
+    - name: Build unbundled version
+      run: dotnet publish -c Release .\OhmGraphite\ --no-self-contained
+    - name: Create unbundled zip
+      shell: powershell
+      run: |
+        $version = (Get-Item .\OhmGraphite\bin\Release\net8.0\win-x64\publish\OhmGraphite.dll).VersionInfo.FileVersion
+        Compress-Archive -Path .\OhmGraphite\bin\Release\net8.0\win-x64\publish\* -DestinationPath ".\OhmGraphite\bin\OhmGraphite-unbundled-$version.zip"
+    - name: Upload unbundled artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: OhmGraphite\bin\OhmGraphite-unbundled-*.zip
+        if-no-files-found: error
+
+    # Release both artifacts when tagged
     - name: Release
-      uses: softprops/action-gh-release@v0.1.13 # https://github.com/softprops/action-gh-release/issues/280
+      uses: softprops/action-gh-release@v0.1.13
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: 'OhmGraphite\bin\*.zip'
+        files: |
+          OhmGraphite\bin\*.zip
         prerelease: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
