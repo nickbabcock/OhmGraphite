@@ -40,7 +40,7 @@ jobs:
     - name: Create unbundled zip
       shell: powershell
       run: |
-        $version = (Get-Item .\OhmGraphite\bin\Release\net8.0\win-x64\publish\OhmGraphite.dll).VersionInfo.FileVersion
+        $version = (Get-Item .\OhmGraphite\bin\Release\net8.0\win-x64\publish\OhmGraphite.exe).VersionInfo.FileVersion
         Compress-Archive -Path .\OhmGraphite\bin\Release\net8.0\win-x64\publish\* -DestinationPath ".\OhmGraphite\bin\OhmGraphite-unbundled-$version.zip"
     - name: Upload unbundled artifact
       uses: actions/upload-artifact@v4
