@@ -61,7 +61,13 @@ namespace OhmGraphite
                 return;
             }
 
-            Logger.Debug("Hardware added: {0}", hardware.Identifier);
+            Logger.Debug(
+                "Hardware added: {0} (Type: {1}, Class: {2})",
+                hardware.Identifier,
+                hardware.HardwareType,
+                hardware.GetType().Name
+            );
+
             hardware.SensorAdded += SensorAdded;
             hardware.SensorRemoved += SensorRemoved;
             foreach (var sensor in hardware.Sensors)
