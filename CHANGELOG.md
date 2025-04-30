@@ -1,3 +1,11 @@
+## 0.35.1 - 2025-04-30
+
+Update LibreHardwareMonitor to latest:
+  - Support for AM5 motherboards
+  - Support for Gigabyte X670E AORUS XTREME
+  - Support for ASRock B850M Steel Legend Wifi
+  - Fix Aquacomputer Farbwerk sensor data out of sync
+
 ## 0.35.0 - 2025-03-29
 
 *Breaking*: hardware instance names have braces trimmed.
