@@ -51,6 +51,23 @@ namespace OhmGraphite.Test
             server.Dispose();
         }
 
+        [Fact]
+        public async Task PrometheusExportsBuildInfo()
+        {
+            var collector = new TestSensorCreator();
+            var registry = PrometheusCollection.SetupDefault(collector);
+            var mserver = new MetricServer("localhost", 21884, registry: registry);
+            using var server = new PrometheusServer(mserver, collector);
+            using var client = new HttpClient();
+            server.Start();
+            var resp = await client.GetAsync("http://localhost:21884/metrics");
+            Assert.True(resp.IsSuccessStatusCode);
+            var content = await resp.Content.ReadAsStringAsync();
+            Assert.Contains("# HELP ohm_exporter_build_info Build information for OhmGraphite exporter", content);
+            Assert.Contains("ohm_exporter_build_info{version=", content);
+            Assert.Contains("full_version=", content);
+        }
+
         public class NicGuidSensor : IGiveSensors
         {
             public IEnumerable<ReportedValue> ReadAllSensors()

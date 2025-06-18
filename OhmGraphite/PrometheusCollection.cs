@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using NLog;
 using Prometheus;
@@ -24,12 +25,27 @@ namespace OhmGraphite
             var metrics = Metrics.WithCustomRegistry(registry);
             var prometheusCollection = new PrometheusCollection(collector, metrics);
             registry.AddBeforeCollectCallback(() => prometheusCollection.UpdateMetrics());
+
+            // Add build info metric
+            prometheusCollection.SetupBuildInfo();
+
             return registry;
         }
 
         public void UpdateMetrics()
         {
             Logger.LogAction("prometheus update metrics", PollSensors);
+        }
+
+        private void SetupBuildInfo()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var version = assembly.GetName().Version?.ToString() ?? "unknown";
+            var informationalVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? version;
+
+            _metrics.CreateGauge("ohm_exporter_build_info", "Build information for OhmGraphite exporter", "version", "full_version")
+                .WithLabels(version, informationalVersion)
+                .Set(1);
         }
 
         private static (string, double) BaseReport(ReportedValue report)
