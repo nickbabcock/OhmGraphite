@@ -30,9 +30,10 @@ Hardware support is provided through [LibreHardwareMonitor](https://github.com/L
 - Create a directory that will be the home base for OhmGraphite (I use `C:\Apps\OhmGraphite`).
 - Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory.
 - Update app configuration (located at `OhmGraphite.exe.config`). See configs for [Graphite](#graphite-configuration), [InfluxDB](#influxdb-configuration), [Prometheus](#prometheus-configuration), [Timescale / Postgres](#timescaledb-configuration)
+- **Run as Administrator**: Open PowerShell or Command Prompt
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
 - To start the app after installation: `.\OhmGraphite.exe start` or your favorite Windows service management tool
-- If immediately installing the app is unnerving, the app can be ran interactively by executing `.\OhmGraphite.exe run`. Executing as administrator will most likely increase the number of sensors found (OhmGraphite will log how many sensors are found).
+- If immediately installing an app as an administrator is unnerving, OhmGraphite can be ran interactively with `.\OhmGraphite.exe run`. Note that running as a regular user will limit the number of sensors OhmGraphite can report on.
 
 Congrats! Installation is done and you'll start seeing metrics flowing into your desired metric store.
 
