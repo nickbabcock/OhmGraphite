@@ -39,6 +39,7 @@
     <PackageReference Include="InfluxDB.Client" Version="4.18.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.8" />
+  <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.19" />
     <PackageReference Include="NLog" Version="6.0.2" />
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="prometheus-net" Version="8.2.1" />
