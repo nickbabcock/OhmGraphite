@@ -6,6 +6,7 @@ using System.CommandLine;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.ServiceProcess;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,10 @@ namespace OhmGraphite
         {
             var serviceName = "OhmGraphite";
             var description = "Expose hardware sensor data to Graphite / InfluxDB / Prometheus / Postgres / Timescaledb";
-            var configOption = new Option<FileInfo>(name: "--config", description: "OhmGraphite configuration file");
+            var configOption = new Option<FileInfo>("--config")
+            {
+                Description = "OhmGraphite configuration file"
+            };
             var rootCommand = new RootCommand(description)
             {
                 // To maintain compabitility with old topshelf installations, we should ignore
@@ -28,16 +32,16 @@ namespace OhmGraphite
                 TreatUnmatchedTokensAsErrors = false
             };
 
-            rootCommand.AddOption(configOption);
-            rootCommand.SetHandler(async (context) => await OhmCommand(context, configOption));
+            rootCommand.Options.Add(configOption);
+            rootCommand.SetAction(async (parseResult, cancellationToken) => await OhmCommand(parseResult, configOption, cancellationToken));
 
             var runCommand = new Command("run", "Runs the service from the command line (default)");
-            runCommand.AddOption(configOption);
-            runCommand.SetHandler(async (context) => await OhmCommand(context, configOption));
-            rootCommand.AddCommand(runCommand);
+            runCommand.Options.Add(configOption);
+            runCommand.SetAction(async (parseResult, cancellationToken) => await OhmCommand(parseResult, configOption, cancellationToken));
+            rootCommand.Subcommands.Add(runCommand);
 
             var statusCommand = new Command("status", "Queries the status of the service");
-            statusCommand.SetHandler((context) =>
+            statusCommand.SetAction((parseResult) =>
             {
                 if (OperatingSystem.IsWindows())
                 {
@@ -45,10 +49,10 @@ namespace OhmGraphite
                     Console.WriteLine(service.Status);
                 }
             });
-            rootCommand.AddCommand(statusCommand);
+            rootCommand.Subcommands.Add(statusCommand);
 
             var stopCommand = new Command("stop", "Stops the service if it is running");
-            stopCommand.SetHandler((context) =>
+            stopCommand.SetAction((parseResult) =>
             {
                 if (OperatingSystem.IsWindows())
                 {
@@ -65,10 +69,10 @@ namespace OhmGraphite
                     }
                 }
             });
-            rootCommand.AddCommand(stopCommand);
+            rootCommand.Subcommands.Add(stopCommand);
 
             var startCommand = new Command("start", "Starts the service if it is not already running");
-            startCommand.SetHandler((context) =>
+            startCommand.SetAction((parseResult) =>
             {
                 if (OperatingSystem.IsWindows())
                 {
@@ -85,18 +89,18 @@ namespace OhmGraphite
                     }
                 }
             });
-            rootCommand.AddCommand(startCommand);
+            rootCommand.Subcommands.Add(startCommand);
 
             var installCommand = new Command("install", "Installs the service");
-            installCommand.AddOption(configOption);
-            installCommand.SetHandler((context) =>
+            installCommand.Options.Add(configOption);
+            installCommand.SetAction((parseResult) =>
             {
                 {
                     var procInfo = new ProcessStartInfo();
                     procInfo.ArgumentList.Add("create");
                     procInfo.ArgumentList.Add(serviceName);
 
-                    var configFile = context.ParseResult.GetValueForOption(configOption);
+                    var configFile = parseResult.GetValue(configOption);
                     var configService = configFile == null ? "" : $@" --config ""{configFile.FullName}""";
                     procInfo.ArgumentList.Add($@"binpath=""{Environment.ProcessPath}"" {configService}");
                     procInfo.ArgumentList.Add(@"DisplayName=Ohm Graphite");
@@ -113,10 +117,10 @@ namespace OhmGraphite
                     ScCommand(procInfo);
                 }
             });
-            rootCommand.AddCommand(installCommand);
+            rootCommand.Subcommands.Add(installCommand);
 
             var uninstallCommand = new Command("uninstall", "Uninstalls the service");
-            uninstallCommand.SetHandler((context) =>
+            uninstallCommand.SetAction((parseResult) =>
             {
                 var procInfo = new ProcessStartInfo
                 {
@@ -125,14 +129,15 @@ namespace OhmGraphite
 
                 ScCommand(procInfo);
             });
-            rootCommand.AddCommand(uninstallCommand);
+            rootCommand.Subcommands.Add(uninstallCommand);
 
-            await rootCommand.InvokeAsync(args);
+            var parseResult = rootCommand.Parse(args);
+            await parseResult.InvokeAsync();
         }
 
-        static async Task OhmCommand(System.CommandLine.Invocation.InvocationContext context, Option<FileInfo> configOption)
+        static async Task OhmCommand(System.CommandLine.ParseResult parseResult, Option<FileInfo> configOption, CancellationToken cancellationToken = default)
         {
-            var configFile = context.ParseResult.GetValueForOption(configOption);
+            var configFile = parseResult.GetValue(configOption);
             var configPath = configFile == null ? string.Empty : configFile.FullName;
             var configDisplay = configFile == null ? "default" : configFile.Name;
             var config = Logger.LogFunction($"parse config {configDisplay}", () => MetricConfig.ParseAppSettings(CreateConfiguration(configPath)));
@@ -154,7 +159,7 @@ namespace OhmGraphite
             }
             else
             {
-                var token = context.GetCancellationToken();
+                var token = cancellationToken;
                 var worker = new Worker(config);
                 await worker.StartAsync(token);
                 await worker.ExecuteTask;
