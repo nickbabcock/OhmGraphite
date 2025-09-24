@@ -27,6 +27,7 @@ Hardware support is provided through [LibreHardwareMonitor](https://github.com/L
 
 ## Installation
 
+- To allow OhmGraphite access to sensors like CPU temperature, wattage, and frequency: install [PawnIO](https://pawnio.eu/). OhmGraphite works without PawnIO, but will emit limited data.
 - Create a directory that will be the home base for OhmGraphite (I use `C:\Apps\OhmGraphite`).
 - Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory.
 - Update app configuration (located at `OhmGraphite.exe.config`). See configs for [Graphite](#graphite-configuration), [InfluxDB](#influxdb-configuration), [Prometheus](#prometheus-configuration), [Timescale / Postgres](#timescaledb-configuration)
