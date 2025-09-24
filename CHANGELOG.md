@@ -1,3 +1,29 @@
+## 0.36.0 - TBD
+
+### Breaking Changes
+
+PawnIO has replaced WinRing0 as the kernel driver due to the latter being flagged as malicious by Windows Anti-Virus. PawnIO must be installed separately. Please see the [PawnIO site](https://pawnio.eu/) for more information.
+
+If PawnIO is not installed, OhmGraphite will fail to detect:
+
+- CPU Temperature
+- CPU wattage
+- CPU Frequency
+- All motherboard sensors
+
+Additionally, there is a **Breaking Name Change** from LibreHardwareMonitor as RAM hardware has been split in two: "Total Memory" and "Virtual Memory". Changing references to total memory should be preserve values.
+
+### Updates
+
+  - Add individual DIMM temperature sensors (when supported)
+  - Motherboard support:
+    - MSI: PRO Z890 WIFI (NCT6687D), B850M Mortar, B840 PRO WIFI, Pro Z890-A WiFi (MS-7E32), MPG B850 EDGE TI WIFI, X570 Unify
+    - ASUS: ROG STRIX X870-I Gaming WIFI, ROG STRIX B760-I GAMING WIFI, ROG STRIX B850-I GAMING WIFI, STRIX Z790-E WIFI II
+    - Gigabyte: X870 AORUS ELITE WIFI7 (ITE IT8696E, IT87952E), B360M H
+    - ASRock: B450M Pro4 R2.0, B850M Steel Legend Wifi, X870E Taichi
+  - Improved detection for Samsung NVMe devices
+  - Fix with USB devices crashes and NCT6701D chip issues
+
 ## 0.35.1 - 2025-04-30
 
 Update LibreHardwareMonitor to latest:
