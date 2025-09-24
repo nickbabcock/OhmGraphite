@@ -19,7 +19,7 @@ namespace OhmGraphite.Test
                 .WithPortBinding(2003, assignRandomHostPort: true)
                 .WithPortBinding(80, assignRandomHostPort: true)
                 .WithPortBinding(8080, assignRandomHostPort: true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8080));
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8080));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
@@ -60,7 +60,7 @@ namespace OhmGraphite.Test
                 .WithPortBinding(2003, assignRandomHostPort: true)
                 .WithPortBinding(80, assignRandomHostPort: true)
                 .WithPortBinding(8080, assignRandomHostPort: true)
-                                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8080));
+                                .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8080));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();

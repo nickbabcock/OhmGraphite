@@ -23,7 +23,7 @@ namespace OhmGraphite.Test
                 .WithEnvironment("INFLUXDB_USER", "my_user")
                 .WithEnvironment("INFLUXDB_USER_PASSWORD", "my_pass")
                 .WithPortBinding(8086, assignRandomHostPort: true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8086));
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
@@ -66,7 +66,7 @@ namespace OhmGraphite.Test
                 .WithEnvironment("INFLUXDB_USER", "my_user")
                 .WithEnvironment("INFLUXDB_HTTP_AUTH_ENABLED", "false")
                 .WithPortBinding(8086, assignRandomHostPort: true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8086));
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
@@ -111,7 +111,7 @@ namespace OhmGraphite.Test
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_BUCKET", "mydb")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_ORG", "myorg")
                 .WithPortBinding(8086, assignRandomHostPort: true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8086));
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
@@ -164,7 +164,7 @@ namespace OhmGraphite.Test
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_ORG", "myorg")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN", "thisistheinfluxdbtoken")
                 .WithPortBinding(8086, assignRandomHostPort: true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8086));
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
@@ -218,7 +218,7 @@ namespace OhmGraphite.Test
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_ORG", "myorg")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN", "thisistheinfluxdbtoken")
                 .WithPortBinding(8086, assignRandomHostPort: true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8086));
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
             await container.StartAsync();
@@ -229,7 +229,7 @@ namespace OhmGraphite.Test
                 .WithImage("squareup/ghostunnel")
                 .WithExposedPort(8087)
                 .WithPortBinding(8087, assignRandomHostPort: true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8087))
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8087))
                 .WithEntrypoint("/bin/sh")
                 .WithCommand("-c", cmd);
 

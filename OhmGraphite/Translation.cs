@@ -24,6 +24,7 @@ namespace OhmGraphite
         SmallData, // MB = 2^20 Bytes
         Throughput, // B/s
         TimeSpan, // Seconds
+        Timing, // nanoseconds
         Energy, // milliwatt-hour (mWh)
         Noise, // dBA
         Humidity, // %
@@ -89,6 +90,8 @@ namespace OhmGraphite
                     return SensorType.Throughput;
                 case LibreHardwareMonitor.Hardware.SensorType.TimeSpan:
                     return SensorType.TimeSpan;
+                case LibreHardwareMonitor.Hardware.SensorType.Timing:
+                    return SensorType.Timing;
                 case LibreHardwareMonitor.Hardware.SensorType.Energy:
                     return SensorType.Energy;
                 case LibreHardwareMonitor.Hardware.SensorType.Noise:
