@@ -68,6 +68,8 @@ namespace OhmGraphite
                         return value * 1000000;
                     case SensorType.Energy: // Wh
                         return value / 1000.0;
+                    case SensorType.Timing: // nanoseconds to seconds
+                        return value / 1_000_000_000.0;
                     default:
                         return value;
                 }
@@ -106,6 +108,7 @@ namespace OhmGraphite
                     case SensorType.Current:
                         return "amps";
                     case SensorType.TimeSpan:
+                    case SensorType.Timing:
                         return "seconds";
                     case SensorType.Energy:
                         return "watt_hours";
