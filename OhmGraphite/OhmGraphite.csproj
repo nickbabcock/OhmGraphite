@@ -40,7 +40,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.9" />
     <PackageReference Include="NLog" Version="6.0.5" />
-    <PackageReference Include="Npgsql" Version="9.0.3" />
+    <PackageReference Include="Npgsql" Version="9.0.4" />
     <PackageReference Include="prometheus-net" Version="8.2.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-rc.1.25451.107" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
