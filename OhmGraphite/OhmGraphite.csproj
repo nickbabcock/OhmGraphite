@@ -23,6 +23,7 @@
     <Version>$(Major).$(Minor).$(Revision)</Version>
     <FileVersion>$(Major).$(Minor).$(Revision)</FileVersion>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+	<Guid>4d84e694-570e-4956-afd0-66f2959f5860</Guid>
   </PropertyGroup>
 
   <ItemGroup>
