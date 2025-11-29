@@ -5,6 +5,7 @@ using NLog;
 using LibreHardwareMonitor.Hardware;
 using LibreHardwareMonitor.Hardware.Storage;
 using System;
+using LibreHardwareMonitor.PawnIo;
 
 namespace OhmGraphite
 {
@@ -37,6 +38,15 @@ namespace OhmGraphite
             _computer.HardwareAdded += HardwareAdded;
             _computer.HardwareRemoved += HardwareRemoved;
             _computer.Open();
+
+            if (PawnIo.IsInstalled)
+            {
+                Logger.Info("Detected PawnIo version ({0}) installed", PawnIo.Version());
+            }
+            else
+            {
+                Logger.Warn("PawnIo is not installed. Limited sensors detecting capabilities.");
+            }
         }
 
         public void Close()
