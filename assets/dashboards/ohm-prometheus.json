@@ -4790,7 +4790,7 @@
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
-        "regex": "/.*instance=\"([^\"]*).*/",
+        "regex": "/[^_]*instance=\"([^\"]*).*/",
         "type": "query"
       },
       {
