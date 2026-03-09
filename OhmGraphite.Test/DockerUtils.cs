@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Xunit;
 
@@ -23,7 +24,8 @@ namespace OhmGraphite.Test
 
     public sealed class IgnoreOnRemoteDockerFactAttribute : FactAttribute
     {
-        public IgnoreOnRemoteDockerFactAttribute()
+        public IgnoreOnRemoteDockerFactAttribute([CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
+            : base(sourceFilePath, sourceLineNumber)
         {
             if (Environment.GetEnvironmentVariable("DOCKER_HOST") != null)
             {

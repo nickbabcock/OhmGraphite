@@ -11,16 +11,16 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async Task CanSetupTimescale()
         {
-            var testContainersBuilder = new ContainerBuilder()
+            var cancellationToken = TestContext.Current.CancellationToken;
+            var testContainersBuilder = new ContainerBuilder("timescale/timescaledb:latest-pg12")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("timescale/timescaledb:latest-pg12")
                 .WithEnvironment("POSTGRES_PASSWORD", "123456")
                 .WithPortBinding(5432, assignRandomHostPort: true)
                 .WithWaitStrategy(Wait.ForUnixContainer()
                     .UntilCommandIsCompleted("pg_isready -h 'localhost' -p '5432'"));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
 
             string connStr = $"Host={container.Hostname};Username=postgres;Password=123456;Port={container.GetMappedPublicPort(5432)}";
             var epoch = new DateTime(2001, 1, 13, 0, 0, 0, DateTimeKind.Utc);
@@ -35,25 +35,25 @@ namespace OhmGraphite.Test
         }
 
         [IgnoreOnRemoteDockerFact, Trait("Category", "integration")]
-        public async void InsertOnlyTimescale()
+        public async Task InsertOnlyTimescale()
         {
+            var cancellationToken = TestContext.Current.CancellationToken;
             var image = new ImageFromDockerfileBuilder()
                 .WithDockerfile("timescale.dockerfile")
                 .WithDockerfileDirectory("docker")
                 .WithDeleteIfExists(true)
                 .WithName("ohm-graphite-insert-only-timescale")
                 .Build();
-            await image.CreateAsync();
+            await image.CreateAsync(cancellationToken);
 
-            var testContainersBuilder = new ContainerBuilder()
-                .WithImage(image)
+            var testContainersBuilder = new ContainerBuilder(image)
                 .WithEnvironment("POSTGRES_PASSWORD", "123456")
                 .WithPortBinding(5432, assignRandomHostPort: true)
                 .WithWaitStrategy(Wait.ForUnixContainer()
                     .UntilCommandIsCompleted("pg_isready -h 'localhost' -p '5432'"));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
 
             string selectStr = $"Host={container.Hostname};Username=postgres;Password=123456;Port={container.GetMappedPublicPort(5432)};Database=timescale_built";
             var epoch = new DateTime(2001, 1, 13, 0, 0, 0, DateTimeKind.Utc);

@@ -19,7 +19,12 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.*'
-    - run: dotnet publish -c Release .\OhmGraphite\
+    - run: >
+        dotnet publish -c Release -r win-x64 --self-contained true
+        -p:PublishSingleFile=true
+        -p:EnableCompressionInSingleFile=true
+        -p:IncludeNativeLibrariesForSelfExtract=true
+        .\OhmGraphite\
     - name: Set artifact name
       shell: bash
       working-directory: OhmGraphite\bin

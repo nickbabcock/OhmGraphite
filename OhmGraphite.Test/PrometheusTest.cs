@@ -11,30 +11,32 @@ namespace OhmGraphite.Test
         [Fact]
         public async Task PrometheusTestServer()
         {
+            var cancellationToken = TestContext.Current.CancellationToken;
             var collector = new TestSensorCreator();
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21881, registry: registry);
             using var server = new PrometheusServer(mserver, collector);
             using var client = new HttpClient();
             server.Start();
-            var resp = await client.GetAsync("http://localhost:21881/metrics");
+            var resp = await client.GetAsync("http://localhost:21881/metrics", cancellationToken);
             Assert.True(resp.IsSuccessStatusCode);
-            var content = await resp.Content.ReadAsStringAsync();
+            var content = await resp.Content.ReadAsStringAsync(cancellationToken);
             Assert.Contains("# HELP ohm_cpu_celsius Metric reported by open hardware sensor", content);
         }
 
         [Fact]
         public async Task PrometheusNicGuid()
         {
+            var cancellationToken = TestContext.Current.CancellationToken;
             var collector = new NicGuidSensor();
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21882, registry: registry);
             using var server = new PrometheusServer(mserver, collector);
             using var client = new HttpClient();
             server.Start();
-            var resp = await client.GetAsync("http://localhost:21882/metrics");
+            var resp = await client.GetAsync("http://localhost:21882/metrics", cancellationToken);
             Assert.True(resp.IsSuccessStatusCode);
-            var content = await resp.Content.ReadAsStringAsync();
+            var content = await resp.Content.ReadAsStringAsync(cancellationToken);
             Assert.Contains("Bluetooth Network Connection 2", content);
         }
 
@@ -54,15 +56,16 @@ namespace OhmGraphite.Test
         [Fact]
         public async Task PrometheusExportsBuildInfo()
         {
+            var cancellationToken = TestContext.Current.CancellationToken;
             var collector = new TestSensorCreator();
             var registry = PrometheusCollection.SetupDefault(collector);
             var mserver = new MetricServer("localhost", 21884, registry: registry);
             using var server = new PrometheusServer(mserver, collector);
             using var client = new HttpClient();
             server.Start();
-            var resp = await client.GetAsync("http://localhost:21884/metrics");
+            var resp = await client.GetAsync("http://localhost:21884/metrics", cancellationToken);
             Assert.True(resp.IsSuccessStatusCode);
-            var content = await resp.Content.ReadAsStringAsync();
+            var content = await resp.Content.ReadAsStringAsync(cancellationToken);
             Assert.Contains("# HELP ohm_exporter_build_info Build information for OhmGraphite exporter", content);
             Assert.Contains("ohm_exporter_build_info{version=", content);
             Assert.Contains("full_version=", content);
