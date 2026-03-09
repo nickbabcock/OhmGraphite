@@ -12,9 +12,9 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async Task InsertGraphiteTest()
         {
-            var testContainersBuilder = new ContainerBuilder()
+            var cancellationToken = TestContext.Current.CancellationToken;
+            var testContainersBuilder = new ContainerBuilder("graphiteapp/graphite-statsd:1.1.8-2")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("graphiteapp/graphite-statsd:1.1.8-2")
                 .WithEnvironment("REDIS_TAGDB", "y")
                 .WithPortBinding(2003, assignRandomHostPort: true)
                 .WithPortBinding(80, assignRandomHostPort: true)
@@ -22,7 +22,7 @@ namespace OhmGraphite.Test
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8080));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
             var port = container.GetMappedPublicPort(2003);
             using var writer = new GraphiteWriter(container.Hostname, port, "my-pc", tags: false);
             using var client = new HttpClient();
@@ -33,8 +33,9 @@ namespace OhmGraphite.Test
                     await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
 
                     var resp = await client.GetAsync(
-                        $"http://{container.Hostname}:{container.GetMappedPublicPort(80)}/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1");
-                    var content = await resp.Content.ReadAsStringAsync();
+                        $"http://{container.Hostname}:{container.GetMappedPublicPort(80)}/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1",
+                        cancellationToken);
+                    var content = await resp.Content.ReadAsStringAsync(cancellationToken);
                     Assert.Contains("ohm.my-pc.intelcpu.0.temperature.cpucore.1", content);
                     break;
                 }
@@ -45,7 +46,7 @@ namespace OhmGraphite.Test
                         throw;
                     }
 
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
             }
         }
@@ -53,9 +54,9 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async Task InsertTagGraphiteTest()
         {
-            var testContainersBuilder = new ContainerBuilder()
+            var cancellationToken = TestContext.Current.CancellationToken;
+            var testContainersBuilder = new ContainerBuilder("graphiteapp/graphite-statsd:1.1.8-2")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("graphiteapp/graphite-statsd:1.1.8-2")
                 .WithEnvironment("REDIS_TAGDB", "y")
                 .WithPortBinding(2003, assignRandomHostPort: true)
                 .WithPortBinding(80, assignRandomHostPort: true)
@@ -63,7 +64,7 @@ namespace OhmGraphite.Test
                                 .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8080));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
             var port = container.GetMappedPublicPort(2003);
             using var writer = new GraphiteWriter(container.Hostname, port, "my-pc", tags: true);
             using var client = new HttpClient();
@@ -73,9 +74,10 @@ namespace OhmGraphite.Test
                 {
                     await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
                     var resp = await client.GetAsync(
-                        $"http://{container.Hostname}:{container.GetMappedPublicPort(80)}/render?format=csv&target=seriesByTag('sensor_type=Temperature','hardware_type=CPU')");
+                        $"http://{container.Hostname}:{container.GetMappedPublicPort(80)}/render?format=csv&target=seriesByTag('sensor_type=Temperature','hardware_type=CPU')",
+                        cancellationToken);
 
-                    var content = await resp.Content.ReadAsStringAsync();
+                    var content = await resp.Content.ReadAsStringAsync(cancellationToken);
                     Assert.Contains("host=my-pc", content);
                     Assert.Contains("app=ohm", content);
                     Assert.Contains("sensor_type=Temperature", content);
@@ -88,7 +90,7 @@ namespace OhmGraphite.Test
                         throw;
                     }
 
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
             }
         }

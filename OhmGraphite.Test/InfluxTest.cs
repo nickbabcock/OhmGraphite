@@ -16,9 +16,9 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async Task CanInsertIntoInflux()
         {
-            var testContainersBuilder = new ContainerBuilder()
+            var cancellationToken = TestContext.Current.CancellationToken;
+            var testContainersBuilder = new ContainerBuilder("influxdb:1.8-alpine")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("influxdb:1.8-alpine")
                 .WithEnvironment("INFLUXDB_DB", "mydb")
                 .WithEnvironment("INFLUXDB_USER", "my_user")
                 .WithEnvironment("INFLUXDB_USER_PASSWORD", "my_pass")
@@ -26,7 +26,7 @@ namespace OhmGraphite.Test
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
             var baseUrl = $"http://{container.Hostname}:{container.GetMappedPublicPort(8086)}";
             var config = new InfluxConfig(new Uri(baseUrl), "mydb", "my_user", "my_pass");
             using var writer = new InfluxWriter(config, "my-pc");
@@ -38,9 +38,10 @@ namespace OhmGraphite.Test
                     await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
 
                     var resp = await client.GetAsync(
-                        $"{baseUrl}/query?pretty=true&db=mydb&q=SELECT%20*%20FROM%20Temperature");
+                        $"{baseUrl}/query?pretty=true&db=mydb&q=SELECT%20*%20FROM%20Temperature",
+                        cancellationToken);
                     Assert.True(resp.IsSuccessStatusCode);
-                    var content = await resp.Content.ReadAsStringAsync();
+                    var content = await resp.Content.ReadAsStringAsync(cancellationToken);
                     Assert.Contains("/intelcpu/0/temperature/0", content);
                     break;
                 }
@@ -51,7 +52,7 @@ namespace OhmGraphite.Test
                         throw;
                     }
 
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
             }
         }
@@ -59,9 +60,9 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async Task CanInsertIntoPasswordLessInfluxdb()
         {
-            var testContainersBuilder = new ContainerBuilder()
+            var cancellationToken = TestContext.Current.CancellationToken;
+            var testContainersBuilder = new ContainerBuilder("influxdb:1.8-alpine")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("influxdb:1.8-alpine")
                 .WithEnvironment("INFLUXDB_DB", "mydb")
                 .WithEnvironment("INFLUXDB_USER", "my_user")
                 .WithEnvironment("INFLUXDB_HTTP_AUTH_ENABLED", "false")
@@ -69,7 +70,7 @@ namespace OhmGraphite.Test
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
             var baseUrl = $"http://{container.Hostname}:{container.GetMappedPublicPort(8086)}";
             var config = new InfluxConfig(new Uri(baseUrl), "mydb", "my_user", null);
             using var writer = new InfluxWriter(config, "my-pc");
@@ -81,9 +82,10 @@ namespace OhmGraphite.Test
                     await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
 
                     var resp = await client.GetAsync(
-                        $"{baseUrl}/query?pretty=true&db=mydb&q=SELECT%20*%20FROM%20Temperature");
+                        $"{baseUrl}/query?pretty=true&db=mydb&q=SELECT%20*%20FROM%20Temperature",
+                        cancellationToken);
                     Assert.True(resp.IsSuccessStatusCode);
-                    var content = await resp.Content.ReadAsStringAsync();
+                    var content = await resp.Content.ReadAsStringAsync(cancellationToken);
                     Assert.Contains("/intelcpu/0/temperature/0", content);
                     break;
                 }
@@ -94,7 +96,7 @@ namespace OhmGraphite.Test
                         throw;
                     }
 
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
             }
         }
@@ -102,9 +104,9 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async Task CanInsertIntoInflux2()
         {
-            var testContainersBuilder = new ContainerBuilder()
+            var cancellationToken = TestContext.Current.CancellationToken;
+            var testContainersBuilder = new ContainerBuilder("influxdb:2.0-alpine")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("influxdb:2.0-alpine")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_USERNAME", "my-user")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_PASSWORD", "my-password")
@@ -114,7 +116,7 @@ namespace OhmGraphite.Test
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
             var baseUrl = $"http://{container.Hostname}:{container.GetMappedPublicPort(8086)}";
             var options = new InfluxDBClientOptions.Builder()
                 .Url(baseUrl)
@@ -134,7 +136,7 @@ namespace OhmGraphite.Test
                     var influxDBClient = new InfluxDBClient(options);
                     var flux = "from(bucket:\"mydb\") |> range(start: -1h)";
                     var queryApi = influxDBClient.GetQueryApi();
-                    var tables = await queryApi.QueryAsync(flux, "myorg");
+                    var tables = await queryApi.QueryAsync(flux, "myorg", cancellationToken);
                     var fields = tables.SelectMany(x => x.Records).Select(x => x.GetValueByKey("identifier"));
                     Assert.Contains("/intelcpu/0/temperature/0", fields);
                     break;
@@ -146,7 +148,7 @@ namespace OhmGraphite.Test
                         throw;
                     }
 
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
             }
         }
@@ -154,9 +156,9 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async Task CanInsertIntoInflux2Token()
         {
-            var testContainersBuilder = new ContainerBuilder()
+            var cancellationToken = TestContext.Current.CancellationToken;
+            var testContainersBuilder = new ContainerBuilder("influxdb:2.0-alpine")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("influxdb:2.0-alpine")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_USERNAME", "my-user")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_PASSWORD", "my-password")
@@ -167,7 +169,7 @@ namespace OhmGraphite.Test
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
 
             var baseUrl = $"http://{container.Hostname}:{container.GetMappedPublicPort(8086)}";
             var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/influx2.config" };
@@ -185,7 +187,7 @@ namespace OhmGraphite.Test
                     var influxDBClient = new InfluxDBClient(results.Influx2.Options);
                     var flux = "from(bucket:\"mydb\") |> range(start: -1h)";
                     var queryApi = influxDBClient.GetQueryApi();
-                    var tables = await queryApi.QueryAsync(flux, "myorg");
+                    var tables = await queryApi.QueryAsync(flux, "myorg", cancellationToken);
                     var fields = tables.SelectMany(x => x.Records).Select(x => x.GetValueByKey("identifier"));
                     Assert.Contains("/intelcpu/0/temperature/0", fields);
                     break;
@@ -197,7 +199,7 @@ namespace OhmGraphite.Test
                         throw;
                     }
 
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
             }
         }
@@ -205,12 +207,12 @@ namespace OhmGraphite.Test
         [Fact, Trait("Category", "integration")]
         public async Task CanInsertIntoInflux2TokenTls()
         {
+            var cancellationToken = TestContext.Current.CancellationToken;
             // We do some fancy docker footwork where we informally connect
             // these two containers. In the future I believe test containers will
             // be able to natively handle adding these to a docker network
-            var testContainersBuilder = new ContainerBuilder()
+            var testContainersBuilder = new ContainerBuilder("influxdb:2.0-alpine")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("influxdb:2.0-alpine")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_MODE", "setup")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_USERNAME", "my-user")
                 .WithEnvironment("DOCKER_INFLUXDB_INIT_PASSWORD", "my-password")
@@ -221,12 +223,11 @@ namespace OhmGraphite.Test
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8086));
 
             await using var container = testContainersBuilder.Build();
-            await container.StartAsync();
+            await container.StartAsync(cancellationToken);
 
             var cmd = $"apk add openssl && openssl req -x509 -nodes -newkey rsa:4096 -keyout /tmp/key.pem -out /tmp/cert.pem -days 365 -subj '/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=www.example.com' && /usr/bin/ghostunnel server --listen=0.0.0.0:8087 --target={container.IpAddress}:8086 --unsafe-target --disable-authentication --key /tmp/key.pem --cert=/tmp/cert.pem";
-            var tlsContainerBuilder = new ContainerBuilder()
+            var tlsContainerBuilder = new ContainerBuilder("squareup/ghostunnel")
                 .WithDockerEndpoint(DockerUtils.DockerEndpoint())
-                .WithImage("squareup/ghostunnel")
                 .WithExposedPort(8087)
                 .WithPortBinding(8087, assignRandomHostPort: true)
                 .WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(8087))
@@ -234,7 +235,7 @@ namespace OhmGraphite.Test
                 .WithCommand("-c", cmd);
 
             await using var tlsContainer = tlsContainerBuilder.Build();
-            await tlsContainer.StartAsync();
+            await tlsContainer.StartAsync(cancellationToken);
 
             var baseUrl = $"https://{tlsContainer.Hostname}:{tlsContainer.GetMappedPublicPort(8087)}";
             var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/influx2-ssl.config" };
@@ -254,7 +255,7 @@ namespace OhmGraphite.Test
                         var influxDbClient = new InfluxDBClient(results.Influx2.Options);
                         var flux = "from(bucket:\"mydb\") |> range(start: -1h)";
                         var queryApi = influxDbClient.GetQueryApi();
-                        var tables = await queryApi.QueryAsync(flux, "myorg");
+                        var tables = await queryApi.QueryAsync(flux, "myorg", cancellationToken);
                         var fields = tables.SelectMany(x => x.Records).Select(x => x.GetValueByKey("identifier"));
                         Assert.Contains("/intelcpu/0/temperature/0", fields);
                         break;
@@ -266,7 +267,7 @@ namespace OhmGraphite.Test
                             throw;
                         }
 
-                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                        await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                     }
                 }
             }
