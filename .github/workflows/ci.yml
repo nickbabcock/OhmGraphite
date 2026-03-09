@@ -11,11 +11,7 @@ on:
 jobs:
   test:
     name: test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ['ubuntu-latest', 'windows-latest']
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
       with:
@@ -23,7 +19,76 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
-    - run: dotnet test
-      if: matrix.os == 'ubuntu-latest'
-    - run: dotnet test --filter 'Category!=integration'
-      if: matrix.os == 'windows-latest'
+    - run: dotnet build
+    - name: Set up Docker in WSL2
+      shell: pwsh
+      run: |
+        # Disable WSL2 VM idle shutdown (default shuts down after 60s of no wsl.exe activity)
+        Set-Content -Path "$env:USERPROFILE\.wslconfig" -Value "[wsl2]`nvmIdleTimeout=-1"
+
+        # Install Ubuntu distro in WSL2
+        wsl --install Ubuntu-24.04 --no-launch
+
+        # Helper to convert Windows path for WSL: D:\a\_temp\x -> /mnt/d/a/_temp/x
+        function ToWslPath($p) {
+          return "/mnt/" + $p.Substring(0,1).ToLower() + ($p.Substring(2) -replace '\\', '/')
+        }
+
+        # Install Docker Engine and configure TCP listener
+        $installScript = (
+          "set -eu",
+          "export DEBIAN_FRONTEND=noninteractive",
+          "apt-get update -qq",
+          "apt-get install -y -qq ca-certificates curl >/dev/null",
+          "install -m 0755 -d /etc/apt/keyrings",
+          "curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc",
+          "chmod a+r /etc/apt/keyrings/docker.asc",
+          'echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable" > /etc/apt/sources.list.d/docker.list',
+          "apt-get update -qq",
+          "apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugin >/dev/null",
+          "",
+          "# Configure Docker to also listen on TCP",
+          "mkdir -p /etc/docker",
+          'echo ''{"hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"]}'' > /etc/docker/daemon.json',
+          "",
+          "# Override systemd service to not pass -H fd:// (conflicts with daemon.json hosts)",
+          "mkdir -p /etc/systemd/system/docker.service.d",
+          'printf "[Service]\nExecStart=\nExecStart=/usr/bin/dockerd --containerd=/run/containerd/containerd.sock\n" > /etc/systemd/system/docker.service.d/override.conf',
+          "systemctl daemon-reload",
+          "systemctl restart docker",
+          "",
+          "# Verify TCP listener is active",
+          "docker info",
+          "ss -tlnp | grep 2375"
+        ) -join "`n"
+        $installPath = "$env:RUNNER_TEMP\docker-install.sh"
+        [System.IO.File]::WriteAllText($installPath, $installScript)
+        wsl -d Ubuntu-24.04 -u root -- bash $(ToWslPath $installPath)
+
+        # Get WSL2 IP and verify connectivity from Windows
+        $wslIp = (wsl -d Ubuntu-24.04 -- hostname -I).Trim().Split(' ')[0]
+        echo "WSL2 IP: $wslIp"
+
+        New-NetFirewallRule -DisplayName "WSL2" -Direction Inbound -Action Allow -RemoteAddress $wslIp
+        New-NetFirewallRule -DisplayName "WSL2" -Direction Outbound -Action Allow -RemoteAddress $wslIp
+
+        $ready = $false
+        for ($i = 0; $i -lt 10; $i++) {
+          try {
+            $response = Invoke-WebRequest -Uri "http://${wslIp}:2375/info" -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop
+            if ($response.StatusCode -eq 200) { $ready = $true; break }
+          } catch {}
+          Start-Sleep -Seconds 1
+        }
+        if (-not $ready) {
+          throw "Docker in WSL2 is not reachable from Windows at ${wslIp}:2375"
+        }
+
+        # Keep WSL2 alive by periodically running a wsl command in the background
+        $keepaliveScript = 'while ($true) { wsl -d Ubuntu-24.04 -- true 2>$null; Start-Sleep 5 }'
+        $keepalivePath = "$env:RUNNER_TEMP\wsl-keepalive.ps1"
+        Set-Content -Path $keepalivePath -Value $keepaliveScript
+        Start-Process pwsh -ArgumentList "-File",$keepalivePath -WindowStyle Hidden
+
+        echo "DOCKER_HOST=tcp://${wslIp}:2375" >> $env:GITHUB_ENV
+    - run: dotnet test --no-build

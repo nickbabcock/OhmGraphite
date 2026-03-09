@@ -39,6 +39,7 @@ namespace OhmGraphite.Test
         {
             var cancellationToken = TestContext.Current.CancellationToken;
             var image = new ImageFromDockerfileBuilder()
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithDockerfile("timescale.dockerfile")
                 .WithDockerfileDirectory("docker")
                 .WithDeleteIfExists(true)
@@ -47,6 +48,7 @@ namespace OhmGraphite.Test
             await image.CreateAsync(cancellationToken);
 
             var testContainersBuilder = new ContainerBuilder(image)
+                .WithDockerEndpoint(DockerUtils.DockerEndpoint())
                 .WithEnvironment("POSTGRES_PASSWORD", "123456")
                 .WithPortBinding(5432, assignRandomHostPort: true)
                 .WithWaitStrategy(Wait.ForUnixContainer()
