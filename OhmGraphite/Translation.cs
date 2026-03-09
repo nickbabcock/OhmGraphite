@@ -50,6 +50,7 @@ namespace OhmGraphite
         PSU,
         EmbeddedController,
         Battery,
+        PowerMonitor,
     }
 
     public static class TranslationExtension
@@ -135,6 +136,8 @@ namespace OhmGraphite
                     return HardwareType.EmbeddedController;
                 case LibreHardwareMonitor.Hardware.HardwareType.Battery:
                     return HardwareType.Battery;
+                case LibreHardwareMonitor.Hardware.HardwareType.PowerMonitor:
+                    return HardwareType.PowerMonitor;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s), s, "unexpected hardware monitor hardware translation");
             }
