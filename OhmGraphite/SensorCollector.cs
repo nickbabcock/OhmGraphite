@@ -41,7 +41,7 @@ namespace OhmGraphite
 
             if (PawnIo.IsInstalled)
             {
-                Logger.Info("Detected PawnIo version ({0}) installed", PawnIo.Version());
+                Logger.Info("Detected PawnIo version ({0}) installed", PawnIo.Version);
             }
             else
             {
@@ -85,7 +85,7 @@ namespace OhmGraphite
                 SensorAdded(sensor);
             }
 
-            if (hardware is NVMeGeneric nvme)
+            if (hardware is StorageDevice nvme && nvme.Storage.IsNVMe)
             {
                 var ohmNvme = new OhmNvme(nvme);
                 _nvmes.TryAdd(hardware.Identifier, ohmNvme);
