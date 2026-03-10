@@ -1,3 +1,19 @@
+## 0.37.0 - 2026-03-10
+
+LibreHardareMonitor has been bumped to the latest version:
+
+- Added Intel discrete GPU support, including VRAM, bandwidth, and additional Intel GPU telemetry.
+- Added Intel iGPU IGCL telemetry sensors (temperature, clock, voltage) and fixed duplicate integrated GPU entries.
+- Added NVIDIA core voltage sensors, Astral GPU sensors, and more precise RTX 50XX core temperature readings.
+- Added sensors for Framework laptops.
+- Improved storage detection and polling reliability, including force-drive wakeup support, restored NVMe thermal reporting, and fixes for ATA storage update issues.
+- Better handling for DIMM identifiers and battery custom names.
+- Added ARCTIC fan controller support, MSI AIO controller support, Thermal Grizzly WireView Pro 2 support and controls, and MSI MEG Ai1300P PSU support.
+- Added Lenovo V50t Gen 2 support.
+- Added broad motherboard coverage across MSI B840/B850/X870(E)/Z890, ASUS B450/B760/B850/X670E/X870E/Z690/Z170, Gigabyte A320/B650/X870, and ASRock X870E boards.
+- Fixed high CPU usage and several motherboard sensor issues, including ASUS Z170 EC zero-value temperatures, NCT67xx/NCT6799D register handling, and MSI pump and fan reporting.
+- Fixed duplicate GPU memory reporting and improved D3D-friendly device names.
+
 ## 0.36.0 - 2025-09-24
 
 ### Breaking Changes
