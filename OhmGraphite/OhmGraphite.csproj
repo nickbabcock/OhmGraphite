@@ -33,8 +33,8 @@
   <ItemGroup>
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.7-pre649" />
     <PackageReference Include="InfluxDB.Client" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.5" />
     <PackageReference Include="NLog" Version="6.1.1" />
     <PackageReference Include="Npgsql" Version="10.0.1" />
     <PackageReference Include="prometheus-net" Version="8.2.1" />
