@@ -148,9 +148,9 @@ namespace OhmGraphite.Test
             Environment.SetEnvironmentVariable("OHM_TEST_TOKEN", "secret123");
             try
             {
-                Assert.Equal("secret123", OhmGraphite.CustomConfig.Expand("influx2_token", "%OHM_TEST_TOKEN%"));
+                Assert.Equal("secret123", OhmGraphite.CustomConfig.Expand("%OHM_TEST_TOKEN%"));
                 Assert.Equal("prefix-secret123-suffix",
-                    OhmGraphite.CustomConfig.Expand("influx2_token", "prefix-%OHM_TEST_TOKEN%-suffix"));
+                    OhmGraphite.CustomConfig.Expand("prefix-%OHM_TEST_TOKEN%-suffix"));
             }
             finally
             {
@@ -158,45 +158,27 @@ namespace OhmGraphite.Test
             }
         }
 
-        [Fact]
-        public void ExpandsDollarBraceEnvVars()
+        [Theory]
+        [InlineData("dont%change%me")]
+        [InlineData("ci834g%94fn%9cws*one_")]
+        public void UnsetPercentVarStaysLiteral(string happenstanceString)
         {
-            Environment.SetEnvironmentVariable("OHM_TEST_TOKEN", "secret123");
-            try
-            {
-                Assert.Equal("secret123", OhmGraphite.CustomConfig.Expand("influx2_token", "${OHM_TEST_TOKEN}"));
-                Assert.Equal("a-secret123-b",
-                    OhmGraphite.CustomConfig.Expand("influx2_token", "a-${OHM_TEST_TOKEN}-b"));
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable("OHM_TEST_TOKEN", null);
-            }
-        }
-
-        [Fact]
-        public void UnsetDollarBraceExpandsToEmpty()
-        {
-            Environment.SetEnvironmentVariable("OHM_TEST_UNSET", null);
-            Assert.Equal("", OhmGraphite.CustomConfig.Expand("influx2_token", "${OHM_TEST_UNSET}"));
-            Assert.Equal("a--b", OhmGraphite.CustomConfig.Expand("influx2_token", "a-${OHM_TEST_UNSET}-b"));
+            Assert.Equal(happenstanceString, OhmGraphite.CustomConfig.Expand(happenstanceString));
         }
 
         [Fact]
         public void ExpandHandlesNullAndEmpty()
         {
-            Assert.Null(OhmGraphite.CustomConfig.Expand("influx2_token", null));
-            Assert.Equal("", OhmGraphite.CustomConfig.Expand("influx2_token", ""));
+            Assert.Null(OhmGraphite.CustomConfig.Expand(null));
+            Assert.Equal("", OhmGraphite.CustomConfig.Expand(""));
         }
 
-        [Fact]
-        public void ExpandLeavesPlainValuesUntouched()
+        [Theory]
+        [InlineData("localhost")]
+        [InlineData("https://example.com:8086/")]
+        public void ExpandLeavesPlainValuesUntouched(string plainValue)
         {
-            Assert.Equal("localhost", OhmGraphite.CustomConfig.Expand("host", "localhost"));
-            Assert.Equal(
-                "http://example.com:8086/",
-                OhmGraphite.CustomConfig.Expand("influx_address", "http://example.com:8086/")
-            );
+            Assert.Equal(plainValue, OhmGraphite.CustomConfig.Expand(plainValue));
         }
 
         [Fact]
