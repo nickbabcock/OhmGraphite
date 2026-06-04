@@ -32,6 +32,10 @@ namespace OhmGraphite.Test
             conn.Open();
             await using var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM ohm_stats", conn);
             Assert.Equal(3, Convert.ToInt32(cmd.ExecuteScalar()));
+
+            await using var hwCmd = new NpgsqlCommand(
+                "SELECT hw_instance FROM ohm_stats WHERE identifier = '/intelcpu/0/temperature/0'", conn);
+            Assert.Equal("0", Convert.ToString(hwCmd.ExecuteScalar()));
         }
 
         [IgnoreOnRemoteDockerFact, Trait("Category", "integration")]
@@ -68,6 +72,10 @@ namespace OhmGraphite.Test
             conn.Open();
             await using var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM ohm_stats", conn);
             Assert.Equal(3, Convert.ToInt32(cmd.ExecuteScalar()));
+
+            await using var hwCmd = new NpgsqlCommand(
+                "SELECT hw_instance FROM ohm_stats WHERE identifier = '/intelcpu/0/temperature/0'", conn);
+            Assert.Equal("0", Convert.ToString(hwCmd.ExecuteScalar()));
         }
     }
 }

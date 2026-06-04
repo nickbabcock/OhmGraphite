@@ -81,6 +81,7 @@ namespace OhmGraphite.Test
                     Assert.Contains("host=my-pc", content);
                     Assert.Contains("app=ohm", content);
                     Assert.Contains("sensor_type=Temperature", content);
+                    Assert.Contains("hw_instance=0", content);
                     break;
                 }
                 catch (Exception)

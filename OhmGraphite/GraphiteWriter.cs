@@ -147,6 +147,7 @@ namespace OhmGraphite
                    "app=ohm;" +
                    $"hardware={GraphiteEscape(data.Hardware)};" +
                    $"hardware_type={Enum.GetName(typeof(HardwareType), data.HardwareType)};" +
+                   $"hw_instance={GraphiteEscape(data.HardwareInstance)};" +
                    $"sensor_type={Enum.GetName(typeof(SensorType), data.SensorType)};" +
                    $"sensor_index={data.SensorIndex};" +
                    $"raw_name={GraphiteEscape(data.Sensor)} " +

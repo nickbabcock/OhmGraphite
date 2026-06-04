@@ -111,6 +111,7 @@ namespace OhmGraphite
                             cmd.Parameters.Add($"hardware{i}", NpgsqlDbType.Text);
                             cmd.Parameters.Add($"hardware_type{i}", NpgsqlDbType.Text);
                             cmd.Parameters.Add($"identifier{i}", NpgsqlDbType.Text);
+                            cmd.Parameters.Add($"hw_instance{i}", NpgsqlDbType.Text);
                             cmd.Parameters.Add($"sensor{i}", NpgsqlDbType.Text);
                             cmd.Parameters.Add($"sensor_type{i}", NpgsqlDbType.Text);
                             cmd.Parameters.Add($"value{i}", NpgsqlDbType.Real);
@@ -129,6 +130,7 @@ namespace OhmGraphite
                             cmd.Parameters[$"hardware{i}"].Value = sensor.Hardware;
                             cmd.Parameters[$"hardware_type{i}"].Value = Enum.GetName(typeof(HardwareType), sensor.HardwareType);
                             cmd.Parameters[$"identifier{i}"].Value = sensor.Identifier;
+                            cmd.Parameters[$"hw_instance{i}"].Value = sensor.HardwareInstance;
                             cmd.Parameters[$"sensor{i}"].Value = sensor.Sensor;
                             cmd.Parameters[$"sensor_type{i}"].Value = Enum.GetName(typeof(SensorType), sensor.SensorType);
                             cmd.Parameters[$"value{i}"].Value = sensor.Value;
@@ -161,10 +163,10 @@ namespace OhmGraphite
         private static string BatchedInsertSql(IEnumerable<ReportedValue> values)
         {
             var sqlColumns = values.Select((x, i) =>
-                $"(@time{i}, @host{i}, @hardware{i}, @hardware_type{i}, @identifier{i}, @sensor{i}, @sensor_type{i}, @sensor_index{i}, @value{i})");
+                $"(@time{i}, @host{i}, @hardware{i}, @hardware_type{i}, @identifier{i}, @hw_instance{i}, @sensor{i}, @sensor_type{i}, @sensor_index{i}, @value{i})");
             var columns = string.Join(", ", sqlColumns);
             return "INSERT INTO ohm_stats " +
-                   "(time, host, hardware, hardware_type, identifier, sensor, sensor_type, sensor_index, value) VALUES " +
+                   "(time, host, hardware, hardware_type, identifier, hw_instance, sensor, sensor_type, sensor_index, value) VALUES " +
                    columns;
         }
 

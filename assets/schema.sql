@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS ohm_stats (
    hardware TEXT,
    hardware_type TEXT,
    identifier TEXT,
+   hw_instance TEXT,
    sensor TEXT,
    sensor_type TEXT,
    sensor_index INT,

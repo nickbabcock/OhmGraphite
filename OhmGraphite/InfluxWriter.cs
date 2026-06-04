@@ -49,6 +49,7 @@ namespace OhmGraphite
                 {"hardware", sensor.Hardware},
                 {"hardware_type", Enum.GetName(typeof(HardwareType), sensor.HardwareType)},
                 {"identifier", sensor.Identifier },
+                {"hw_instance", sensor.HardwareInstance},
                 {"sensor", sensor.Sensor},
             };
 
