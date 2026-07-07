@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 using LibreHardwareMonitor.Hardware;
 using Prometheus;
 using System.Threading.Tasks;
@@ -12,19 +13,36 @@ namespace OhmGraphite
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly MetricConfig config;
+        private IManage _app;
+
         public Worker(MetricConfig config)
         {
             this.config = config;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            return Task.Run(() =>
+            _app = CreateOhmGraphite(config);
+            _app.Start();
+            await base.StartAsync(cancellationToken);
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            // Simply keep the service alive until shutdown is requested.
+            try
             {
-                using var app = CreateOhmGraphite(config);
-                app.Start();
-                stoppingToken.WaitHandle.WaitOne();
-            }, stoppingToken);
+                await Task.Delay(Timeout.Infinite, stoppingToken);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+        }
+
+        public override void Dispose()
+        {
+            _app?.Dispose();
+            base.Dispose();
         }
 
         private static IManage CreateOhmGraphite(MetricConfig config)

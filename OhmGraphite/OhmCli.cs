@@ -155,14 +155,33 @@ namespace OhmGraphite
                         services.AddHostedService<Worker>();
                     });
 
-                builder.Build().Run();
+                try
+                {
+                    builder.Build().Run();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex, "OhmGraphite terminated due to startup failure");
+                    Environment.ExitCode = 1;
+                }
             }
             else
             {
-                var token = cancellationToken;
                 var worker = new Worker(config);
-                await worker.StartAsync(token);
-                await worker.ExecuteTask;
+                try
+                {
+                    await worker.StartAsync(cancellationToken);
+                    await worker.ExecuteTask;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex, "OhmGraphite terminated due to startup failure");
+                    Environment.ExitCode = 1;
+                }
+                finally
+                {
+                    worker.Dispose();
+                }
             }
         }
 
