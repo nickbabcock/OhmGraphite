@@ -69,7 +69,7 @@ namespace OhmGraphite
         private static float? SmartValue(IEnumerable<DiskInfoToolkit.SmartAttributeEntry> attributes, string textKey)
         {
             return attributes
-                ?.FirstOrDefault(attribute => attribute.TextKey == textKey)
+                ?.FirstOrDefault(attribute => attribute.AttributeKey == textKey)
                 ?.RawValue;
         }
     }
