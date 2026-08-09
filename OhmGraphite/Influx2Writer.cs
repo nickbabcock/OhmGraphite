@@ -39,6 +39,7 @@ namespace OhmGraphite
                 .Tag("hardware", sensor.Hardware)
                 .Tag("hardware_type", Enum.GetName(typeof(HardwareType), sensor.HardwareType))
                 .Tag("identifier", sensor.Identifier)
+                .Tag("hw_instance", sensor.HardwareInstance)
                 .Tag("sensor", sensor.Sensor)
                 .Field("value", sensor.Value)
                 .Field("sensor_index", sensor.SensorIndex)

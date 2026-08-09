@@ -43,6 +43,7 @@ namespace OhmGraphite.Test
                     Assert.True(resp.IsSuccessStatusCode);
                     var content = await resp.Content.ReadAsStringAsync(cancellationToken);
                     Assert.Contains("/intelcpu/0/temperature/0", content);
+                    Assert.Contains("hw_instance", content);
                     break;
                 }
                 catch (Exception)
@@ -87,6 +88,7 @@ namespace OhmGraphite.Test
                     Assert.True(resp.IsSuccessStatusCode);
                     var content = await resp.Content.ReadAsStringAsync(cancellationToken);
                     Assert.Contains("/intelcpu/0/temperature/0", content);
+                    Assert.Contains("hw_instance", content);
                     break;
                 }
                 catch (Exception)
@@ -139,6 +141,8 @@ namespace OhmGraphite.Test
                     var tables = await queryApi.QueryAsync(flux, "myorg", cancellationToken);
                     var fields = tables.SelectMany(x => x.Records).Select(x => x.GetValueByKey("identifier"));
                     Assert.Contains("/intelcpu/0/temperature/0", fields);
+                    var hwInstances = tables.SelectMany(x => x.Records).Select(x => x.GetValueByKey("hw_instance"));
+                    Assert.Contains("0", hwInstances);
                     break;
                 }
                 catch (Exception)
@@ -190,6 +194,8 @@ namespace OhmGraphite.Test
                     var tables = await queryApi.QueryAsync(flux, "myorg", cancellationToken);
                     var fields = tables.SelectMany(x => x.Records).Select(x => x.GetValueByKey("identifier"));
                     Assert.Contains("/intelcpu/0/temperature/0", fields);
+                    var hwInstances = tables.SelectMany(x => x.Records).Select(x => x.GetValueByKey("hw_instance"));
+                    Assert.Contains("0", hwInstances);
                     break;
                 }
                 catch (Exception)
