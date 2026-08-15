@@ -26,14 +26,10 @@ namespace OhmGraphite
             _setupTable = setupTable;
         }
 
-        public Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        public Task ReportMetrics(IEnumerable<MetricReport> reports)
         {
             try
             {
-                // "timestamp with time zone" postgres type is a UTC timestamp so
-                // we explicitly convert the reported time to UTC to avoid a cast
-                // exception by npgsql
-                reportTime = reportTime.ToUniversalTime();
                 if (_failure)
                 {
                     Logger.Debug("Clearing connection pool");
@@ -96,46 +92,21 @@ namespace OhmGraphite
                         }
                     }
 
-                    var values = sensors.ToList();
-                    using (var cmd = new NpgsqlCommand(BatchedInsertSql(values), conn))
+                    // Every report becomes its own statement, but they are all sent in a
+                    // single batch, so the whole flush is one round trip and one commit.
+                    using (var transaction = conn.BeginTransaction())
+                    using (var batch = new NpgsqlBatch(conn, transaction))
                     {
-                        // Note that all parameters must be set before calling Prepare()
-                        // they are part of the information transmitted to PostgreSQL
-                        // and used to effectively plan the statement. You must also set
-                        // the DbType or NpgsqlDbType on your parameters to unambiguously
-                        // specify the data type (setting the value isn't support)
-                        for (int i = 0; i < values.Count; i++)
+                        foreach (var report in reports)
                         {
-                            cmd.Parameters.Add($"time{i}", NpgsqlDbType.TimestampTz);
-                            cmd.Parameters.Add($"host{i}", NpgsqlDbType.Text);
-                            cmd.Parameters.Add($"hardware{i}", NpgsqlDbType.Text);
-                            cmd.Parameters.Add($"hardware_type{i}", NpgsqlDbType.Text);
-                            cmd.Parameters.Add($"identifier{i}", NpgsqlDbType.Text);
-                            cmd.Parameters.Add($"sensor{i}", NpgsqlDbType.Text);
-                            cmd.Parameters.Add($"sensor_type{i}", NpgsqlDbType.Text);
-                            cmd.Parameters.Add($"value{i}", NpgsqlDbType.Real);
-                            cmd.Parameters.Add($"sensor_index{i}", NpgsqlDbType.Integer);
+                            batch.BatchCommands.Add(InsertCommand(report));
                         }
 
                         // A majority of the time, the same number of sensors will be
-                        // reported on, so it's important to prepare the statement
-                        cmd.Prepare();
-
-                        for (int i = 0; i < values.Count; i++)
-                        {
-                            var sensor = values[i];
-                            cmd.Parameters[$"time{i}"].Value = reportTime;
-                            cmd.Parameters[$"host{i}"].Value = _localHost;
-                            cmd.Parameters[$"hardware{i}"].Value = sensor.Hardware;
-                            cmd.Parameters[$"hardware_type{i}"].Value = Enum.GetName(typeof(HardwareType), sensor.HardwareType);
-                            cmd.Parameters[$"identifier{i}"].Value = sensor.Identifier;
-                            cmd.Parameters[$"sensor{i}"].Value = sensor.Sensor;
-                            cmd.Parameters[$"sensor_type{i}"].Value = Enum.GetName(typeof(SensorType), sensor.SensorType);
-                            cmd.Parameters[$"value{i}"].Value = sensor.Value;
-                            cmd.Parameters[$"sensor_index{i}"].Value = sensor.SensorIndex;
-                        }
-
-                        cmd.ExecuteNonQuery();
+                        // reported on, so it's important to prepare the statements
+                        batch.Prepare();
+                        batch.ExecuteNonQuery();
+                        transaction.Commit();
                     }
 
                     _failure = false;
@@ -152,21 +123,41 @@ namespace OhmGraphite
             }
         }
 
-        // Returns a SQL INSERT statement that will insert all the reported values in one go.
-        // Since there is no batched insert API that is part of Npgsql, we simulate one by
-        // creating a unique set of sql parameters for each reported value by it's index.
-        // Sending one insert of 70 values was nearly 10x faster than 70 inserts of 1 value,
-        // so this circumnavigation around a lack of native batched insert statements is
-        // worth it.
-        private static string BatchedInsertSql(IEnumerable<ReportedValue> values)
+        // Returns a statement that inserts every sensor of a report in one go.
+        private NpgsqlBatchCommand InsertCommand(MetricReport report)
         {
-            var sqlColumns = values.Select((x, i) =>
+            var sensors = report.Sensors;
+            var reportTime = report.ReportTime.ToUniversalTime();
+
+            var sqlColumns = sensors.Select((x, i) =>
                 $"(@time{i}, @host{i}, @hardware{i}, @hardware_type{i}, @identifier{i}, @sensor{i}, @sensor_type{i}, @sensor_index{i}, @value{i})");
             var columns = string.Join(", ", sqlColumns);
-            return "INSERT INTO ohm_stats " +
+            var cmd = new NpgsqlBatchCommand("INSERT INTO ohm_stats " +
                    "(time, host, hardware, hardware_type, identifier, sensor, sensor_type, sensor_index, value) VALUES " +
-                   columns;
+                   columns);
+
+            // You must set the DbType or NpgsqlDbType on the parameters to unambiguously
+            // specify the data type, as the type is part of the information transmitted to
+            // PostgreSQL and used to effectively plan the statement.
+            for (int i = 0; i < sensors.Count; i++)
+            {
+                var sensor = sensors[i];
+                cmd.Parameters.Add(Param($"time{i}", NpgsqlDbType.TimestampTz, reportTime));
+                cmd.Parameters.Add(Param($"host{i}", NpgsqlDbType.Text, _localHost));
+                cmd.Parameters.Add(Param($"hardware{i}", NpgsqlDbType.Text, sensor.Hardware));
+                cmd.Parameters.Add(Param($"hardware_type{i}", NpgsqlDbType.Text, Enum.GetName(typeof(HardwareType), sensor.HardwareType)));
+                cmd.Parameters.Add(Param($"identifier{i}", NpgsqlDbType.Text, sensor.Identifier));
+                cmd.Parameters.Add(Param($"sensor{i}", NpgsqlDbType.Text, sensor.Sensor));
+                cmd.Parameters.Add(Param($"sensor_type{i}", NpgsqlDbType.Text, Enum.GetName(typeof(SensorType), sensor.SensorType)));
+                cmd.Parameters.Add(Param($"sensor_index{i}", NpgsqlDbType.Integer, sensor.SensorIndex));
+                cmd.Parameters.Add(Param($"value{i}", NpgsqlDbType.Real, sensor.Value));
+            }
+
+            return cmd;
         }
+
+        private static NpgsqlParameter Param(string name, NpgsqlDbType type, object value) =>
+            new NpgsqlParameter(name, type) { Value = value };
 
         public void Dispose()
         {

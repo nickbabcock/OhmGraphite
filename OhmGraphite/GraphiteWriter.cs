@@ -31,7 +31,7 @@ namespace OhmGraphite
             _localHost = localHost;
         }
 
-        public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        public async Task ReportMetrics(IEnumerable<MetricReport> reports)
         {
             // Since the graphite writer keeps the same connection open across
             // writes, we need to ensure that only one thread has access to
@@ -47,7 +47,7 @@ namespace OhmGraphite
 
             try
             {
-                await SendGraphite(reportTime, sensors);
+                await SendGraphite(reports);
             }
             finally
             {
@@ -55,7 +55,7 @@ namespace OhmGraphite
             }
         }
 
-        private async Task SendGraphite(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        private async Task SendGraphite(IEnumerable<MetricReport> reports)
         {
             try
             {
@@ -69,11 +69,6 @@ namespace OhmGraphite
                     await _client.ConnectAsync(_remoteHost, _remotePort);
                 }
 
-                // We don't want to transmit metrics across multiple seconds as they
-                // are being retrieved so calculate the timestamp of the signaled event
-                // only once.
-                long epoch = new DateTimeOffset(reportTime).ToUnixTimeSeconds();
-
                 // Create a stream writer that leaves the underlying stream open
                 // when the writer is closed, as we don't want our TCP connection
                 // closed too. Since this requires the four param constructor for
@@ -81,9 +76,13 @@ namespace OhmGraphite
                 // the C# reference source.
                 using (var writer = new StreamWriter(_client.GetStream(), Utf8NoBom, bufferSize: 1024, leaveOpen: true))
                 {
-                    foreach (var sensor in sensors)
+                    foreach (var report in reports)
                     {
-                        await writer.WriteLineAsync(FormatGraphiteData(epoch, sensor));
+                        var epoch = new DateTimeOffset(report.ReportTime).ToUnixTimeSeconds();
+                        foreach (var sensor in report.Sensors)
+                        {
+                            await writer.WriteLineAsync(FormatGraphiteData(epoch, sensor));
+                        }
                     }
                 }
 

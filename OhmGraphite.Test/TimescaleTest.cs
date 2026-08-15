@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DotNet.Testcontainers.Builders;
 using Npgsql;
@@ -27,11 +28,25 @@ namespace OhmGraphite.Test
 
             using var writer = new TimescaleWriter(connStr, true, "my-pc");
             await using var conn = new NpgsqlConnection(connStr);
-            await writer.ReportMetrics(epoch, TestSensorCreator.Values());
+            await writer.ReportMetrics(TestSensorCreator.Reports(epoch, epoch.AddSeconds(1)));
 
             conn.Open();
-            await using var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM ohm_stats", conn);
-            Assert.Equal(3, Convert.ToInt32(cmd.ExecuteScalar()));
+            await using (var cmd = new NpgsqlCommand("SELECT COUNT(*), COUNT(DISTINCT time) FROM ohm_stats", conn))
+            await using (var reader = cmd.ExecuteReader())
+            {
+                Assert.True(reader.Read());
+                Assert.Equal(6, reader.GetInt64(0));
+                Assert.Equal(2, reader.GetInt64(1));
+            }
+
+            // A large batch must stay below the Postgres limit of 65535 parameters per
+            // statement. At 9 parameters per sensor, a single statement can only hold 7281
+            // sensors, which a batch of reports can easily exceed.
+            var many = Enumerable.Range(1, 3000).Select(x => epoch.AddSeconds(x)).ToArray();
+            await writer.ReportMetrics(TestSensorCreator.Reports(many));
+
+            await using var largeCmd = new NpgsqlCommand("SELECT COUNT(*) FROM ohm_stats", conn);
+            Assert.Equal(9006, Convert.ToInt32(largeCmd.ExecuteScalar()));
         }
 
         [IgnoreOnRemoteDockerFact, Trait("Category", "integration")]
@@ -63,7 +78,7 @@ namespace OhmGraphite.Test
             string connStr = $"Host={container.Hostname};Username=ohm;Password=itsohm;Port={container.GetMappedPublicPort(5432)};Database=timescale_built";
             using var writer = new TimescaleWriter(connStr, false, "my-pc");
             await using var conn = new NpgsqlConnection(selectStr);
-            await writer.ReportMetrics(epoch, TestSensorCreator.Values());
+            await writer.ReportMetrics(TestSensorCreator.Reports(epoch));
 
             conn.Open();
             await using var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM ohm_stats", conn);

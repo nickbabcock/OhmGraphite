@@ -22,11 +22,12 @@ namespace OhmGraphite
             _localHost = localHost;
         }
 
-        public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        public async Task ReportMetrics(IEnumerable<MetricReport> reports)
         {
+            var points = reports.SelectMany(report =>
+                report.Sensors.Select(sensor => NewPoint(report.ReportTime, sensor))).ToList();
             var influxDbClient = new InfluxDBClient(_config.Options);
             var writeApi = influxDbClient.GetWriteApiAsync();
-            var points = sensors.Select(x => NewPoint(reportTime, x)).ToList();
             await writeApi.WritePointsAsync(points);
         }
 

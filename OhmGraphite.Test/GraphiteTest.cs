@@ -26,11 +26,12 @@ namespace OhmGraphite.Test
             var port = container.GetMappedPublicPort(2003);
             using var writer = new GraphiteWriter(container.Hostname, port, "my-pc", tags: false);
             using var client = new HttpClient();
+            var reportTime = DateTime.Now;
             for (int attempts = 0; ; attempts++)
             {
                 try
                 {
-                    await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
+                    await writer.ReportMetrics(TestSensorCreator.Reports(reportTime.AddSeconds(-1), reportTime));
 
                     var resp = await client.GetAsync(
                         $"http://{container.Hostname}:{container.GetMappedPublicPort(80)}/render?format=csv&target=ohm.my-pc.intelcpu.0.temperature.cpucore.1",
@@ -72,7 +73,7 @@ namespace OhmGraphite.Test
             {
                 try
                 {
-                    await writer.ReportMetrics(DateTime.Now, TestSensorCreator.Values());
+                    await writer.ReportMetrics(TestSensorCreator.Reports(DateTime.Now));
                     var resp = await client.GetAsync(
                         $"http://{container.Hostname}:{container.GetMappedPublicPort(80)}/render?format=csv&target=seriesByTag('sensor_type=Temperature','hardware_type=CPU')",
                         cancellationToken);

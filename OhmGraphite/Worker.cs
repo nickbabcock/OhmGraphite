@@ -49,16 +49,19 @@ namespace OhmGraphite
         private static IManage CreateManager(MetricConfig config, SensorCollector collector)
         {
             var hostname = config.LookupName();
-            double seconds = config.Interval.TotalSeconds;
+            if (config.Prometheus == null)
+            {
+                Logger.Info($"Metric interval: {config.Interval.TotalSeconds}s batch size: {config.BatchSize}");
+            }
+
             if (config.Graphite != null)
             {
-                Logger.Info(
-                    $"Graphite host: {config.Graphite.Host} port: {config.Graphite.Port} interval: {seconds} tags: {config.Graphite.Tags}");
+                Logger.Info($"Graphite host: {config.Graphite.Host} port: {config.Graphite.Port} tags: {config.Graphite.Tags}");
                 var writer = new GraphiteWriter(config.Graphite.Host,
                     config.Graphite.Port,
                     hostname,
                     config.Graphite.Tags);
-                return new MetricTimer(config.Interval, collector, writer);
+                return new MetricTimer(config.Interval, config.BatchSize, collector, writer);
             }
             else if (config.Prometheus != null)
             {
@@ -70,19 +73,19 @@ namespace OhmGraphite
             else if (config.Timescale != null)
             {
                 var writer = new TimescaleWriter(config.Timescale.Connection, config.Timescale.SetupTable, hostname);
-                return new MetricTimer(config.Interval, collector, writer);
+                return new MetricTimer(config.Interval, config.BatchSize, collector, writer);
             }
             else if (config.Influx != null)
             {
                 Logger.Info($"Influxdb address: {config.Influx.Address} db: {config.Influx.Db}");
                 var writer = new InfluxWriter(config.Influx, hostname);
-                return new MetricTimer(config.Interval, collector, writer);
+                return new MetricTimer(config.Interval, config.BatchSize, collector, writer);
             }
             else
             {
                 Logger.Info($"Influx2 address: {config.Influx2.Options.Url}");
                 var writer = new Influx2Writer(config.Influx2, hostname);
-                return new MetricTimer(config.Interval, collector, writer);
+                return new MetricTimer(config.Interval, config.BatchSize, collector, writer);
             }
         }
     }

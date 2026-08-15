@@ -20,6 +20,7 @@ namespace OhmGraphite.Test
             Assert.Equal("myhost", results.Graphite.Host);
             Assert.Equal(2004, results.Graphite.Port);
             Assert.Equal(TimeSpan.FromSeconds(6), results.Interval);
+            Assert.Equal(3, results.BatchSize);
             Assert.True(results.Graphite.Tags);
         }
 
@@ -36,6 +37,7 @@ namespace OhmGraphite.Test
             Assert.Equal("localhost", results.Graphite.Host);
             Assert.Equal(2003, results.Graphite.Port);
             Assert.Equal(TimeSpan.FromSeconds(5), results.Interval);
+            Assert.Equal(1, results.BatchSize);
             Assert.False(results.Graphite.Tags);
 
             Assert.True(results.EnabledHardware.Cpu);
@@ -45,6 +47,36 @@ namespace OhmGraphite.Test
             Assert.True(results.EnabledHardware.Network);
             Assert.True(results.EnabledHardware.Ram);
             Assert.True(results.EnabledHardware.Storage);
+        }
+
+        [Theory]
+        [InlineData("invalid")]
+        [InlineData("0")]
+        [InlineData("-1")]
+        public void InvalidBatchSizeUsesDefault(string batchSize)
+        {
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/default.config" };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            config.AppSettings.Settings.Add("batch_size", batchSize);
+
+            var results = MetricConfig.ParseAppSettings(new CustomConfig(config));
+
+            Assert.Equal(1, results.BatchSize);
+        }
+
+        [Theory]
+        [InlineData("invalid")]
+        [InlineData("0")]
+        [InlineData("-1")]
+        public void InvalidIntervalUsesDefault(string interval)
+        {
+            var configMap = new ExeConfigurationFileMap { ExeConfigFilename = "assets/default.config" };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+            config.AppSettings.Settings.Add("interval", interval);
+
+            var results = MetricConfig.ParseAppSettings(new CustomConfig(config));
+
+            Assert.Equal(TimeSpan.FromSeconds(5), results.Interval);
         }
 
         [Fact]
