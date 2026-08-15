@@ -21,13 +21,14 @@ namespace OhmGraphite
             _localHost = localHost;
         }
 
-        public async Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors)
+        public async Task ReportMetrics(IEnumerable<MetricReport> reports)
         {
             var payload = new LineProtocolPayload();
             var password = _config.User != null ? (_config.Password ?? "") : null;
             var client = new LineProtocolClient(_config.Address, _config.Db, _config.User, password);
 
-            foreach (var point in sensors.Select(x => NewPoint(reportTime, x)))
+            foreach (var point in reports.SelectMany(report =>
+                         report.Sensors.Select(sensor => NewPoint(report.ReportTime, sensor))))
             {
                 payload.Add(point);
             }

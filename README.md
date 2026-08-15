@@ -64,6 +64,8 @@ Any `value` in the config can reference an environment variable using `%NAME%` s
 
 When running as a Windows service, set the variable machine-wide (e.g. via `setx /M INFLUX_TOKEN ...` or System Properties → Environment Variables) so the service account inherits it; per-user variables won't be visible to `LocalSystem`. Unset references are left as the literal `%NAME%` placeholder (standard Windows behavior).
 
+For data connectors that push metrics to a destination, `batch_size` can be used to batch `n` number of metric reports. So if the interval is 5 seconds, and the batch size is 12, OhmGraphite will write data once a minute.
+
 ### Graphite Configuration
 
 The config below polls our hardware every `5` seconds and sends the results to a graphite server listening on `localhost:2003`.
@@ -75,6 +77,7 @@ The config below polls our hardware every `5` seconds and sends the results to a
     <add key="host" value="localhost" />
     <add key="port" value="2003" />
     <add key="interval" value="5" />
+    <add key="batch_size" value="1" />
     <add key="tags" value="false" />
   </appSettings>
 </configuration>
@@ -103,12 +106,14 @@ Graphite is the default export style, but if you're an InfluxDB user you can cha
   <appSettings>
     <add key="type" value="influxdb" />
     <add key="interval" value="5" />
+    <add key="batch_size" value="1" />
     <add key="influx_address" value="http://localhost:8086" />
     <add key="influx_db" value="mydb" />
 <!--
     <add key="influx_user" value="myuser" />
     <add key="influx_password" value="mypassword" />
     <add key="interval" value="5" />
+    <add key="batch_size" value="1" />
 -->
   </appSettings>
 </configuration>
@@ -126,6 +131,7 @@ If OhmGraphite will be connecting to InfluxDB 2, the configuration will need to 
     <add key="influx2_bucket" value="mydb" />
     <add key="influx2_token" value="thisistheinfluxdbtoken" />
     <add key="interval" value="5" />
+    <add key="batch_size" value="1" />
   </appSettings>
 </configuration>
 ```
@@ -242,6 +248,8 @@ One can configure OhmGraphite to send to Timescale / Postgres with the following
 <configuration>
   <appSettings>
     <add key="type" value="timescale" />
+    <add key="interval" value="5" />
+    <add key="batch_size" value="1" />
     <add key="timescale_connection" value="Host=vm-ubuntu;Username=ohm;Password=123456;Database=postgres" />
     <add key="timescale_setup" value="false" />
   </appSettings>

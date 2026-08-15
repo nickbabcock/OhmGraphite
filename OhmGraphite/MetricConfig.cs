@@ -15,11 +15,12 @@ namespace OhmGraphite
     {
         private readonly INameResolution _nameLookup;
 
-        public MetricConfig(TimeSpan interval, INameResolution nameLookup, GraphiteConfig graphite, InfluxConfig influx,
+        public MetricConfig(TimeSpan interval, int batchSize, INameResolution nameLookup, GraphiteConfig graphite, InfluxConfig influx,
             PrometheusConfig prometheus, TimescaleConfig timescale, Dictionary<string, string> aliases, List<Regex> hiddenSensors, Influx2Config influx2, EnabledHardware enabledHardware)
         {
             _nameLookup = nameLookup;
             Interval = interval;
+            BatchSize = batchSize;
             Graphite = graphite;
             Influx = influx;
             Prometheus = prometheus;
@@ -32,6 +33,7 @@ namespace OhmGraphite
 
         public string LookupName() => _nameLookup.LookupName();
         public TimeSpan Interval { get; }
+        public int BatchSize { get; }
         public GraphiteConfig Graphite { get; }
         public InfluxConfig Influx { get; }
         public Influx2Config Influx2 { get; }
@@ -43,12 +45,16 @@ namespace OhmGraphite
 
         public static MetricConfig ParseAppSettings(IAppConfig config)
         {
-            if (!int.TryParse(config["interval"], out int seconds))
+            if (!int.TryParse(config["interval"], out int seconds) || seconds <= 0)
             {
                 seconds = 5;
             }
 
             var interval = TimeSpan.FromSeconds(seconds);
+            if (!int.TryParse(config["batch_size"], out int batchSize) || batchSize <= 0)
+            {
+                batchSize = 1;
+            }
 
             INameResolution nameLookup = NameLookup(config["name_lookup"] ?? "netbios");
             InstallCertificateVerification(config["certificate_verification"] ?? "True");
@@ -102,7 +108,7 @@ namespace OhmGraphite
                     RegexOptions.IgnoreCase | RegexOptions.Singleline
                 )).ToList();
 
-            return new MetricConfig(interval, nameLookup, gconfig, iconfig, pconfig, timescale, aliases, hiddenSensors, influx2, enabledHardware);
+            return new MetricConfig(interval, batchSize, nameLookup, gconfig, iconfig, pconfig, timescale, aliases, hiddenSensors, influx2, enabledHardware);
         }
 
         private static EnabledHardware ParseEnabledHardware(IAppConfig config)

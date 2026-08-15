@@ -6,6 +6,6 @@ namespace OhmGraphite
 {
     public interface IWriteMetrics : IDisposable
     {
-        Task ReportMetrics(DateTime reportTime, IEnumerable<ReportedValue> sensors);
+        Task ReportMetrics(IEnumerable<MetricReport> reports);
     }
 }
