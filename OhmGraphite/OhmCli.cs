@@ -17,12 +17,13 @@ namespace OhmGraphite
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private static readonly string SampleConfig = ReadSampleConfig();
+        private static readonly string SampleConfig = ReadResource("SampleConfig.xml");
+        private static readonly string SampleNLogConfig = ReadResource("SampleNLog.xml");
 
-        private static string ReadSampleConfig()
+        private static string ReadResource(string name)
         {
-            using var stream = typeof(OhmCli).Assembly.GetManifestResourceStream("SampleConfig.xml")
-                ?? throw new InvalidOperationException("missing embedded SampleConfig.xml resource");
+            using var stream = typeof(OhmCli).Assembly.GetManifestResourceStream(name)
+                ?? throw new InvalidOperationException($"missing embedded {name} resource");
             using var reader = new StreamReader(stream);
             return reader.ReadToEnd();
         }
@@ -141,29 +142,35 @@ namespace OhmGraphite
             });
             rootCommand.Subcommands.Add(uninstallCommand);
 
+            var directoryArgument = new Argument<DirectoryInfo>("directory")
+            {
+                Description = "Directory to write the configuration files to (default: current directory)",
+                Arity = ArgumentArity.ZeroOrOne,
+                DefaultValueFactory = _ => new DirectoryInfo(Directory.GetCurrentDirectory())
+            };
             var forceOption = new Option<bool>("--force")
             {
-                Description = "Overwrite the config file if it already exists"
+                Description = "Overwrite the configuration files if they already exist"
             };
 
-            var initCommand = new Command("init", "Writes a sample configuration file to get started");
-            initCommand.Options.Add(configOption);
+            var initCommand = new Command("init", "Writes the initial configuration files (OhmGraphite.exe.config and NLog.config) to a directory");
+            initCommand.Arguments.Add(directoryArgument);
             initCommand.Options.Add(forceOption);
             initCommand.SetAction((parseResult) =>
             {
-                var configFile = parseResult.GetValue(configOption);
+                var directory = parseResult.GetValue(directoryArgument);
                 var force = parseResult.GetValue(forceOption);
-                var path = configFile == null ? DefaultConfigPath() : configFile.FullName;
 
-                if (File.Exists(path) && !force)
+                if (!directory.Exists)
                 {
-                    Console.Error.WriteLine($"{path} already exists. Use --force to overwrite it.");
+                    Console.Error.WriteLine($"{directory.FullName} does not exist.");
                     Environment.ExitCode = 1;
                     return;
                 }
 
-                File.WriteAllText(path, SampleConfig);
-                Console.WriteLine($"Wrote sample configuration to {path}");
+                // Write each file independently, so that a missing file is created even if the other one exists
+                WriteInitFile(Path.Join(directory.FullName, "OhmGraphite.exe.config"), SampleConfig, force);
+                WriteInitFile(Path.Join(directory.FullName, "NLog.config"), SampleNLogConfig, force);
             });
             rootCommand.Subcommands.Add(initCommand);
 
@@ -227,6 +234,19 @@ namespace OhmGraphite
             }
 
             return process.ExitCode;
+        }
+
+        private static void WriteInitFile(string path, string contents, bool force)
+        {
+            if (File.Exists(path) && !force)
+            {
+                Console.Error.WriteLine($"{path} already exists. Use --force to overwrite it.");
+                Environment.ExitCode = 1;
+                return;
+            }
+
+            File.WriteAllText(path, contents);
+            Console.WriteLine($"Wrote {path}");
         }
 
         private static string DefaultConfigPath() =>
