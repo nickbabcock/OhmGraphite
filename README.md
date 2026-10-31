@@ -27,10 +27,23 @@ Hardware support is provided through [LibreHardwareMonitor](https://github.com/L
 
 ## Installation
 
+### Winget
+
+```powershell
+winget install NickBabcock.OhmGraphite
+```
+
+Winget installs OhmGraphite as a portable package.
+For a user install, winget puts `OhmGraphite.exe` in `%LOCALAPPDATA%\Microsoft\WinGet\Packages\NickBabcock.OhmGraphite_<source>\`.
+This is the installation directory.
+Continue with the "Generate the configuration files" step below.
+
+### Manual
+
 - To allow OhmGraphite access to sensors like CPU temperature, wattage, and frequency: install [PawnIO](https://pawnio.eu/). OhmGraphite works without PawnIO, but will emit limited data.
 - Create a directory that will be the home base for OhmGraphite (I use `C:\Apps\OhmGraphite`).
 - Download the [latest zip](https://github.com/nickbabcock/OhmGraphite/releases/latest) and extract to our directory.
-- Update app configuration (located at `OhmGraphite.exe.config`). See configs for [Graphite](#graphite-configuration), [InfluxDB](#influxdb-configuration), [Prometheus](#prometheus-configuration), [Timescale / Postgres](#timescaledb-configuration)
+- Generate the configuration files: in the installation directory, run `.\OhmGraphite.exe init`. This writes `OhmGraphite.exe.config` and `NLog.config` to the current directory. See configs for [Graphite](#graphite-configuration), [InfluxDB](#influxdb-configuration), [Prometheus](#prometheus-configuration), [Timescale / Postgres](#timescaledb-configuration)
 - **Run as Administrator**: Open PowerShell or Command Prompt
 - To install the app `.\OhmGraphite.exe install`. The command will install OhmGraphite as a Windows service (so you can manage it with your favorite powershell commands or `services.msc`)
 - To start the app after installation: `.\OhmGraphite.exe start` or your favorite Windows service management tool
@@ -40,8 +53,14 @@ Congrats! Installation is done and you'll start seeing metrics flowing into your
 
 ## Upgrades
 
+### Winget
+
+- Run `winget upgrade`.
+
+### Manual
+
 - Stop OhmGraphite service `.\OhmGraphite.exe stop`
-- Unzip latest release and copy `OhmGraphite.exe` to your installation directory.
+- Unzip latest release and copy `OhmGraphite.exe` to your installation directory. The zip contains only `OhmGraphite.exe`, so your configuration files stay as they are.
 - Start OhmGraphite service `.\OhmGraphite.exe start`
 
 ## Uninstall
@@ -52,7 +71,14 @@ Congrats! Installation is done and you'll start seeing metrics flowing into your
 
 ## Configuration
 
-App configuration is located in the installation directory at `OhmGraphite.exe.config`.
+OhmGraphite uses two configuration files:
+
+- `OhmGraphite.exe.config`: the app configuration. OhmGraphite reads it from the installation directory. To use a different file, give `--config <path>` to `run` or `install`.
+- `NLog.config`: the logging configuration. OhmGraphite reads it only from the installation directory. If this file does not exist, OhmGraphite writes no log.
+
+The release does not include these files. To create them, run `.\OhmGraphite.exe init [directory]`.
+The command writes both files to `directory`, or to the current directory if you do not give one. The directory must exist.
+The command does not overwrite a file that exists. To overwrite the files, add `--force`.
 
 Config updates require an app restart to take effect.
 
@@ -447,7 +473,8 @@ Something wrong? Try these steps
 - Enter the directory where OhmGraphite is installed
 - Examine `OhmGraphite.log`, do you see any lines with an "ERROR"? Fix the error.
 - To see what hardward and sensors have been detected, and when metrics are
-  pushed to the destination, enable more logging in `NLog.config`. Change the
+  pushed to the destination, enable more logging in `NLog.config` (if it is
+  missing, create it with `.\OhmGraphite.exe init`). Change the
   following line
   ```xml
     <logger name="*" minlevel="Info" writeTo="file" />

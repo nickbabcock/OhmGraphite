@@ -26,11 +26,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="..\assets\schema.sql">
       <LogicalName>schema.sql</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App.config">
+      <LogicalName>SampleConfig.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NLog.config">
+      <LogicalName>SampleNLog.xml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 
@@ -51,8 +54,6 @@
     <RemoveDir Directories="$(BaseOutputPath)tmp\" ContinueOnError="true" />
     <MakeDir Directories="$(BaseOutputPath)tmp\" />
     <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.exe" DestinationFolder="$(BaseOutputPath)tmp\" />
-    <Copy SourceFiles="$(OutputPath)\publish\OhmGraphite.dll.config" DestinationFiles="$(BaseOutputPath)tmp\OhmGraphite.exe.config" />
-    <Copy SourceFiles="$(OutputPath)\publish\NLog.config" DestinationFolder="$(BaseOutputPath)tmp\" />
 
     <ZipDirectory Overwrite="true" SourceDirectory="$(BaseOutputPath)\tmp" DestinationFile="$(BaseOutputPath)OhmGraphite-$(Major).$(Minor).$(Revision).zip" />
   </Target>

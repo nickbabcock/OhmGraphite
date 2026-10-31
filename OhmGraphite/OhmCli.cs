@@ -17,6 +17,17 @@ namespace OhmGraphite
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        private static readonly string SampleConfig = ReadResource("SampleConfig.xml");
+        private static readonly string SampleNLogConfig = ReadResource("SampleNLog.xml");
+
+        private static string ReadResource(string name)
+        {
+            using var stream = typeof(OhmCli).Assembly.GetManifestResourceStream(name)
+                ?? throw new InvalidOperationException($"missing embedded {name} resource");
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+        }
+
         public static async Task Execute(string[] args)
         {
             var serviceName = "OhmGraphite";
@@ -131,6 +142,38 @@ namespace OhmGraphite
             });
             rootCommand.Subcommands.Add(uninstallCommand);
 
+            var directoryArgument = new Argument<DirectoryInfo>("directory")
+            {
+                Description = "Directory to write the configuration files to (default: current directory)",
+                Arity = ArgumentArity.ZeroOrOne,
+                DefaultValueFactory = _ => new DirectoryInfo(Directory.GetCurrentDirectory())
+            };
+            var forceOption = new Option<bool>("--force")
+            {
+                Description = "Overwrite the configuration files if they already exist"
+            };
+
+            var initCommand = new Command("init", "Writes the initial configuration files (OhmGraphite.exe.config and NLog.config) to a directory");
+            initCommand.Arguments.Add(directoryArgument);
+            initCommand.Options.Add(forceOption);
+            initCommand.SetAction((parseResult) =>
+            {
+                var directory = parseResult.GetValue(directoryArgument);
+                var force = parseResult.GetValue(forceOption);
+
+                if (!directory.Exists)
+                {
+                    Console.Error.WriteLine($"{directory.FullName} does not exist.");
+                    Environment.ExitCode = 1;
+                    return;
+                }
+
+                // Write each file independently, so that a missing file is created even if the other one exists
+                WriteInitFile(Path.Join(directory.FullName, "OhmGraphite.exe.config"), SampleConfig, force);
+                WriteInitFile(Path.Join(directory.FullName, "NLog.config"), SampleNLogConfig, force);
+            });
+            rootCommand.Subcommands.Add(initCommand);
+
             var parseResult = rootCommand.Parse(args);
             await parseResult.InvokeAsync();
         }
@@ -193,11 +236,32 @@ namespace OhmGraphite
             return process.ExitCode;
         }
 
+        private static void WriteInitFile(string path, string contents, bool force)
+        {
+            if (File.Exists(path) && !force)
+            {
+                Console.Error.WriteLine($"{path} already exists. Use --force to overwrite it.");
+                Environment.ExitCode = 1;
+                return;
+            }
+
+            File.WriteAllText(path, contents);
+            Console.WriteLine($"Wrote {path}");
+        }
+
+        private static string DefaultConfigPath() =>
+            Path.Join(Path.GetDirectoryName(Environment.ProcessPath), "OhmGraphite.exe.config");
+
         private static IAppConfig CreateConfiguration(string configPath)
         {
             if (string.IsNullOrEmpty(configPath))
             {
-                var fn = Path.Join(Path.GetDirectoryName(Environment.ProcessPath), "OhmGraphite.exe.config");
+                var fn = DefaultConfigPath();
+                if (!File.Exists(fn))
+                {
+                    throw new ApplicationException($"unable to detect config: {fn}. Run 'OhmGraphite.exe init' to create one.");
+                }
+
                 var configMap1 = new ExeConfigurationFileMap { ExeConfigFilename = fn };
                 var config1 = ConfigurationManager.OpenMappedExeConfiguration(configMap1, ConfigurationUserLevel.None);
                 return new CustomConfig(config1);
@@ -205,7 +269,7 @@ namespace OhmGraphite
 
             if (!File.Exists(configPath))
             {
-                throw new ApplicationException($"unable to detect config: ${configPath}");
+                throw new ApplicationException($"unable to detect config: {configPath}. Run 'OhmGraphite.exe init' to create one.");
             }
 
             var configMap = new ExeConfigurationFileMap { ExeConfigFilename = configPath };

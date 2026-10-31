@@ -43,3 +43,10 @@ jobs:
         prerelease: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish to winget-pkgs
+      uses: vedantmgoyal9/winget-releaser@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        identifier: NickBabcock.OhmGraphite
+        installers-regex: '\.zip$'
+        token: ${{ secrets.WINGET_TOKEN }}
